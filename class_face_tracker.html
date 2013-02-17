@@ -163,6 +163,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:abf0948b588ae71d555d61506cb8c8a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the passed flag from the additional flags.  <a href="#abf0948b588ae71d555d61506cb8c8a4e"></a><br/></td></tr>
 <tr class="memitem:a99fde78244336b63796b3c0467210213"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a99fde78244336b63796b3c0467210213">SetAdditionalFlags</a> (unsigned int flags)</td></tr>
 <tr class="memdesc:a99fde78244336b63796b3c0467210213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the additional flags to flags.  <a href="#a99fde78244336b63796b3c0467210213"></a><br/></td></tr>
+<tr class="memitem:a4f77bdab0b45cf24701ac008c56ce571"><td class="memItemLeft" align="right" valign="top">QImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">GetLastImage</a> ()</td></tr>
+<tr class="memdesc:a4f77bdab0b45cf24701ac008c56ce571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information.  <a href="#a4f77bdab0b45cf24701ac008c56ce571"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -203,6 +205,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a2e35b6c5399c821e2c2ae5f4403f8c43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e35b6c5399c821e2c2ae5f4403f8c43"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2e35b6c5399c821e2c2ae5f4403f8c43">m_imageHeight</a></td></tr>
 <tr class="memdesc:a2e35b6c5399c821e2c2ae5f4403f8c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the height of the image on which face detection is performed. <br/></td></tr>
+<tr class="memitem:a1ecd3863876e847cec6e411601e9a65e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ecd3863876e847cec6e411601e9a65e"></a>
+cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><b>cameraFrame_saved</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -382,6 +386,24 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
+<a class="anchor" id="a4f77bdab0b45cf24701ac008c56ce571"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QImage * FaceTracker::GetLastImage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information. </p>
+<dl class="section return"><dt>Returns</dt><dd>Last Processed frame </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a189f02c677e1060792208c9ee1eb3222"></a>
 <div class="memitem">
 <div class="memproto">
@@ -519,7 +541,7 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_face_tracker.html">FaceTracker</a></li>
-    <li class="footer">Generated on Sun Feb 17 2013 01:00:25 for Lockheed Inanimation by
+    <li class="footer">Generated on Sun Feb 17 2013 13:30:20 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
