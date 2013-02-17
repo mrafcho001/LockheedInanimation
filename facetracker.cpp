@@ -24,17 +24,18 @@ void FaceTracker::ResetTracker()
 
 QRect FaceTracker::GetFacePosition()
 {
-    cv::Mat cameraFrame;
-    m_vc >> cameraFrame;
+    m_vc >> cameraFrame_saved;
 
-    if(cameraFrame.empty())
+    cv::Mat cameraFrame;
+
+    if(cameraFrame_saved.empty())
         return InvalidQRect;
 
     //To Grayscale
-    if(cameraFrame.channels() == 3)
-        cv::cvtColor(cameraFrame, cameraFrame, CV_BGR2GRAY);
-    else if(cameraFrame.channels() == 4)
-        cv::cvtColor(cameraFrame, cameraFrame, CV_BGRA2GRAY);
+    if(cameraFrame_saved.channels() == 3)
+        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGR2GRAY);
+    else if(cameraFrame_saved.channels() == 4)
+        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGRA2GRAY);
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);
@@ -126,6 +127,14 @@ void FaceTracker::SetAdditionalFlags(unsigned int flags)
     m_additionalFlags = flags;
 }
 
+QImage *FaceTracker::GetLastImage()
+{
+    cv::cvtColor(cameraFrame_saved, cameraFrame_saved, CV_BGR2RGB);
+
+    return new QImage(cameraFrame_saved.data, cameraFrame_saved.cols,
+                  cameraFrame_saved.rows, QImage::Format_RGB888);
+}
+
 
 void FaceTracker::Init(int deviceID)
 {
@@ -145,7 +154,9 @@ void FaceTracker::Init(int deviceID)
 
     SetProcessingImageDimensions(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
+    try {
     faceDetector.load(classifier_xml_filename);
+    }catch (...) { }
     if(faceDetector.empty())
         throw std::runtime_error("Unable to load classifier xml file.");
 }

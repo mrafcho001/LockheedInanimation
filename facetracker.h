@@ -25,6 +25,7 @@
 #include <opencv2/opencv.hpp>
 #include <QRect>
 #include <QList>
+#include <QImage>
 
 //Default values for cv::CascadeClassifier::detectMultiScale()
 //! \brief Default value for minimum feature size
@@ -161,6 +162,14 @@ public:
     */
     void SetAdditionalFlags(unsigned int flags);
 
+    /*! \brief Returns the last processed frame
+      The tracker internally saves the last processed frame and this function
+      can be used to retrieve it. Along with the face positions, this can help
+      display real time face tracking information.
+      \returns Last Processed frame
+    */
+    QImage *GetLastImage();
+
 private:
     /*! \brief Initialization function
 
@@ -193,6 +202,9 @@ private:
 
 
     static const QRect InvalidQRect;    //!< Easy way to create an InvalidRect
+
+    // THESE ARE TEMPORARY
+    cv::Mat cameraFrame_saved;
 };
 
 #endif // FACETRACKER_H
