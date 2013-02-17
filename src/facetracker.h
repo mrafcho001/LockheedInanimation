@@ -194,8 +194,9 @@ private:
     cv::CascadeClassifier faceDetector; //!< Used for face detection
     std::string classifier_xml_filename;//!< The filename of the XML containing the classifier data
 
-    //Face tracking members
+    //Face tracking data saved between runs
     QRect m_lastPosition;   //!< Stores the last bounding rectangle of the tracked face
+    cv::Mat cameraFrame_saved; //!< Stores the last processed frame (needed for face extraction)
 
     //Parameters for tuning face detection
     cv::Size m_minFeatureSize;  //!< Minimum feature size used for cv::CascadeClassifier::detectMultiScale()
@@ -208,8 +209,7 @@ private:
 
     static const QRect InvalidQRect;    //!< Easy way to create an InvalidRect
 
-    // THESE ARE TEMPORARY
-    cv::Mat cameraFrame_saved;
+    // Saved data between runs
 };
 
 #endif // FACETRACKER_H
