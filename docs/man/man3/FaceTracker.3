@@ -86,6 +86,10 @@ Tracks a face as it moves around\&. This class is a wrapper around OpenCV and pr
 .RI "void \fBSetAdditionalFlags\fP (unsigned int flags)"
 .br
 .RI "\fISets the additional flags to flags\&. \fP"
+.ti -1c
+.RI "QImage * \fBGetLastImage\fP ()"
+.br
+.RI "\fIReturns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it\&. Along with the face positions, this can help display real time face tracking information\&. \fP"
 .in -1c
 .SS "Private Member Functions"
 
@@ -142,6 +146,9 @@ Tracks a face as it moves around\&. This class is a wrapper around OpenCV and pr
 .RI "unsigned int \fBm_imageHeight\fP"
 .br
 .RI "\fISpecifies the height of the image on which face detection is performed\&. \fP"
+.ti -1c
+.RI "cv::Mat \fBcameraFrame_saved\fP"
+.br
 .in -1c
 .SS "Static Private Attributes"
 
@@ -236,6 +243,15 @@ Returns the rectangle of the currently tracked face\&. If there is no face curre
 \fBReturns:\fP
 .RS 4
 Bounding rectangle of the face 
+.RE
+.PP
+
+.SS "QImage * FaceTracker::GetLastImage ()"
+
+.PP
+Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it\&. Along with the face positions, this can help display real time face tracking information\&. \fBReturns:\fP
+.RS 4
+Last Processed frame 
 .RE
 .PP
 

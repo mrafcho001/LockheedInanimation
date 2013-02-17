@@ -13,14 +13,14 @@ TEMPLATE = app
 
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    facetracker.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    src/facetracker.cpp
 
-HEADERS  += mainwindow.h \
-    facetracker.h
+HEADERS  += src/mainwindow.h \
+    src/facetracker.h
 
-FORMS    += mainwindow.ui
+FORMS    += resources/mainwindow.ui
 
 OBJECTS_DIR = build/.obj
 MOC_DIR = build/.moc
@@ -49,4 +49,7 @@ docs.depends = $(SOURCES)
 docs.commands = doxygen Doxyfile
 
 QMAKE_EXTRA_TARGETS += docs
+
+RESOURCES += \
+    resources/resources.qrc
 

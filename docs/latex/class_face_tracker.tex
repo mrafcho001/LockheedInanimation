@@ -56,7 +56,9 @@ void \hyperlink{class_face_tracker_a8efa0e58da5503bb16f21b0b5008af82}{Set\-Addit
 void \hyperlink{class_face_tracker_abf0948b588ae71d555d61506cb8c8a4e}{Clear\-Additional\-Flag} (unsigned int flag)
 \begin{DoxyCompactList}\small\item\em Clears the passed flag from the additional flags. \end{DoxyCompactList}\item 
 void \hyperlink{class_face_tracker_a99fde78244336b63796b3c0467210213}{Set\-Additional\-Flags} (unsigned int flags)
-\begin{DoxyCompactList}\small\item\em Sets the additional flags to flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Sets the additional flags to flags. \end{DoxyCompactList}\item 
+Q\-Image $\ast$ \hyperlink{class_face_tracker_a4f77bdab0b45cf24701ac008c56ce571}{Get\-Last\-Image} ()
+\begin{DoxyCompactList}\small\item\em Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -96,7 +98,10 @@ Q\-Rect \hyperlink{class_face_tracker_abc157c27b7002840cf82faedc23a1b57}{find\-C
 \begin{DoxyCompactList}\small\item\em Specifies the width of the image on which face detection is performed. \end{DoxyCompactList}\item 
 \hypertarget{class_face_tracker_a2e35b6c5399c821e2c2ae5f4403f8c43}{unsigned int \hyperlink{class_face_tracker_a2e35b6c5399c821e2c2ae5f4403f8c43}{m\-\_\-image\-Height}}\label{class_face_tracker_a2e35b6c5399c821e2c2ae5f4403f8c43}
 
-\begin{DoxyCompactList}\small\item\em Specifies the height of the image on which face detection is performed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Specifies the height of the image on which face detection is performed. \end{DoxyCompactList}\item 
+\hypertarget{class_face_tracker_a1ecd3863876e847cec6e411601e9a65e}{cv\-::\-Mat {\bfseries camera\-Frame\-\_\-saved}}\label{class_face_tracker_a1ecd3863876e847cec6e411601e9a65e}
+
+\end{DoxyCompactItemize}
 \subsection*{Static Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -230,6 +235,20 @@ If there is no face currently being tracked, or this function is called after a 
 
 \begin{DoxyReturn}{Returns}
 Bounding rectangle of the face 
+\end{DoxyReturn}
+\hypertarget{class_face_tracker_a4f77bdab0b45cf24701ac008c56ce571}{\index{Face\-Tracker@{Face\-Tracker}!Get\-Last\-Image@{Get\-Last\-Image}}
+\index{Get\-Last\-Image@{Get\-Last\-Image}!FaceTracker@{Face\-Tracker}}
+\subsubsection[{Get\-Last\-Image}]{\setlength{\rightskip}{0pt plus 5cm}Q\-Image $\ast$ Face\-Tracker\-::\-Get\-Last\-Image (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_face_tracker_a4f77bdab0b45cf24701ac008c56ce571}
+
+
+Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information. 
+
+\begin{DoxyReturn}{Returns}
+Last Processed frame 
 \end{DoxyReturn}
 \hypertarget{class_face_tracker_a189f02c677e1060792208c9ee1eb3222}{\index{Face\-Tracker@{Face\-Tracker}!Init@{Init}}
 \index{Init@{Init}!FaceTracker@{Face\-Tracker}}
