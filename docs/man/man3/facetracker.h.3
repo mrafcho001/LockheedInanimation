@@ -1,0 +1,88 @@
+.TH "facetracker.h" 3 "Sat Feb 16 2013" "Lockheed Inanimation" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+facetracker.h \- 
+.PP
+Defines the class for tracking a face as it moves using OpenCV\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <opencv2/opencv\&.hpp>\fP
+.br
+\fC#include <QRect>\fP
+.br
+\fC#include <QList>\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBFaceTracker\fP"
+.br
+.RI "\fITracks a face as it moves around\&. This class is a wrapper around OpenCV and provides an eassy to use interface for tracking a face between frames\&. The class exposes several face detection tuning parameters\&. \fP"
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBDEFAULT_MIN_FEATURE_SIZE\fP   40"
+.br
+.RI "\fIDefault value for minimum feature size\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_SEARCH_SCALE_FACTOR\fP   1\&.1f"
+.br
+.RI "\fIDefault value for search scale factor\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_MIN_NEIGHBORS_CUTOFF\fP   4"
+.br
+.RI "\fIDefault value for minimum neighbor cutoff value\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_ADDITIONAL_FLAGS\fP   0"
+.br
+.RI "\fIDefault additional flags\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_CLASSIFIER_XML_FILENAME\fP   'lbpcascade_frontalface\&.xml'"
+.br
+.RI "\fIDefault classifier xml filename\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_IMAGE_WIDTH\fP   640"
+.br
+.RI "\fIDefault Image Width\&. \fP"
+.ti -1c
+.RI "#define \fBDEFAULT_IMAGE_HEIGHT\fP   480"
+.br
+.RI "\fIDefault Image Height\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Defines the class for tracking a face as it moves using OpenCV\&. 
+
+\fBFaceTracker\fP uses OpenCV to track a moving face using a webcam\&. The device ID of the webcam to use can be specified in the constructor of the class otherwise the first webcam (device ID: 0) is used\&.
+.PP
+In the presence of multiple faces, \fBFaceTracker\fP will attempt to track the same face as it moves around the scree\&. If multiple faces are present a face is selected to be tracked as per the \fBFaceTracker::SelectFace2Track\fP\&. 
+.PP
+\fBSee Also:\fP
+.RS 4
+\fBFaceTracker::SelectFace2Track\fP
+.RE
+.PP
+The class also exposes some parameters for tuning the face detection: 
+.PP
+\fBSee Also:\fP
+.RS 4
+\fBFaceTracker::m_minFeatureSize\fP 
+.PP
+\fBFaceTracker::m_searchScaleFactor\fP 
+.PP
+\fBFaceTracker::m_minNeighbors\fP 
+.PP
+\fBFaceTracker::m_additionalFlags\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Lockheed Inanimation from the source code\&.

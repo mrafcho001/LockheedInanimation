@@ -1,0 +1,311 @@
+.TH "FaceTracker" 3 "Sat Feb 16 2013" "Lockheed Inanimation" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FaceTracker \- 
+.PP
+Tracks a face as it moves around\&. This class is a wrapper around OpenCV and provides an eassy to use interface for tracking a face between frames\&. The class exposes several face detection tuning parameters\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <facetracker\&.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBFaceTracker\fP ()"
+.br
+.RI "\fIDefault constructor uses device 0\&. \fP"
+.ti -1c
+.RI "\fBFaceTracker\fP (int deviceID)"
+.br
+.RI "\fIConstructor uses specified device ID for VideoCapture\&. \fP"
+.ti -1c
+.RI "void \fBResetTracker\fP ()"
+.br
+.RI "\fIStops tracking of the current face\&. \fP"
+.ti -1c
+.RI "QRect \fBGetFacePosition\fP ()"
+.br
+.RI "\fIReturns the rectangle of the currently tracked face\&. \fP"
+.ti -1c
+.RI "QList< QRect > \fBGetAllFacesPositions\fP ()"
+.br
+.RI "\fIReturns a list of bounding rectangles of all of the faces\&. \fP"
+.ti -1c
+.RI "QRect \fBGetBestFacePosition\fP ()"
+.br
+.RI "\fIReturns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned\&. \fP"
+.ti -1c
+.RI "QRect \fBSelectFace2Track\fP (std::vector< cv::Rect > faceRects)"
+.br
+.RI "\fISelects which face to track from a list Given a list of bounding rectangles, this function select which face will be tracked from here on out\&. \fP"
+.ti -1c
+.RI "int \fBGetMinFeatureSize\fP ()"
+.br
+.RI "\fIGetter for minimum feature size used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "void \fBSetMinFeatureSize\fP (int minFeatureSize)"
+.br
+.RI "\fISetter for minimum feature size used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "float \fBGetSearchScaleFactor\fP ()"
+.br
+.RI "\fIGetter for search scale factor used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "void \fBSetSearchScaleFactor\fP (float searchScaleFactor)"
+.br
+.RI "\fISetter for search scale factor used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "int \fBGetMinNeighbors\fP ()"
+.br
+.RI "\fIGetter for minimum neighbors cutoff used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "void \fBSetMinNeighbors\fP (int minNeighbors)"
+.br
+.RI "\fISetter for minimum neighbors cutoff used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "void \fBSetProcessingImageDimensions\fP (int width, int height)"
+.br
+.RI "\fISets the dimensions for the image to be processed by OpenCV This option may effect performance and reliability of the face detection algorithms of OpenCV\&. \fP"
+.ti -1c
+.RI "unsigned int \fBGetAdditionalFlags\fP ()"
+.br
+.RI "\fIGetter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call\&. For example, \fBFaceTracker::GetBestFacePosition\fP will use\&. \fP"
+.ti -1c
+.RI "void \fBSetAdditionalFlag\fP (unsigned int flag)"
+.br
+.RI "\fIAdds flag to the set of additional flags\&. \fP"
+.ti -1c
+.RI "void \fBClearAdditionalFlag\fP (unsigned int flag)"
+.br
+.RI "\fIClears the passed flag from the additional flags\&. \fP"
+.ti -1c
+.RI "void \fBSetAdditionalFlags\fP (unsigned int flags)"
+.br
+.RI "\fISets the additional flags to flags\&. \fP"
+.in -1c
+.SS "Private Member Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBInit\fP (int deviceID)"
+.br
+.RI "\fIInitialization function\&. \fP"
+.ti -1c
+.RI "QRect \fBfindClosest\fP (const std::vector< cv::Rect > &rects, QPoint point)"
+.br
+.RI "\fIFinds rectangle with center closest to point\&. \fP"
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "cv::VideoCapture \fBm_vc\fP"
+.br
+.RI "\fIUsed for acquiring images from camera\&. \fP"
+.ti -1c
+.RI "cv::CascadeClassifier \fBfaceDetector\fP"
+.br
+.RI "\fIUsed for face detection\&. \fP"
+.ti -1c
+.RI "std::string \fBclassifier_xml_filename\fP"
+.br
+.RI "\fIThe filename of the XML containing the classifier data\&. \fP"
+.ti -1c
+.RI "QRect \fBm_lastPosition\fP"
+.br
+.RI "\fIStores the last bounding rectangle of the tracked face\&. \fP"
+.ti -1c
+.RI "cv::Size \fBm_minFeatureSize\fP"
+.br
+.RI "\fIMinimum feature size used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "float \fBm_searchScaleFactor\fP"
+.br
+.RI "\fISearch scale factor used for cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "int \fBm_minNeighbors\fP"
+.br
+.RI "\fIMinimum number of Neighbors to be classified as a face\&. \fP"
+.ti -1c
+.RI "unsigned int \fBm_additionalFlags\fP"
+.br
+.RI "\fIAdditional flags passed to cv::CascadeClassifier::detectMultiScale() \fP"
+.ti -1c
+.RI "unsigned int \fBm_imageWidth\fP"
+.br
+.RI "\fISpecifies the width of the image on which face detection is performed\&. \fP"
+.ti -1c
+.RI "unsigned int \fBm_imageHeight\fP"
+.br
+.RI "\fISpecifies the height of the image on which face detection is performed\&. \fP"
+.in -1c
+.SS "Static Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "static const QRect \fBInvalidQRect\fP"
+.br
+.RI "\fIEasy way to create an InvalidRect\&. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+Tracks a face as it moves around\&. This class is a wrapper around OpenCV and provides an eassy to use interface for tracking a face between frames\&. The class exposes several face detection tuning parameters\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "FaceTracker::FaceTracker (intdeviceID)"
+
+.PP
+Constructor uses specified device ID for VideoCapture\&. \fBParameters:\fP
+.RS 4
+\fIdeviceID\fP device to be used for VideoCapture and image acquisition 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void FaceTracker::ClearAdditionalFlag (unsigned intflag)"
+
+.PP
+Clears the passed flag from the additional flags\&. .PP
+.nf
+m_additionalFlags = m_additionalFlags & (~flag); 
+.fi
+.PP
+ 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIflag\fP Flag to be cleared 
+.RE
+.PP
+
+.SS "QRect FaceTracker::findClosest (const std::vector< cv::Rect > &rects, QPointpoint)\fC [private]\fP"
+
+.PP
+Finds rectangle with center closest to point\&. \fBParameters:\fP
+.RS 4
+\fIrects\fP List of rectangles 
+.br
+\fIpoint\fP Target point 
+.RE
+.PP
+
+.SS "unsigned int FaceTracker::GetAdditionalFlags ()"
+
+.PP
+Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call\&. For example, \fBFaceTracker::GetBestFacePosition\fP will use\&. .PP
+.nf
+CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_ROUGH_SEARCH | m_additionalFlags 
+.fi
+.PP
+ for the flags parameter of the cv::CascadeClassifier::detectMultiScale() function call 
+.SS "QList<QRect> FaceTracker::GetAllFacesPositions ()"
+
+.PP
+Returns a list of bounding rectangles of all of the faces\&. Bounding rectangles of all faces currently in view are returned\&. 
+.PP
+\fBWarning:\fP
+.RS 4
+No confidence information is supplied with each face, but all detected faces meet the FaceTracker::minNeighbors factor 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+List of bounding rectangles of all faces 
+.RE
+.PP
+
+.SS "QRect FaceTracker::GetBestFacePosition ()"
+
+.PP
+Returns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned\&. \fBReturns:\fP
+.RS 4
+Bounding rectangle of face with highest confidence factor 
+.RE
+.PP
+
+.SS "QRect FaceTracker::GetFacePosition ()"
+
+.PP
+Returns the rectangle of the currently tracked face\&. If there is no face currently being tracked, or this function is called after a call to \fBFaceTracker::ResetTracker\fP, a new face will be selected as per \fBFaceTracker::SelectFace2Track\fP\&.
+.PP
+\fBReturns:\fP
+.RS 4
+Bounding rectangle of the face 
+.RE
+.PP
+
+.SS "void FaceTracker::Init (intdeviceID)\fC [private]\fP"
+
+.PP
+Initialization function\&. Performs the initialization of the class, should only be called from constructors 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIdeviceID\fP Device to be used for VideoCapture and image acquisition 
+.RE
+.PP
+
+.SS "void FaceTracker::ResetTracker ()"
+
+.PP
+Stops tracking of the current face\&. This Tracker will attempt to follow the same face around as it moves around the field of view of the camera\&. This function stops the tracking of the current face, the next time position information is requested, a new face will be selected to be tracked\&. 
+.SS "QRect FaceTracker::SelectFace2Track (std::vector< cv::Rect >faceRects)"
+
+.PP
+Selects which face to track from a list Given a list of bounding rectangles, this function select which face will be tracked from here on out\&. \fBParameters:\fP
+.RS 4
+\fIfaceRects\fP list of faces to select from 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+Bounding rectangle of selected face 
+.RE
+.PP
+
+.SS "void FaceTracker::SetAdditionalFlag (unsigned intflag)"
+
+.PP
+Adds flag to the set of additional flags\&. .PP
+.nf
+m_additionalFlags = m_additionalFlags | flag; 
+.fi
+.PP
+ 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIflag\fP Flag to be added to the set of additional flags 
+.RE
+.PP
+
+.SS "void FaceTracker::SetAdditionalFlags (unsigned intflags)"
+
+.PP
+Sets the additional flags to flags\&. .PP
+.nf
+m_additionalFlags = flags 
+.fi
+.PP
+ 
+.PP
+\fBWarning:\fP
+.RS 4
+Currently set additional flags are lost! 
+.RE
+.PP
+\fBParameters:\fP
+.RS 4
+\fIflags\fP The new additional flags 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Lockheed Inanimation from the source code\&.
