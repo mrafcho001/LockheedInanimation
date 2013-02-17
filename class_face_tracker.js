@@ -13,6 +13,7 @@ var class_face_tracker =
     [ "GetMinNeighbors", "class_face_tracker.html#a531a750753b8c6f3e000ae0ad1460ef7", null ],
     [ "GetSearchScaleFactor", "class_face_tracker.html#a6ca25e531d35ecb61eab4fe8b5ece90b", null ],
     [ "Init", "class_face_tracker.html#a189f02c677e1060792208c9ee1eb3222", null ],
+    [ "LoadCascadeClassifier", "class_face_tracker.html#a8d741fa29a809591664187afd58357fe", null ],
     [ "ResetTracker", "class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13", null ],
     [ "SelectFace2Track", "class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f", null ],
     [ "SetAdditionalFlag", "class_face_tracker.html#a8efa0e58da5503bb16f21b0b5008af82", null ],
