@@ -170,6 +170,15 @@ public:
     */
     QImage *GetLastImage();
 
+    /*! \brief Returns the cropped image of the tracked face
+      If there is currently a face being tracked, the face is cropped out of the
+      last processed frame.
+      \warning NULL pointer is returned if no face was present in the last
+               processed frame.
+      \returns Cropped image of the tracked face.
+    */
+    QImage *GetFaceImage();
+
 private:
     /*! \brief Initialization function
 

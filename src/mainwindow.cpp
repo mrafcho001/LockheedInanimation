@@ -41,7 +41,7 @@ void PositionUpdater::run()
     while(1)
     {
         QRect rect = m_ft->GetFacePosition();
-        QImage *image = m_ft->GetLastImage();
+        QImage *image = m_ft->GetFaceImage();
         QPainter p;
         p.begin(image);
         p.setPen(QPen(Qt::red));

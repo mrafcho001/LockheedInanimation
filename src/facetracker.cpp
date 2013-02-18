@@ -134,10 +134,20 @@ void FaceTracker::SetAdditionalFlags(unsigned int flags)
 
 QImage *FaceTracker::GetLastImage()
 {
+    //! \todo This will corrupt image if function called multiple times, or FaceTracker::GetFaceImage gets called
     cv::cvtColor(cameraFrame_saved, cameraFrame_saved, CV_BGR2RGB);
 
     return new QImage(cameraFrame_saved.data, cameraFrame_saved.cols,
-                  cameraFrame_saved.rows, QImage::Format_RGB888);
+                      cameraFrame_saved.rows, QImage::Format_RGB888);
+}
+
+QImage *FaceTracker::GetFaceImage()
+{
+    //! \todo This is very expensive and inefficient way of performing this action
+    QImage *image = GetLastImage();
+    QImage *result = new QImage(image->copy(m_lastPosition));
+    delete image;
+    return result;
 }
 
 
