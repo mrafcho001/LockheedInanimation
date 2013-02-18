@@ -2,6 +2,7 @@ var NAVTREE =
 [
   [ "Lockheed Inanimation", "index.html", [
     [ "Lockheed Inanimation Documentation Homepage", "index.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", null ],

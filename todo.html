@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Lockheed Inanimation: Member List</title>
+<title>Lockheed Inanimation: Todo List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -43,8 +43,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -64,13 +64,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
-    </ul>
-  </div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -83,7 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('class_position_updater.html','');});
+$(document).ready(function(){initNavTree('todo.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -102,18 +95,16 @@ $(document).ready(function(){initNavTree('class_position_updater.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">PositionUpdater Member List</div>  </div>
+<div class="title">Todo List </div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="class_position_updater.html">PositionUpdater</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>m_ft</b> (defined in <a class="el" href="class_position_updater.html">PositionUpdater</a>)</td><td class="entry"><a class="el" href="class_position_updater.html">PositionUpdater</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>PositionUpdater</b>() (defined in <a class="el" href="class_position_updater.html">PositionUpdater</a>)</td><td class="entry"><a class="el" href="class_position_updater.html">PositionUpdater</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>PositionUpdater</b>(FaceTracker *ft, QObject *parent=0) (defined in <a class="el" href="class_position_updater.html">PositionUpdater</a>)</td><td class="entry"><a class="el" href="class_position_updater.html">PositionUpdater</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>run</b>() (defined in <a class="el" href="class_position_updater.html">PositionUpdater</a>)</td><td class="entry"><a class="el" href="class_position_updater.html">PositionUpdater</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>Updated</b>(QImage *image) (defined in <a class="el" href="class_position_updater.html">PositionUpdater</a>)</td><td class="entry"><a class="el" href="class_position_updater.html">PositionUpdater</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-</table></div><!-- contents -->
+<div class="textblock"><dl class="reflist">
+<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280">FaceTracker::GetFaceImage</a>  ()</dt>
+<dd>This is very expensive and inefficient way of performing this action  </dd>
+<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">FaceTracker::GetLastImage</a>  ()</dt>
+<dd>This will corrupt image if function called multiple times, or <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> gets called </dd>
+</dl>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
