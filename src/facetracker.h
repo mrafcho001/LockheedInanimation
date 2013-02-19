@@ -15,7 +15,24 @@
     \sa FaceTracker::m_searchScaleFactor
     \sa FaceTracker::m_minNeighbors
     \sa FaceTracker::m_additionalFlags
-
+*/
+/*! \page explanationspage Explanations
+    \section normRect Normalized Rectangles
+    Sometimes it is more useful to know the relative location and size of a
+    bounding rectangle than knowing its absolution location and size. In fact
+    in the case of FaceTracker, it is only useful to know the absolute bounding
+    rectangle of the detected faces when the faces are to be cropped or visually
+    highlighted. Since the size of the acquired image may not be known to the
+    user, an absolute bounding rectangle reveals very little.
+    A rectangle can only be normalized if it exists within a larger all encompassing
+    bounding rectangle. In our context, a normalized bounding rectangle will
+    be a rectangle that is contained within a 100x100 rectangle, which is considered
+    to be the context of the inner bounding rectangles. For example, a bounding
+    rectangle of a detected face within an image is normalized by scaling the
+    upper left point position and rectangle dimentions by 100/image_dimentions.
+    \note Normalizing a bounding rectangle will cause loss of original aspect
+          ratio.
+    \sa FaceTracker::GetFacePosition
 */
 
 #ifndef FACETRACKER_H
@@ -80,27 +97,32 @@ public:
       If there is no face currently being tracked, or this function is called
       after a call to FaceTracker::ResetTracker, a new face will be selected as
       per FaceTracker::SelectFace2Track.
+      \param normalized See \ref normRect
 
       \returns Bounding rectangle of the face
     */
-    QRect GetFacePosition();
+    QRect GetFacePosition(bool normalized = false);
 
     /*! \brief Returns a list of bounding rectangles of all of the faces
 
       Bounding rectangles of all faces currently in view are returned.
-      \warning No confidence information is supplied with each face, but all
-               detected faces meet the FaceTracker::minNeighbors factor
+      \param normalized See \ref normRect
       \returns List of bounding rectangles of all faces
+      \note No confidence information is supplied with each face, but all
+            detected faces meet the FaceTracker::minNeighbors factor.
+      \note After this function is called, the FaceTracker::GetFaceImage will
+            not return a usable result.
     */
-    QList<QRect> GetAllFacesPositions();
+    QList<QRect> GetAllFacesPositions(bool normalized = false);
 
     /*! \brief Returns the bounding rectangle of the face with the highest
                confidence factor
       If there are multiple faces, only the bounding rectangle of the face with
       the highest confidence is returned.
+      \param normalized See \ref normRect
       \returns Bounding rectangle of face with highest confidence factor
     */
-    QRect GetBestFacePosition();
+    QRect GetBestFacePosition(bool normalized = false);
 
     /*! \brief Selects which face to track from a list
       Given a list of bounding rectangles, this function select which face will
@@ -157,8 +179,8 @@ public:
 
     /*! \brief Sets the additional flags to flags
       \code m_additionalFlags = flags \endcode
-      \warning Currently set additional flags are lost!
       \param flags The new additional flags
+      \warning Currently set additional flags are lost!
     */
     void SetAdditionalFlags(unsigned int flags);
 
@@ -173,11 +195,11 @@ public:
     /*! \brief Returns the cropped image of the tracked face
       If there is currently a face being tracked, the face is cropped out of the
       last processed frame.
-      \warning NULL pointer is returned if no face was present in the last
-               processed frame.
-      \returns Cropped image of the tracked face.
+      \returns Cropped image of the tracked face. NULL is returned if no face
+               was detected in the last processed frame.
     */
     QImage *GetFaceImage();
+
 
 private:
     /*! \brief Initialization function
@@ -198,6 +220,15 @@ private:
       \param point Target point
     */
     QRect findClosest(const std::vector<cv::Rect> &rects, QPoint point);
+
+    /*! \brief Obtains a properly sized and processed image for CascadeClassifer
+      The obtained image is sized down, converted to gray, and undergone
+      histogram equalization. These alterations are aimed at improving performance
+      and detection accuracy.
+      \param cameraFrame [out] The captured image is stored
+      \note This function alters the last saved camera frame.
+    */
+    void GetProcessReadyWebcamImage(cv::Mat &cameraFrame);
 
     cv::VideoCapture m_vc;   //!< Used for acquiring images from camera
     cv::CascadeClassifier faceDetector; //!< Used for face detection

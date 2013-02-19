@@ -27,23 +27,12 @@ void FaceTracker::ResetTracker()
     m_lastPosition.setCoords(1,1,0,0);
 }
 
-QRect FaceTracker::GetFacePosition()
+QRect FaceTracker::GetFacePosition(bool normalized)
 {
-    m_vc >> cameraFrame_saved;
-
     cv::Mat cameraFrame;
-
-    if(cameraFrame_saved.empty())
+    GetProcessReadyWebcamImage(cameraFrame);
+    if(cameraFrame.empty())
         return InvalidQRect;
-
-    //To Grayscale
-    if(cameraFrame_saved.channels() == 3)
-        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGR2GRAY);
-    else if(cameraFrame_saved.channels() == 4)
-        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGRA2GRAY);
-
-    //Histogram Equalization
-    cv::equalizeHist(cameraFrame, cameraFrame);
 
     std::vector<cv::Rect> faceRects;
     faceDetector.detectMultiScale(cameraFrame, faceRects,
@@ -63,6 +52,74 @@ QRect FaceTracker::GetFacePosition()
 
     //Find face closest to where the tracked face was last time
     m_lastPosition = findClosest(faceRects,m_lastPosition.center());
+
+    if(normalized)
+    {
+        return QRect(100*m_lastPosition.x()/m_imageWidth,
+                     100*m_lastPosition.y()/m_imageHeight,
+                     100*m_lastPosition.width()/m_imageWidth,
+                     100*m_lastPosition.height()/m_imageHeight);
+    }
+
+    return m_lastPosition;
+}
+
+QList<QRect> FaceTracker::GetAllFacesPositions(bool normalized)
+{
+    cv::Mat cameraFrame;
+    GetProcessReadyWebcamImage(cameraFrame);
+    if(cameraFrame.empty())
+        return QList<QRect>();
+
+    std::vector<cv::Rect> faceRects;
+    faceDetector.detectMultiScale(cameraFrame, faceRects,
+                                  m_searchScaleFactor, m_minNeighbors,
+                                  cv::CASCADE_SCALE_IMAGE | m_additionalFlags);
+    QList<QRect> qFaceRects;
+
+    if(normalized)
+    {
+        for(std::vector<cv::Rect>::const_iterator itr = faceRects.begin();
+            itr != faceRects.end(); ++itr)
+            qFaceRects.append(QRect(itr->x, itr->y, itr->width, itr->height));
+    }
+    else
+    {
+        for(std::vector<cv::Rect>::const_iterator itr = faceRects.begin();
+            itr != faceRects.end(); ++itr)
+            qFaceRects.append(QRect(100*(itr->x)/m_imageWidth,
+                                    100*(itr->y)/m_imageHeight,
+                                    100*(itr->width)/m_imageWidth,
+                                    100*(itr->height)/m_imageHeight));
+    }
+
+    return qFaceRects;
+}
+
+QRect FaceTracker::GetBestFacePosition(bool normalized)
+{
+    cv::Mat cameraFrame;
+    GetProcessReadyWebcamImage(cameraFrame);
+    if(cameraFrame.empty())
+        return InvalidQRect;
+
+    std::vector<cv::Rect> faceRects;
+    faceDetector.detectMultiScale(cameraFrame, faceRects,
+                                  m_searchScaleFactor, m_minNeighbors,
+                                  cv::CASCADE_FIND_BIGGEST_OBJECT | cv::CASCADE_DO_ROUGH_SEARCH | m_additionalFlags);
+
+    //No Faces detected
+    if(faceRects.size() == 0)
+        return InvalidQRect;
+
+    if(normalized)
+        m_lastPosition.setRect(faceRects[0].x, faceRects[0].y,
+                               faceRects[0].width, faceRects[0].height);
+    else
+        m_lastPosition.setRect(100*faceRects[0].x/m_imageWidth,
+                               100*faceRects[0].y/m_imageHeight,
+                               100*faceRects[0].width/m_imageWidth,
+                               100*faceRects[0].height/m_imageHeight);
 
     return m_lastPosition;
 }
@@ -184,6 +241,18 @@ void FaceTracker::Init(int deviceID)
         LoadCascadeClassifier(classifier_xml_filename);
 }
 
+void FaceTracker::LoadCascadeClassifier(const std::string filename)
+{
+    try
+    {
+        faceDetector.load(filename);
+    }
+    catch (...) { }
+
+    if(faceDetector.empty())
+        throw std::runtime_error("Unable to load classifier xml file.");
+}
+
 QRect FaceTracker::findClosest(const std::vector<cv::Rect> &rects, QPoint point)
 {
     cv::Rect bestMatch(0,0,0,0);
@@ -206,14 +275,22 @@ QRect FaceTracker::findClosest(const std::vector<cv::Rect> &rects, QPoint point)
     return QRect(bestMatch.x, bestMatch.y, bestMatch.width, bestMatch.height);
 }
 
-void FaceTracker::LoadCascadeClassifier(const std::string filename)
+void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 {
-    try
-    {
-        faceDetector.load(filename);
-    }
-    catch (...) { }
+    m_vc >> cameraFrame_saved;
 
-    if(faceDetector.empty())
-        throw std::runtime_error("Unable to load classifier xml file.");
+    if(cameraFrame_saved.empty())
+    {
+        cameraFrame = cameraFrame_saved;
+        return;
+    }
+
+    //To Grayscale
+    if(cameraFrame_saved.channels() == 3)
+        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGR2GRAY);
+    else if(cameraFrame_saved.channels() == 4)
+        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGRA2GRAY);
+
+    //Histogram Equalization
+    cv::equalizeHist(cameraFrame, cameraFrame);
 }
