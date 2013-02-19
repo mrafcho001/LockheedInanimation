@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('mainwindow_8h_source.html','');});
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    Ui::MainWindow *ui;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a> *ft;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> *ft;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;};</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="class_position_updater.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_position_updater.html">PositionUpdater</a> : <span class="keyword">public</span> QThread</div>
@@ -140,13 +140,13 @@ $(document).ready(function(){initNavTree('mainwindow_8h_source.html','');});
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_position_updater.html">PositionUpdater</a>();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_position_updater.html">PositionUpdater</a>(<a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a> *ft, QObject *parent = 0);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="class_position_updater.html">PositionUpdater</a>(<a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> *ft, QObject *parent = 0);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;signals:</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span> Updated(QImage *image);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">void</span> run();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a> *m_ft;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> *m_ft;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif // MAINWINDOW_H</span></div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('mainwindow_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>mainwindow.h</b></li>
-    <li class="footer">Generated on Mon Feb 18 2013 21:39:25 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 23:16:23 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

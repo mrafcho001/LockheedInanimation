@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('facetracker_8h.html','');});
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html">FaceTracker</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use interface for tracking a face between frames. The class exposes several face detection tuning parameters.  <a href="class_face_tracker.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks a face as it moves around.  <a href="class_face_tracker.html#details">More...</a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -148,24 +148,17 @@ Macros</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines the class for tracking a face as it moves using OpenCV. </p>
-<p><a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a> uses OpenCV to track a moving face using a webcam. The device ID of the webcam to use can be specified in the constructor of the class otherwise the first webcam (device ID: 0) is used.</p>
-<p>In the presence of multiple faces, <a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a> will attempt to track the same face as it moves around the scree. If multiple faces are present a face is selected to be tracked as per the <a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f" title="Selects which face to track from a list Given a list of bounding rectangles, this function select whi...">FaceTracker::SelectFace2Track</a>. </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f" title="Selects which face to track from a list Given a list of bounding rectangles, this function select whi...">FaceTracker::SelectFace2Track</a></dd></dl>
-<p>The class also exposes some parameters for tuning the face detection: </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html#a10d5fe065cfb5aa8fef1cbe2eea1361b" title="Minimum feature size used for cv::CascadeClassifier::detectMultiScale()">FaceTracker::m_minFeatureSize</a> </dd>
-<dd>
-<a class="el" href="class_face_tracker.html#adb6ffd8a79a458cb701b39616e89e593" title="Search scale factor used for cv::CascadeClassifier::detectMultiScale()">FaceTracker::m_searchScaleFactor</a> </dd>
-<dd>
-<a class="el" href="class_face_tracker.html#a939f87b9f2cb592530ed10007f260ea0" title="Minimum number of Neighbors to be classified as a face.">FaceTracker::m_minNeighbors</a> </dd>
-<dd>
-<a class="el" href="class_face_tracker.html#a20e60ee13a0d72915c5cd911fb551b25" title="Additional flags passed to cv::CascadeClassifier::detectMultiScale()">FaceTracker::m_additionalFlags</a> </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Martin Bakiev </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>Feb, 2013 </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 No other classes or functions are defined in this class. </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="facetracker_8h.html">facetracker.h</a></li>
-    <li class="footer">Generated on Mon Feb 18 2013 21:39:25 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 23:16:23 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

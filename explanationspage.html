@@ -100,15 +100,19 @@ $(document).ready(function(){initNavTree('explanationspage.html','');});
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="normRect"></a>
 Normalized Rectangles</h1>
-<p>Sometimes it is more useful to know the relative location and size of a bounding rectangle than knowing its absolution location and size. In fact in the case of <a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around. This class is a wrapper around OpenCV and provides an eassy to use ...">FaceTracker</a>, it is only useful to know the absolute bounding rectangle of the detected faces when the faces are to be cropped or visually highlighted. Since the size of the acquired image may not be known to the user, an absolute bounding rectangle reveals very little. A rectangle can only be normalized if it exists within a larger all encompassing bounding rectangle. In our context, a normalized bounding rectangle will be a rectangle that is contained within a 100x100 rectangle, which is considered to be the context of the inner bounding rectangles. For example, a bounding rectangle of a detected face within an image is normalized by scaling the upper left point position and rectangle dimentions by 100/image_dimentions. </p>
+<p>Sometimes it is more useful to know the relative location and size of a bounding rectangle than knowing its absolution location and size. In fact in the case of <a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a>, it is only useful to know the absolute bounding rectangle of the detected faces when the faces are to be cropped or visually highlighted. Since the size of the acquired image may not be known to the user, an absolute bounding rectangle reveals very little. A rectangle can only be normalized if it exists within a larger all encompassing bounding rectangle. In our context, a normalized bounding rectangle will be a rectangle that is contained within a 100x100 rectangle, which is considered to be the context of the inner bounding rectangles. For example, a bounding rectangle of a detected face within an image is normalized by scaling the upper left point position and rectangle dimentions by 100/image_dimentions. </p>
 <dl class="section note"><dt>Note</dt><dd>Normalizing a bounding rectangle will cause loss of original aspect ratio. </dd></dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966" title="Returns the rectangle of the currently tracked face.">FaceTracker::GetFacePosition</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966" title="Returns the rectangle of the currently tracked face.">FaceTracker::GetFacePosition</a> </dd>
+<dd>
+<a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> </dd>
+<dd>
+<a class="el" href="class_face_tracker.html#aa38eb8c5e423e917ce5809865682f975" title="Returns a list of bounding rectangles of all of the faces.">FaceTracker::GetAllFacesPositions</a> </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 18 2013 21:39:25 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 23:16:23 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
