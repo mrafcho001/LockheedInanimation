@@ -2,6 +2,9 @@ var NAVTREE =
 [
   [ "Lockheed Inanimation", "index.html", [
     [ "Lockheed Inanimation Documentation Homepage", "index.html", null ],
+    [ "Explanations", "explanationspage.html", [
+      [ "Normalized Rectangles", "explanationspage.html#normRect", null ]
+    ] ],
     [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],

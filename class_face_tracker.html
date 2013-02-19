@@ -126,12 +126,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a73575602a17e08f3885f2f3596218efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor uses specified device ID for VideoCapture.  <a href="#a73575602a17e08f3885f2f3596218efc"></a><br/></td></tr>
 <tr class="memitem:a37bf5c368990b1cd659b5b1c25930f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13">ResetTracker</a> ()</td></tr>
 <tr class="memdesc:a37bf5c368990b1cd659b5b1c25930f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops tracking of the current face.  <a href="#a37bf5c368990b1cd659b5b1c25930f13"></a><br/></td></tr>
-<tr class="memitem:a2536daf855b15610190bcedf97e2d957"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2536daf855b15610190bcedf97e2d957">GetFacePosition</a> ()</td></tr>
-<tr class="memdesc:a2536daf855b15610190bcedf97e2d957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rectangle of the currently tracked face.  <a href="#a2536daf855b15610190bcedf97e2d957"></a><br/></td></tr>
-<tr class="memitem:a3b8e7cbdf61e72359cce469df98cf71e"><td class="memItemLeft" align="right" valign="top">QList&lt; QRect &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a3b8e7cbdf61e72359cce469df98cf71e">GetAllFacesPositions</a> ()</td></tr>
-<tr class="memdesc:a3b8e7cbdf61e72359cce469df98cf71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of bounding rectangles of all of the faces.  <a href="#a3b8e7cbdf61e72359cce469df98cf71e"></a><br/></td></tr>
-<tr class="memitem:aff0b9cfb91df4eac94efe0cbfeae0f4f"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aff0b9cfb91df4eac94efe0cbfeae0f4f">GetBestFacePosition</a> ()</td></tr>
-<tr class="memdesc:aff0b9cfb91df4eac94efe0cbfeae0f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned.  <a href="#aff0b9cfb91df4eac94efe0cbfeae0f4f"></a><br/></td></tr>
+<tr class="memitem:a9b2f83e09b8911f8c14df67453cda966"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966">GetFacePosition</a> (bool normalized=false)</td></tr>
+<tr class="memdesc:a9b2f83e09b8911f8c14df67453cda966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rectangle of the currently tracked face.  <a href="#a9b2f83e09b8911f8c14df67453cda966"></a><br/></td></tr>
+<tr class="memitem:aa38eb8c5e423e917ce5809865682f975"><td class="memItemLeft" align="right" valign="top">QList&lt; QRect &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa38eb8c5e423e917ce5809865682f975">GetAllFacesPositions</a> (bool normalized=false)</td></tr>
+<tr class="memdesc:aa38eb8c5e423e917ce5809865682f975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of bounding rectangles of all of the faces.  <a href="#aa38eb8c5e423e917ce5809865682f975"></a><br/></td></tr>
+<tr class="memitem:ad66defbacf249e938041ce4e4a0d55a9"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9">GetBestFacePosition</a> (bool normalized=false)</td></tr>
+<tr class="memdesc:ad66defbacf249e938041ce4e4a0d55a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned.  <a href="#ad66defbacf249e938041ce4e4a0d55a9"></a><br/></td></tr>
 <tr class="memitem:a2e99d33e34874b94f5248950b03ed39f"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f">SelectFace2Track</a> (std::vector&lt; cv::Rect &gt; faceRects)</td></tr>
 <tr class="memdesc:a2e99d33e34874b94f5248950b03ed39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects which face to track from a list Given a list of bounding rectangles, this function select which face will be tracked from here on out.  <a href="#a2e99d33e34874b94f5248950b03ed39f"></a><br/></td></tr>
 <tr class="memitem:a5a04d2a24e2607a04f187b81b5335391"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a04d2a24e2607a04f187b81b5335391"></a>
@@ -156,7 +156,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abd852b1cc6fe2f7658b7dd3cfd39db26">SetProcessingImageDimensions</a> (int width, int height)</td></tr>
 <tr class="memdesc:abd852b1cc6fe2f7658b7dd3cfd39db26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dimensions for the image to be processed by OpenCV This option may effect performance and reliability of the face detection algorithms of OpenCV. <br/></td></tr>
 <tr class="memitem:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa89fea2366e81e1b7eeda5de64b72b9a">GetAdditionalFlags</a> ()</td></tr>
-<tr class="memdesc:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#aff0b9cfb91df4eac94efe0cbfeae0f4f" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use.  <a href="#aa89fea2366e81e1b7eeda5de64b72b9a"></a><br/></td></tr>
+<tr class="memdesc:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use.  <a href="#aa89fea2366e81e1b7eeda5de64b72b9a"></a><br/></td></tr>
 <tr class="memitem:a8efa0e58da5503bb16f21b0b5008af82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a8efa0e58da5503bb16f21b0b5008af82">SetAdditionalFlag</a> (unsigned int flag)</td></tr>
 <tr class="memdesc:a8efa0e58da5503bb16f21b0b5008af82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds flag to the set of additional flags.  <a href="#a8efa0e58da5503bb16f21b0b5008af82"></a><br/></td></tr>
 <tr class="memitem:abf0948b588ae71d555d61506cb8c8a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abf0948b588ae71d555d61506cb8c8a4e">ClearAdditionalFlag</a> (unsigned int flag)</td></tr>
@@ -176,6 +176,8 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a8d741fa29a809591664187afd58357fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">CascadeClassifier is loaded with the file.  <a href="#a8d741fa29a809591664187afd58357fe"></a><br/></td></tr>
 <tr class="memitem:abc157c27b7002840cf82faedc23a1b57"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abc157c27b7002840cf82faedc23a1b57">findClosest</a> (const std::vector&lt; cv::Rect &gt; &amp;rects, QPoint point)</td></tr>
 <tr class="memdesc:abc157c27b7002840cf82faedc23a1b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds rectangle with center closest to point.  <a href="#abc157c27b7002840cf82faedc23a1b57"></a><br/></td></tr>
+<tr class="memitem:aa14c553465c1c0efbc4b5a240013b02c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa14c553465c1c0efbc4b5a240013b02c">GetProcessReadyWebcamImage</a> (cv::Mat &amp;cameraFrame)</td></tr>
+<tr class="memdesc:aa14c553465c1c0efbc4b5a240013b02c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains a properly sized and processed image for CascadeClassifer The obtained image is sized down, converted to gray, and undergone histogram equalization. These alterations are aimed at improving performance and detection accuracy.  <a href="#aa14c553465c1c0efbc4b5a240013b02c"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -328,20 +330,21 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
       </table>
 </div><div class="memdoc">
 
-<p>Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#aff0b9cfb91df4eac94efe0cbfeae0f4f" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use. </p>
+<p>Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use. </p>
 <div class="fragment"><div class="line">CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_ROUGH_SEARCH | <a class="code" href="class_face_tracker.html#a20e60ee13a0d72915c5cd911fb551b25" title="Additional flags passed to cv::CascadeClassifier::detectMultiScale()">m_additionalFlags</a> </div>
 </div><!-- fragment --><p> for the flags parameter of the cv::CascadeClassifier::detectMultiScale() function call </p>
 
 </div>
 </div>
-<a class="anchor" id="a3b8e7cbdf61e72359cce469df98cf71e"></a>
+<a class="anchor" id="aa38eb8c5e423e917ce5809865682f975"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">QList&lt;QRect&gt; FaceTracker::GetAllFacesPositions </td>
+          <td class="memname">QList&lt; QRect &gt; FaceTracker::GetAllFacesPositions </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>normalized</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -349,25 +352,40 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 <p>Returns a list of bounding rectangles of all of the faces. </p>
 <p>Bounding rectangles of all faces currently in view are returned. </p>
-<dl class="section warning"><dt>Warning</dt><dd>No confidence information is supplied with each face, but all detected faces meet the FaceTracker::minNeighbors factor </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">normalized</td><td>See <a class="el" href="explanationspage.html#normRect">Normalized Rectangles</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>List of bounding rectangles of all faces </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>No confidence information is supplied with each face, but all detected faces meet the FaceTracker::minNeighbors factor. </dd>
+<dd>
+After this function is called, the <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> will not return a usable result. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="aff0b9cfb91df4eac94efe0cbfeae0f4f"></a>
+<a class="anchor" id="ad66defbacf249e938041ce4e4a0d55a9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">QRect FaceTracker::GetBestFacePosition </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>normalized</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Returns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">normalized</td><td>See <a class="el" href="explanationspage.html#normRect">Normalized Rectangles</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Bounding rectangle of face with highest confidence factor </dd></dl>
 
 </div>
@@ -386,27 +404,33 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div><div class="memdoc">
 
 <p>Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame. </p>
-<dl class="section warning"><dt>Warning</dt><dd>NULL pointer is returned if no face was present in the last processed frame. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>Cropped image of the tracked face. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Cropped image of the tracked face. NULL is returned if no face was detected in the last processed frame. </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>This is very expensive and inefficient way of performing this action </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a2536daf855b15610190bcedf97e2d957"></a>
+<a class="anchor" id="a9b2f83e09b8911f8c14df67453cda966"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">QRect FaceTracker::GetFacePosition </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>normalized</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Returns the rectangle of the currently tracked face. </p>
-<p>If there is no face currently being tracked, or this function is called after a call to <a class="el" href="class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13" title="Stops tracking of the current face.">FaceTracker::ResetTracker</a>, a new face will be selected as per <a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f" title="Selects which face to track from a list Given a list of bounding rectangles, this function select whi...">FaceTracker::SelectFace2Track</a>.</p>
+<p>If there is no face currently being tracked, or this function is called after a call to <a class="el" href="class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13" title="Stops tracking of the current face.">FaceTracker::ResetTracker</a>, a new face will be selected as per <a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f" title="Selects which face to track from a list Given a list of bounding rectangles, this function select whi...">FaceTracker::SelectFace2Track</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">normalized</td><td>See <a class="el" href="explanationspage.html#normRect">Normalized Rectangles</a></td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Bounding rectangle of the face </dd></dl>
 
 </div>
@@ -427,6 +451,39 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <p>Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information. </p>
 <dl class="section return"><dt>Returns</dt><dd>Last Processed frame </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>This will corrupt image if function called multiple times, or <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> gets called </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa14c553465c1c0efbc4b5a240013b02c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FaceTracker::GetProcessReadyWebcamImage </td>
+          <td>(</td>
+          <td class="paramtype">cv::Mat &amp;&#160;</td>
+          <td class="paramname"><em>cameraFrame</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtains a properly sized and processed image for CascadeClassifer The obtained image is sized down, converted to gray, and undergone histogram equalization. These alterations are aimed at improving performance and detection accuracy. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cameraFrame</td><td>[out] The captured image is stored </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function alters the last saved camera frame. </dd></dl>
 
 </div>
 </div>
@@ -579,13 +636,13 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 <p>Sets the additional flags to flags. </p>
 <div class="fragment"><div class="line"><a class="code" href="class_face_tracker.html#a20e60ee13a0d72915c5cd911fb551b25" title="Additional flags passed to cv::CascadeClassifier::detectMultiScale()">m_additionalFlags</a> = flags </div>
-</div><!-- fragment --> <dl class="section warning"><dt>Warning</dt><dd>Currently set additional flags are lost! </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
+</div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">flags</td><td>The new additional flags </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section warning"><dt>Warning</dt><dd>Currently set additional flags are lost! </dd></dl>
 
 </div>
 </div>
@@ -599,7 +656,7 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_face_tracker.html">FaceTracker</a></li>
-    <li class="footer">Generated on Sun Feb 17 2013 22:54:49 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 21:39:25 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
