@@ -35,7 +35,7 @@ QRect FaceTracker::GetFacePosition(bool normalized)
         return InvalidQRect;
 
     std::vector<cv::Rect> faceRects;
-    faceDetector.detectMultiScale(cameraFrame, faceRects,
+    m_faceDetector.detectMultiScale(cameraFrame, faceRects,
                                   m_searchScaleFactor, m_minNeighbors,
                                   cv::CASCADE_SCALE_IMAGE | m_additionalFlags);
 
@@ -72,7 +72,7 @@ QList<QRect> FaceTracker::GetAllFacesPositions(bool normalized)
         return QList<QRect>();
 
     std::vector<cv::Rect> faceRects;
-    faceDetector.detectMultiScale(cameraFrame, faceRects,
+    m_faceDetector.detectMultiScale(cameraFrame, faceRects,
                                   m_searchScaleFactor, m_minNeighbors,
                                   cv::CASCADE_SCALE_IMAGE | m_additionalFlags);
     QList<QRect> qFaceRects;
@@ -104,7 +104,7 @@ QRect FaceTracker::GetBestFacePosition(bool normalized)
         return InvalidQRect;
 
     std::vector<cv::Rect> faceRects;
-    faceDetector.detectMultiScale(cameraFrame, faceRects,
+    m_faceDetector.detectMultiScale(cameraFrame, faceRects,
                                   m_searchScaleFactor, m_minNeighbors,
                                   cv::CASCADE_FIND_BIGGEST_OBJECT | cv::CASCADE_DO_ROUGH_SEARCH | m_additionalFlags);
 
@@ -192,10 +192,10 @@ void FaceTracker::SetAdditionalFlags(unsigned int flags)
 QImage *FaceTracker::GetLastImage()
 {
     //! \todo This will corrupt image if function called multiple times, or FaceTracker::GetFaceImage gets called
-    cv::cvtColor(cameraFrame_saved, cameraFrame_saved, CV_BGR2RGB);
+    cv::cvtColor(m_cameraFrame, m_cameraFrame, CV_BGR2RGB);
 
-    return new QImage(cameraFrame_saved.data, cameraFrame_saved.cols,
-                      cameraFrame_saved.rows, QImage::Format_RGB888);
+    return new QImage(m_cameraFrame.data, m_cameraFrame.cols,
+                      m_cameraFrame.rows, QImage::Format_RGB888);
 }
 
 QImage *FaceTracker::GetFaceImage()
@@ -214,7 +214,7 @@ void FaceTracker::Init(int deviceID)
     m_searchScaleFactor = DEFAULT_SEARCH_SCALE_FACTOR;
     m_minNeighbors = DEFAULT_MIN_NEIGHBORS_CUTOFF;
     m_additionalFlags = DEFAULT_ADDITIONAL_FLAGS;
-    classifier_xml_filename = DEFAULT_CLASSIFIER_XML_FILENAME;
+    m_classifierXmlFilename = DEFAULT_CLASSIFIER_XML_FILENAME;
 
     m_vc.open(deviceID);
     if(!m_vc.isOpened())
@@ -226,10 +226,10 @@ void FaceTracker::Init(int deviceID)
 
     SetProcessingImageDimensions(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
-    QResource resource(QString(classifier_xml_filename.c_str()));
+    QResource resource(QString(m_classifierXmlFilename.c_str()));
     if(resource.isValid())
     {
-        QFile resFile(QString(classifier_xml_filename.c_str()));
+        QFile resFile(QString(m_classifierXmlFilename.c_str()));
         QTemporaryFile *tempFile = QTemporaryFile::createLocalFile(resFile);
 
         LoadCascadeClassifier(tempFile->fileName().toStdString());
@@ -238,18 +238,18 @@ void FaceTracker::Init(int deviceID)
         delete tempFile;
     }
     else
-        LoadCascadeClassifier(classifier_xml_filename);
+        LoadCascadeClassifier(m_classifierXmlFilename);
 }
 
 void FaceTracker::LoadCascadeClassifier(const std::string filename)
 {
     try
     {
-        faceDetector.load(filename);
+        m_faceDetector.load(filename);
     }
     catch (...) { }
 
-    if(faceDetector.empty())
+    if(m_faceDetector.empty())
         throw std::runtime_error("Unable to load classifier xml file.");
 }
 
@@ -277,19 +277,19 @@ QRect FaceTracker::findClosest(const std::vector<cv::Rect> &rects, QPoint point)
 
 void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 {
-    m_vc >> cameraFrame_saved;
+    m_vc >> m_cameraFrame;
 
-    if(cameraFrame_saved.empty())
+    if(m_cameraFrame.empty())
     {
-        cameraFrame = cameraFrame_saved;
+        cameraFrame = m_cameraFrame;
         return;
     }
 
     //To Grayscale
-    if(cameraFrame_saved.channels() == 3)
-        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGR2GRAY);
-    else if(cameraFrame_saved.channels() == 4)
-        cv::cvtColor(cameraFrame_saved, cameraFrame, CV_BGRA2GRAY);
+    if(m_cameraFrame.channels() == 3)
+        cv::cvtColor(m_cameraFrame, cameraFrame, CV_BGR2GRAY);
+    else if(m_cameraFrame.channels() == 4)
+        cv::cvtColor(m_cameraFrame, cameraFrame, CV_BGRA2GRAY);
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);

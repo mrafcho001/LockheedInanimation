@@ -1,0 +1,20 @@
+/*! \page explanationspage Explanations
+    \section normRect Normalized Rectangles
+    Sometimes it is more useful to know the relative location and size of a
+    bounding rectangle than knowing its absolution location and size. In fact
+    in the case of FaceTracker, it is only useful to know the absolute bounding
+    rectangle of the detected faces when the faces are to be cropped or visually
+    highlighted. Since the size of the acquired image may not be known to the
+    user, an absolute bounding rectangle reveals very little.
+    A rectangle can only be normalized if it exists within a larger all encompassing
+    bounding rectangle. In our context, a normalized bounding rectangle will
+    be a rectangle that is contained within a 100x100 rectangle, which is considered
+    to be the context of the inner bounding rectangles. For example, a bounding
+    rectangle of a detected face within an image is normalized by scaling the
+    upper left point position and rectangle dimentions by 100/image_dimentions.
+    \note Normalizing a bounding rectangle will cause loss of original aspect
+          ratio.
+    \sa FaceTracker::GetFacePosition
+    \sa FaceTracker::GetBestFacePosition
+    \sa FaceTracker::GetAllFacesPositions
+*/

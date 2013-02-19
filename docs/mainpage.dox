@@ -1,6 +1,26 @@
-/**
+/*!
 \mainpage Lockheed Inanimation Documentation Homepage
 
-This is a test text to see what happens
+\section projectabstract Project Abstract
+This project aims to \e animate a computer monitor, such that it detects the
+user's face and attempts to orient itself for a better viewing angle. Along
+with the useful core functionality of this project, additional non-essential
+"playful" features are available.  The "playful" features include:
+\li Peekaboo - a user interactive children's game of Peekaboo.
+\li FaceInvaders - A space-invader's like game of dodging falling objects.
+\li "Sad" and evasive response to loud noises - Attempts to mimic avoiding getting yelled at.
+
+\section implementationdetails Implementation Details
+OpenCV is used as the base for face recognition and implementing face tracking.
+The <a href="http://docs.opencv.org/doc/tutorials/objdetect/cascade_classifier/cascade_classifier.html">CascadeClassifier</a>
+is used to load a trained LBP classifier for a \e fast and reliable face detection.
+The FaceTracker class is a wrapper around OpenCV's CascadeClassifier and by
+keeping some extra information between processed frames, is able to track a face
+as it moves around in the camera's field of view.  FaceTracker also provides easy
+access to the last processed frame as well as cropped images of the tracked face.
+The cropped images of the tracked face are used for FaceInvaders.
+\warning Documentation incomplete
+\todo Continue documentation along side development
 
 */
+

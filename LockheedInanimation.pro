@@ -53,3 +53,7 @@ QMAKE_EXTRA_TARGETS += docs
 RESOURCES += \
     resources/resources.qrc
 
+OTHER_FILES += \
+    docs/mainpage.dox \
+    docs/explanations.dox
+

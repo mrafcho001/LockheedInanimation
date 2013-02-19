@@ -1,39 +1,13 @@
 /*! \file facetracker.h
+    \author     Martin Bakiev
+    \date       Feb, 2013
+    \version    1.0
     \brief Defines the class for tracking a face as it moves using OpenCV
 
-    FaceTracker uses OpenCV to track a moving face using a webcam.  The
-    device ID of the webcam to use can be specified in the constructor of the
-    class otherwise the first webcam (device ID: 0) is used.
-
-    In the presence of multiple faces, FaceTracker will attempt to track the
-    same face as it moves around the scree. If multiple faces are present a
-    face is selected to be tracked as per the FaceTracker::SelectFace2Track.
-    \sa FaceTracker::SelectFace2Track
-
-    The class also exposes some parameters for tuning the face detection:
-    \sa FaceTracker::m_minFeatureSize
-    \sa FaceTracker::m_searchScaleFactor
-    \sa FaceTracker::m_minNeighbors
-    \sa FaceTracker::m_additionalFlags
+    No other classes or functions are defined in this class.
+    \sa FaceTracker
 */
-/*! \page explanationspage Explanations
-    \section normRect Normalized Rectangles
-    Sometimes it is more useful to know the relative location and size of a
-    bounding rectangle than knowing its absolution location and size. In fact
-    in the case of FaceTracker, it is only useful to know the absolute bounding
-    rectangle of the detected faces when the faces are to be cropped or visually
-    highlighted. Since the size of the acquired image may not be known to the
-    user, an absolute bounding rectangle reveals very little.
-    A rectangle can only be normalized if it exists within a larger all encompassing
-    bounding rectangle. In our context, a normalized bounding rectangle will
-    be a rectangle that is contained within a 100x100 rectangle, which is considered
-    to be the context of the inner bounding rectangles. For example, a bounding
-    rectangle of a detected face within an image is normalized by scaling the
-    upper left point position and rectangle dimentions by 100/image_dimentions.
-    \note Normalizing a bounding rectangle will cause loss of original aspect
-          ratio.
-    \sa FaceTracker::GetFacePosition
-*/
+
 
 #ifndef FACETRACKER_H
 #define FACETRACKER_H
@@ -67,9 +41,45 @@
 #define DEFAULT_IMAGE_HEIGHT            480
 
 /*! \brief Tracks a face as it moves around.
+
   This class is a wrapper around OpenCV and provides an eassy to use interface
   for tracking a face between frames. The class exposes several face detection tuning
   parameters.
+  FaceTracker uses OpenCV to track a moving face using a webcam.  The
+  device ID of the webcam to use can be specified in the constructor of the
+  class otherwise the first webcam (device ID: 0) is used.
+
+  In the presence of multiple faces, FaceTracker will attempt to track the
+  same face as it moves around the scree. If multiple faces are present a
+  face is selected to be tracked as per the FaceTracker::SelectFace2Track.
+  \sa FaceTracker::SelectFace2Track
+
+  The class also exposes some parameters for tuning the face detection:
+  \sa FaceTracker::m_minFeatureSize
+  \sa FaceTracker::m_searchScaleFactor
+  \sa FaceTracker::m_minNeighbors
+  \sa FaceTracker::m_additionalFlags
+
+  <b> Typical Use Case </b>
+
+  Typically this class will be used in a tight loop with repeated calls to
+  one of the face position acquisition functions such as FaceTracker::GetFacePosition,
+  FaceTracker::GetAllFacesPositions, FaceTracker::GetFacePosition.  The less time
+  there is between function calls, the more reliable the face tracking will be,
+  especially in the case of multiple faces on the screen.
+  \code
+  while(1)
+  {
+        QRect rect = faceTracker.GetFacePosition();
+        QImage *image = faceTracker.GetLastImage();
+        QPainter p;
+        p.begin(image);
+        p.setPen(QPen(Qt::red));
+        p.drawRect(rect);
+        p.end();
+        // Display anotated image on screen...
+  }
+  \endcode
 */
 class FaceTracker
 {
@@ -231,12 +241,12 @@ private:
     void GetProcessReadyWebcamImage(cv::Mat &cameraFrame);
 
     cv::VideoCapture m_vc;   //!< Used for acquiring images from camera
-    cv::CascadeClassifier faceDetector; //!< Used for face detection
-    std::string classifier_xml_filename;//!< The filename of the XML containing the classifier data
+    cv::CascadeClassifier m_faceDetector; //!< Used for face detection
+    std::string m_classifierXmlFilename;//!< The filename of the XML containing the classifier data
 
     //Face tracking data saved between runs
     QRect m_lastPosition;   //!< Stores the last bounding rectangle of the tracked face
-    cv::Mat cameraFrame_saved; //!< Stores the last processed frame (needed for face extraction)
+    cv::Mat m_cameraFrame; //!< Stores the last processed frame (needed for face extraction)
 
     //Parameters for tuning face detection
     cv::Size m_minFeatureSize;  //!< Minimum feature size used for cv::CascadeClassifier::detectMultiScale()
@@ -248,8 +258,6 @@ private:
 
 
     static const QRect InvalidQRect;    //!< Easy way to create an InvalidRect
-
-    // Saved data between runs
 };
 
 #endif // FACETRACKER_H
