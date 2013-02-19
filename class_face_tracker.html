@@ -116,6 +116,13 @@ $(document).ready(function(){initNavTree('class_face_tracker.html','');});
  <a href="class_face_tracker.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="facetracker_8h_source.html">facetracker.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for FaceTracker:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_face_tracker__coll__graph.png" border="0" usemap="#_face_tracker_coll__map" alt="Collaboration graph"/></div>
+<map name="_face_tracker_coll__map" id="_face_tracker_coll__map">
+<area shape="rect" id="node2" title="STL class." alt="" coords="28,104,108,133"/><area shape="rect" id="node4" title="STL class." alt="" coords="5,6,131,53"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -124,96 +131,96 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aae2cc94185d72854cd452485a6d00030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor uses device 0. <br/></td></tr>
 <tr class="memitem:a73575602a17e08f3885f2f3596218efc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a73575602a17e08f3885f2f3596218efc">FaceTracker</a> (int deviceID)</td></tr>
 <tr class="memdesc:a73575602a17e08f3885f2f3596218efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor uses specified device ID for VideoCapture.  <a href="#a73575602a17e08f3885f2f3596218efc"></a><br/></td></tr>
-<tr class="memitem:a37bf5c368990b1cd659b5b1c25930f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13">ResetTracker</a> ()</td></tr>
-<tr class="memdesc:a37bf5c368990b1cd659b5b1c25930f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops tracking of the current face.  <a href="#a37bf5c368990b1cd659b5b1c25930f13"></a><br/></td></tr>
-<tr class="memitem:a9b2f83e09b8911f8c14df67453cda966"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966">GetFacePosition</a> (bool normalized=false)</td></tr>
-<tr class="memdesc:a9b2f83e09b8911f8c14df67453cda966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rectangle of the currently tracked face.  <a href="#a9b2f83e09b8911f8c14df67453cda966"></a><br/></td></tr>
+<tr class="memitem:abf0948b588ae71d555d61506cb8c8a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abf0948b588ae71d555d61506cb8c8a4e">ClearAdditionalFlag</a> (unsigned int flag)</td></tr>
+<tr class="memdesc:abf0948b588ae71d555d61506cb8c8a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the passed flag from the additional flags.  <a href="#abf0948b588ae71d555d61506cb8c8a4e"></a><br/></td></tr>
+<tr class="memitem:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa89fea2366e81e1b7eeda5de64b72b9a">GetAdditionalFlags</a> ()</td></tr>
+<tr class="memdesc:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use.  <a href="#aa89fea2366e81e1b7eeda5de64b72b9a"></a><br/></td></tr>
 <tr class="memitem:aa38eb8c5e423e917ce5809865682f975"><td class="memItemLeft" align="right" valign="top">QList&lt; QRect &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa38eb8c5e423e917ce5809865682f975">GetAllFacesPositions</a> (bool normalized=false)</td></tr>
 <tr class="memdesc:aa38eb8c5e423e917ce5809865682f975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of bounding rectangles of all of the faces.  <a href="#aa38eb8c5e423e917ce5809865682f975"></a><br/></td></tr>
 <tr class="memitem:ad66defbacf249e938041ce4e4a0d55a9"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9">GetBestFacePosition</a> (bool normalized=false)</td></tr>
 <tr class="memdesc:ad66defbacf249e938041ce4e4a0d55a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bounding rectangle of the face with the highest confidence factor If there are multiple faces, only the bounding rectangle of the face with the highest confidence is returned.  <a href="#ad66defbacf249e938041ce4e4a0d55a9"></a><br/></td></tr>
-<tr class="memitem:a2e99d33e34874b94f5248950b03ed39f"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f">SelectFace2Track</a> (std::vector&lt; cv::Rect &gt; faceRects)</td></tr>
-<tr class="memdesc:a2e99d33e34874b94f5248950b03ed39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects which face to track from a list Given a list of bounding rectangles, this function select which face will be tracked from here on out.  <a href="#a2e99d33e34874b94f5248950b03ed39f"></a><br/></td></tr>
+<tr class="memitem:a3d2b93c80d45eb8c041cae5165c65280"><td class="memItemLeft" align="right" valign="top">QImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280">GetFaceImage</a> ()</td></tr>
+<tr class="memdesc:a3d2b93c80d45eb8c041cae5165c65280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.  <a href="#a3d2b93c80d45eb8c041cae5165c65280"></a><br/></td></tr>
+<tr class="memitem:a9b2f83e09b8911f8c14df67453cda966"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966">GetFacePosition</a> (bool normalized=false)</td></tr>
+<tr class="memdesc:a9b2f83e09b8911f8c14df67453cda966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rectangle of the currently tracked face.  <a href="#a9b2f83e09b8911f8c14df67453cda966"></a><br/></td></tr>
+<tr class="memitem:a4f77bdab0b45cf24701ac008c56ce571"><td class="memItemLeft" align="right" valign="top">QImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">GetLastImage</a> ()</td></tr>
+<tr class="memdesc:a4f77bdab0b45cf24701ac008c56ce571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information.  <a href="#a4f77bdab0b45cf24701ac008c56ce571"></a><br/></td></tr>
 <tr class="memitem:a5a04d2a24e2607a04f187b81b5335391"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a04d2a24e2607a04f187b81b5335391"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a5a04d2a24e2607a04f187b81b5335391">GetMinFeatureSize</a> ()</td></tr>
 <tr class="memdesc:a5a04d2a24e2607a04f187b81b5335391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for minimum feature size used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:a805d87f3aacd819a3e0fa9a8088b4ec5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a805d87f3aacd819a3e0fa9a8088b4ec5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a805d87f3aacd819a3e0fa9a8088b4ec5">SetMinFeatureSize</a> (int minFeatureSize)</td></tr>
-<tr class="memdesc:a805d87f3aacd819a3e0fa9a8088b4ec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for minimum feature size used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:a6ca25e531d35ecb61eab4fe8b5ece90b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca25e531d35ecb61eab4fe8b5ece90b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a6ca25e531d35ecb61eab4fe8b5ece90b">GetSearchScaleFactor</a> ()</td></tr>
-<tr class="memdesc:a6ca25e531d35ecb61eab4fe8b5ece90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:acecb45f197f71fb5c8047dee61f1d749"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acecb45f197f71fb5c8047dee61f1d749"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#acecb45f197f71fb5c8047dee61f1d749">SetSearchScaleFactor</a> (float searchScaleFactor)</td></tr>
-<tr class="memdesc:acecb45f197f71fb5c8047dee61f1d749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
 <tr class="memitem:a531a750753b8c6f3e000ae0ad1460ef7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a531a750753b8c6f3e000ae0ad1460ef7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a531a750753b8c6f3e000ae0ad1460ef7">GetMinNeighbors</a> ()</td></tr>
 <tr class="memdesc:a531a750753b8c6f3e000ae0ad1460ef7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for minimum neighbors cutoff used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
+<tr class="memitem:a6ca25e531d35ecb61eab4fe8b5ece90b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca25e531d35ecb61eab4fe8b5ece90b"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a6ca25e531d35ecb61eab4fe8b5ece90b">GetSearchScaleFactor</a> ()</td></tr>
+<tr class="memdesc:a6ca25e531d35ecb61eab4fe8b5ece90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
+<tr class="memitem:a37bf5c368990b1cd659b5b1c25930f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a37bf5c368990b1cd659b5b1c25930f13">ResetTracker</a> ()</td></tr>
+<tr class="memdesc:a37bf5c368990b1cd659b5b1c25930f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops tracking of the current face.  <a href="#a37bf5c368990b1cd659b5b1c25930f13"></a><br/></td></tr>
+<tr class="memitem:a2e99d33e34874b94f5248950b03ed39f"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2e99d33e34874b94f5248950b03ed39f">SelectFace2Track</a> (std::vector&lt; cv::Rect &gt; faceRects)</td></tr>
+<tr class="memdesc:a2e99d33e34874b94f5248950b03ed39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects which face to track from a list Given a list of bounding rectangles, this function select which face will be tracked from here on out.  <a href="#a2e99d33e34874b94f5248950b03ed39f"></a><br/></td></tr>
+<tr class="memitem:a8efa0e58da5503bb16f21b0b5008af82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a8efa0e58da5503bb16f21b0b5008af82">SetAdditionalFlag</a> (unsigned int flag)</td></tr>
+<tr class="memdesc:a8efa0e58da5503bb16f21b0b5008af82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds flag to the set of additional flags.  <a href="#a8efa0e58da5503bb16f21b0b5008af82"></a><br/></td></tr>
+<tr class="memitem:a99fde78244336b63796b3c0467210213"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a99fde78244336b63796b3c0467210213">SetAdditionalFlags</a> (unsigned int flags)</td></tr>
+<tr class="memdesc:a99fde78244336b63796b3c0467210213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the additional flags to flags.  <a href="#a99fde78244336b63796b3c0467210213"></a><br/></td></tr>
+<tr class="memitem:a805d87f3aacd819a3e0fa9a8088b4ec5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a805d87f3aacd819a3e0fa9a8088b4ec5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a805d87f3aacd819a3e0fa9a8088b4ec5">SetMinFeatureSize</a> (int minFeatureSize)</td></tr>
+<tr class="memdesc:a805d87f3aacd819a3e0fa9a8088b4ec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for minimum feature size used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
 <tr class="memitem:a24bd4d7e91a493c966650fd26387dd55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24bd4d7e91a493c966650fd26387dd55"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a24bd4d7e91a493c966650fd26387dd55">SetMinNeighbors</a> (int minNeighbors)</td></tr>
 <tr class="memdesc:a24bd4d7e91a493c966650fd26387dd55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for minimum neighbors cutoff used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
 <tr class="memitem:abd852b1cc6fe2f7658b7dd3cfd39db26"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd852b1cc6fe2f7658b7dd3cfd39db26"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abd852b1cc6fe2f7658b7dd3cfd39db26">SetProcessingImageDimensions</a> (int width, int height)</td></tr>
 <tr class="memdesc:abd852b1cc6fe2f7658b7dd3cfd39db26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the dimensions for the image to be processed by OpenCV This option may effect performance and reliability of the face detection algorithms of OpenCV. <br/></td></tr>
-<tr class="memitem:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa89fea2366e81e1b7eeda5de64b72b9a">GetAdditionalFlags</a> ()</td></tr>
-<tr class="memdesc:aa89fea2366e81e1b7eeda5de64b72b9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use.  <a href="#aa89fea2366e81e1b7eeda5de64b72b9a"></a><br/></td></tr>
-<tr class="memitem:a8efa0e58da5503bb16f21b0b5008af82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a8efa0e58da5503bb16f21b0b5008af82">SetAdditionalFlag</a> (unsigned int flag)</td></tr>
-<tr class="memdesc:a8efa0e58da5503bb16f21b0b5008af82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds flag to the set of additional flags.  <a href="#a8efa0e58da5503bb16f21b0b5008af82"></a><br/></td></tr>
-<tr class="memitem:abf0948b588ae71d555d61506cb8c8a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abf0948b588ae71d555d61506cb8c8a4e">ClearAdditionalFlag</a> (unsigned int flag)</td></tr>
-<tr class="memdesc:abf0948b588ae71d555d61506cb8c8a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the passed flag from the additional flags.  <a href="#abf0948b588ae71d555d61506cb8c8a4e"></a><br/></td></tr>
-<tr class="memitem:a99fde78244336b63796b3c0467210213"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a99fde78244336b63796b3c0467210213">SetAdditionalFlags</a> (unsigned int flags)</td></tr>
-<tr class="memdesc:a99fde78244336b63796b3c0467210213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the additional flags to flags.  <a href="#a99fde78244336b63796b3c0467210213"></a><br/></td></tr>
-<tr class="memitem:a4f77bdab0b45cf24701ac008c56ce571"><td class="memItemLeft" align="right" valign="top">QImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">GetLastImage</a> ()</td></tr>
-<tr class="memdesc:a4f77bdab0b45cf24701ac008c56ce571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information.  <a href="#a4f77bdab0b45cf24701ac008c56ce571"></a><br/></td></tr>
-<tr class="memitem:a3d2b93c80d45eb8c041cae5165c65280"><td class="memItemLeft" align="right" valign="top">QImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280">GetFaceImage</a> ()</td></tr>
-<tr class="memdesc:a3d2b93c80d45eb8c041cae5165c65280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.  <a href="#a3d2b93c80d45eb8c041cae5165c65280"></a><br/></td></tr>
+<tr class="memitem:acecb45f197f71fb5c8047dee61f1d749"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acecb45f197f71fb5c8047dee61f1d749"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#acecb45f197f71fb5c8047dee61f1d749">SetSearchScaleFactor</a> (float searchScaleFactor)</td></tr>
+<tr class="memdesc:acecb45f197f71fb5c8047dee61f1d749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a189f02c677e1060792208c9ee1eb3222"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a189f02c677e1060792208c9ee1eb3222">Init</a> (int deviceID)</td></tr>
-<tr class="memdesc:a189f02c677e1060792208c9ee1eb3222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization function.  <a href="#a189f02c677e1060792208c9ee1eb3222"></a><br/></td></tr>
-<tr class="memitem:a8d741fa29a809591664187afd58357fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a8d741fa29a809591664187afd58357fe">LoadCascadeClassifier</a> (const std::string filename)</td></tr>
-<tr class="memdesc:a8d741fa29a809591664187afd58357fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">CascadeClassifier is loaded with the file.  <a href="#a8d741fa29a809591664187afd58357fe"></a><br/></td></tr>
 <tr class="memitem:abc157c27b7002840cf82faedc23a1b57"><td class="memItemLeft" align="right" valign="top">QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abc157c27b7002840cf82faedc23a1b57">findClosest</a> (const std::vector&lt; cv::Rect &gt; &amp;rects, QPoint point)</td></tr>
 <tr class="memdesc:abc157c27b7002840cf82faedc23a1b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds rectangle with center closest to point.  <a href="#abc157c27b7002840cf82faedc23a1b57"></a><br/></td></tr>
 <tr class="memitem:aa14c553465c1c0efbc4b5a240013b02c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#aa14c553465c1c0efbc4b5a240013b02c">GetProcessReadyWebcamImage</a> (cv::Mat &amp;cameraFrame)</td></tr>
 <tr class="memdesc:aa14c553465c1c0efbc4b5a240013b02c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains a properly sized and processed image for CascadeClassifer The obtained image is sized down, converted to gray, and undergone histogram equalization. These alterations are aimed at improving performance and detection accuracy.  <a href="#aa14c553465c1c0efbc4b5a240013b02c"></a><br/></td></tr>
+<tr class="memitem:a189f02c677e1060792208c9ee1eb3222"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a189f02c677e1060792208c9ee1eb3222">Init</a> (int deviceID)</td></tr>
+<tr class="memdesc:a189f02c677e1060792208c9ee1eb3222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization function.  <a href="#a189f02c677e1060792208c9ee1eb3222"></a><br/></td></tr>
+<tr class="memitem:a8d741fa29a809591664187afd58357fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a8d741fa29a809591664187afd58357fe">LoadCascadeClassifier</a> (const std::string filename)</td></tr>
+<tr class="memdesc:a8d741fa29a809591664187afd58357fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">CascadeClassifier is loaded with the file.  <a href="#a8d741fa29a809591664187afd58357fe"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:abe09a6a15e706ccc6eb2519b111408ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe09a6a15e706ccc6eb2519b111408ea"></a>
-cv::VideoCapture&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abe09a6a15e706ccc6eb2519b111408ea">m_vc</a></td></tr>
-<tr class="memdesc:abe09a6a15e706ccc6eb2519b111408ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for acquiring images from camera. <br/></td></tr>
-<tr class="memitem:a6f62146a1ee55513f4a7195588956e33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f62146a1ee55513f4a7195588956e33"></a>
-cv::CascadeClassifier&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a6f62146a1ee55513f4a7195588956e33">m_faceDetector</a></td></tr>
-<tr class="memdesc:a6f62146a1ee55513f4a7195588956e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for face detection. <br/></td></tr>
-<tr class="memitem:adb42f530e03b5ed88d1a580c7a088b3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb42f530e03b5ed88d1a580c7a088b3e"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#adb42f530e03b5ed88d1a580c7a088b3e">m_classifierXmlFilename</a></td></tr>
-<tr class="memdesc:adb42f530e03b5ed88d1a580c7a088b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The filename of the XML containing the classifier data. <br/></td></tr>
-<tr class="memitem:abac52b7656b60f00bb665740b8f3826b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abac52b7656b60f00bb665740b8f3826b"></a>
-QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abac52b7656b60f00bb665740b8f3826b">m_lastPosition</a></td></tr>
-<tr class="memdesc:abac52b7656b60f00bb665740b8f3826b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the last bounding rectangle of the tracked face. <br/></td></tr>
-<tr class="memitem:a62e31f04d926acb83b4b0d0ea79f118c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62e31f04d926acb83b4b0d0ea79f118c"></a>
-cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a62e31f04d926acb83b4b0d0ea79f118c">m_cameraFrame</a></td></tr>
-<tr class="memdesc:a62e31f04d926acb83b4b0d0ea79f118c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the last processed frame (needed for face extraction) <br/></td></tr>
-<tr class="memitem:a10d5fe065cfb5aa8fef1cbe2eea1361b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10d5fe065cfb5aa8fef1cbe2eea1361b"></a>
-cv::Size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a10d5fe065cfb5aa8fef1cbe2eea1361b">m_minFeatureSize</a></td></tr>
-<tr class="memdesc:a10d5fe065cfb5aa8fef1cbe2eea1361b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum feature size used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:adb6ffd8a79a458cb701b39616e89e593"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb6ffd8a79a458cb701b39616e89e593"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#adb6ffd8a79a458cb701b39616e89e593">m_searchScaleFactor</a></td></tr>
-<tr class="memdesc:adb6ffd8a79a458cb701b39616e89e593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:a939f87b9f2cb592530ed10007f260ea0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a939f87b9f2cb592530ed10007f260ea0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a939f87b9f2cb592530ed10007f260ea0">m_minNeighbors</a></td></tr>
-<tr class="memdesc:a939f87b9f2cb592530ed10007f260ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum number of Neighbors to be classified as a face. <br/></td></tr>
 <tr class="memitem:a20e60ee13a0d72915c5cd911fb551b25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20e60ee13a0d72915c5cd911fb551b25"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a20e60ee13a0d72915c5cd911fb551b25">m_additionalFlags</a></td></tr>
 <tr class="memdesc:a20e60ee13a0d72915c5cd911fb551b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional flags passed to cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
-<tr class="memitem:a20746a9ea5b6c90677fc776120b761d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20746a9ea5b6c90677fc776120b761d1"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a20746a9ea5b6c90677fc776120b761d1">m_imageWidth</a></td></tr>
-<tr class="memdesc:a20746a9ea5b6c90677fc776120b761d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the width of the image on which face detection is performed. <br/></td></tr>
+<tr class="memitem:a62e31f04d926acb83b4b0d0ea79f118c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62e31f04d926acb83b4b0d0ea79f118c"></a>
+cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a62e31f04d926acb83b4b0d0ea79f118c">m_cameraFrame</a></td></tr>
+<tr class="memdesc:a62e31f04d926acb83b4b0d0ea79f118c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the last processed frame (needed for face extraction) <br/></td></tr>
+<tr class="memitem:adb42f530e03b5ed88d1a580c7a088b3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb42f530e03b5ed88d1a580c7a088b3e"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#adb42f530e03b5ed88d1a580c7a088b3e">m_classifierXmlFilename</a></td></tr>
+<tr class="memdesc:adb42f530e03b5ed88d1a580c7a088b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The filename of the XML containing the classifier data. <br/></td></tr>
+<tr class="memitem:a6f62146a1ee55513f4a7195588956e33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f62146a1ee55513f4a7195588956e33"></a>
+cv::CascadeClassifier&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a6f62146a1ee55513f4a7195588956e33">m_faceDetector</a></td></tr>
+<tr class="memdesc:a6f62146a1ee55513f4a7195588956e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for face detection. <br/></td></tr>
 <tr class="memitem:a2e35b6c5399c821e2c2ae5f4403f8c43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e35b6c5399c821e2c2ae5f4403f8c43"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a2e35b6c5399c821e2c2ae5f4403f8c43">m_imageHeight</a></td></tr>
 <tr class="memdesc:a2e35b6c5399c821e2c2ae5f4403f8c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the height of the image on which face detection is performed. <br/></td></tr>
+<tr class="memitem:a20746a9ea5b6c90677fc776120b761d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20746a9ea5b6c90677fc776120b761d1"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a20746a9ea5b6c90677fc776120b761d1">m_imageWidth</a></td></tr>
+<tr class="memdesc:a20746a9ea5b6c90677fc776120b761d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the width of the image on which face detection is performed. <br/></td></tr>
+<tr class="memitem:abac52b7656b60f00bb665740b8f3826b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abac52b7656b60f00bb665740b8f3826b"></a>
+QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abac52b7656b60f00bb665740b8f3826b">m_lastPosition</a></td></tr>
+<tr class="memdesc:abac52b7656b60f00bb665740b8f3826b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the last bounding rectangle of the tracked face. <br/></td></tr>
+<tr class="memitem:a10d5fe065cfb5aa8fef1cbe2eea1361b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10d5fe065cfb5aa8fef1cbe2eea1361b"></a>
+cv::Size&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a10d5fe065cfb5aa8fef1cbe2eea1361b">m_minFeatureSize</a></td></tr>
+<tr class="memdesc:a10d5fe065cfb5aa8fef1cbe2eea1361b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum feature size used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
+<tr class="memitem:a939f87b9f2cb592530ed10007f260ea0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a939f87b9f2cb592530ed10007f260ea0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#a939f87b9f2cb592530ed10007f260ea0">m_minNeighbors</a></td></tr>
+<tr class="memdesc:a939f87b9f2cb592530ed10007f260ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum number of Neighbors to be classified as a face. <br/></td></tr>
+<tr class="memitem:adb6ffd8a79a458cb701b39616e89e593"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb6ffd8a79a458cb701b39616e89e593"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#adb6ffd8a79a458cb701b39616e89e593">m_searchScaleFactor</a></td></tr>
+<tr class="memdesc:adb6ffd8a79a458cb701b39616e89e593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search scale factor used for cv::CascadeClassifier::detectMultiScale() <br/></td></tr>
+<tr class="memitem:abe09a6a15e706ccc6eb2519b111408ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe09a6a15e706ccc6eb2519b111408ea"></a>
+cv::VideoCapture&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_face_tracker.html#abe09a6a15e706ccc6eb2519b111408ea">m_vc</a></td></tr>
+<tr class="memdesc:abe09a6a15e706ccc6eb2519b111408ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for acquiring images from camera. <br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -247,7 +254,9 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <div class="line">      p.end();</div>
 <div class="line">      <span class="comment">// Display anotated image on screen...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> </div><h2>Constructor &amp; Destructor Documentation</h2>
+</div><!-- fragment --> 
+<p>Definition at line <a class="el" href="facetracker_8h_source.html#l00084">84</a> of file <a class="el" href="facetracker_8h_source.html">facetracker.h</a>.</p>
+</div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a73575602a17e08f3885f2f3596218efc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -269,6 +278,10 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00019">19</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00211">Init()</a>.</p>
 
 </div>
 </div>
@@ -295,6 +308,10 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00182">182</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>.</p>
 
 </div>
 </div>
@@ -339,6 +356,8 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00256">256</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aa89fea2366e81e1b7eeda5de64b72b9a"></a>
@@ -357,6 +376,10 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <p>Getter for flags used for cv::CascadeClassifier::detectMultiScale() These flags are appended to the flags already used for the function call. For example, <a class="el" href="class_face_tracker.html#ad66defbacf249e938041ce4e4a0d55a9" title="Returns the bounding rectangle of the face with the highest confidence factor If there are multiple f...">FaceTracker::GetBestFacePosition</a> will use. </p>
 <div class="fragment"><div class="line">CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_ROUGH_SEARCH | <a class="code" href="class_face_tracker.html#a20e60ee13a0d72915c5cd911fb551b25" title="Additional flags passed to cv::CascadeClassifier::detectMultiScale()">m_additionalFlags</a> </div>
 </div><!-- fragment --><p> for the flags parameter of the cv::CascadeClassifier::detectMultiScale() function call </p>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00172">172</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>.</p>
 
 </div>
 </div>
@@ -387,6 +410,10 @@ static const QRect&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <dd>
 After this function is called, the <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> will not return a usable result. </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00067">67</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00278">GetProcessReadyWebcamImage()</a>, <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>, <a class="el" href="facetracker_8h_source.html#l00244">m_faceDetector</a>, <a class="el" href="facetracker_8h_source.html#l00257">m_imageHeight</a>, <a class="el" href="facetracker_8h_source.html#l00256">m_imageWidth</a>, <a class="el" href="facetracker_8h_source.html#l00254">m_minNeighbors</a>, and <a class="el" href="facetracker_8h_source.html#l00253">m_searchScaleFactor</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ad66defbacf249e938041ce4e4a0d55a9"></a>
@@ -412,6 +439,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Bounding rectangle of face with highest confidence factor </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00099">99</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00278">GetProcessReadyWebcamImage()</a>, <a class="el" href="facetracker_8h_source.html#l00260">InvalidQRect</a>, <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>, <a class="el" href="facetracker_8h_source.html#l00244">m_faceDetector</a>, <a class="el" href="facetracker_8h_source.html#l00257">m_imageHeight</a>, <a class="el" href="facetracker_8h_source.html#l00256">m_imageWidth</a>, <a class="el" href="facetracker_8h_source.html#l00248">m_lastPosition</a>, <a class="el" href="facetracker_8h_source.html#l00254">m_minNeighbors</a>, and <a class="el" href="facetracker_8h_source.html#l00253">m_searchScaleFactor</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a3d2b93c80d45eb8c041cae5165c65280"></a>
@@ -430,6 +461,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 <p>Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>Cropped image of the tracked face. NULL is returned if no face was detected in the last processed frame. </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>This is very expensive and inefficient way of performing this action </dd></dl>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00201">201</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00192">GetLastImage()</a>, and <a class="el" href="facetracker_8h_source.html#l00248">m_lastPosition</a>.</p>
 
 </div>
 </div>
@@ -457,6 +492,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Bounding rectangle of the face </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00030">30</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00256">findClosest()</a>, <a class="el" href="facetracker_8cpp_source.html#l00278">GetProcessReadyWebcamImage()</a>, <a class="el" href="facetracker_8h_source.html#l00260">InvalidQRect</a>, <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>, <a class="el" href="facetracker_8h_source.html#l00244">m_faceDetector</a>, <a class="el" href="facetracker_8h_source.html#l00257">m_imageHeight</a>, <a class="el" href="facetracker_8h_source.html#l00256">m_imageWidth</a>, <a class="el" href="facetracker_8h_source.html#l00248">m_lastPosition</a>, <a class="el" href="facetracker_8h_source.html#l00254">m_minNeighbors</a>, <a class="el" href="facetracker_8h_source.html#l00253">m_searchScaleFactor</a>, and <a class="el" href="facetracker_8cpp_source.html#l00127">SelectFace2Track()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4f77bdab0b45cf24701ac008c56ce571"></a>
@@ -475,6 +514,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 <p>Returns the last processed frame The tracker internally saves the last processed frame and this function can be used to retrieve it. Along with the face positions, this can help display real time face tracking information. </p>
 <dl class="section return"><dt>Returns</dt><dd>Last Processed frame </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>This will corrupt image if function called multiple times, or <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> gets called </dd></dl>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00192">192</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00249">m_cameraFrame</a>.</p>
 
 </div>
 </div>
@@ -509,6 +552,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function alters the last saved camera frame. </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00278">278</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00249">m_cameraFrame</a>, and <a class="el" href="facetracker_8h_source.html#l00243">m_vc</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a189f02c677e1060792208c9ee1eb3222"></a>
@@ -542,6 +589,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00211">211</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00032">DEFAULT_ADDITIONAL_FLAGS</a>, <a class="el" href="facetracker_8h_source.html#l00035">DEFAULT_CLASSIFIER_XML_FILENAME</a>, <a class="el" href="facetracker_8h_source.html#l00041">DEFAULT_IMAGE_HEIGHT</a>, <a class="el" href="facetracker_8h_source.html#l00038">DEFAULT_IMAGE_WIDTH</a>, <a class="el" href="facetracker_8h_source.html#l00023">DEFAULT_MIN_FEATURE_SIZE</a>, <a class="el" href="facetracker_8h_source.html#l00029">DEFAULT_MIN_NEIGHBORS_CUTOFF</a>, <a class="el" href="facetracker_8h_source.html#l00026">DEFAULT_SEARCH_SCALE_FACTOR</a>, <a class="el" href="facetracker_8cpp_source.html#l00244">LoadCascadeClassifier()</a>, <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>, <a class="el" href="facetracker_8h_source.html#l00245">m_classifierXmlFilename</a>, <a class="el" href="facetracker_8h_source.html#l00252">m_minFeatureSize</a>, <a class="el" href="facetracker_8h_source.html#l00254">m_minNeighbors</a>, <a class="el" href="facetracker_8h_source.html#l00253">m_searchScaleFactor</a>, <a class="el" href="facetracker_8h_source.html#l00243">m_vc</a>, and <a class="el" href="facetracker_8cpp_source.html#l00163">SetProcessingImageDimensions()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a8d741fa29a809591664187afd58357fe"></a>
@@ -574,6 +625,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00244">244</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00244">m_faceDetector</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a37bf5c368990b1cd659b5b1c25930f13"></a>
@@ -591,6 +646,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 
 <p>Stops tracking of the current face. </p>
 <p>This Tracker will attempt to follow the same face around as it moves around the field of view of the camera. This function stops the tracking of the current face, the next time position information is requested, a new face will be selected to be tracked. </p>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00024">24</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00248">m_lastPosition</a>.</p>
 
 </div>
 </div>
@@ -617,6 +676,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Bounding rectangle of selected face </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00127">127</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8cpp_source.html#l00256">findClosest()</a>, <a class="el" href="facetracker_8h_source.html#l00257">m_imageHeight</a>, and <a class="el" href="facetracker_8h_source.html#l00256">m_imageWidth</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a8efa0e58da5503bb16f21b0b5008af82"></a>
@@ -641,6 +704,10 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00177">177</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>.</p>
 
 </div>
 </div>
@@ -668,11 +735,15 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Currently set additional flags are lost! </dd></dl>
 
+<p>Definition at line <a class="el" href="facetracker_8cpp_source.html#l00187">187</a> of file <a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a>.</p>
+
+<p>References <a class="el" href="facetracker_8h_source.html#l00255">m_additionalFlags</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="facetracker_8h_source.html">facetracker.h</a></li>
-<li>src/facetracker.cpp</li>
+<li>src/<a class="el" href="facetracker_8cpp_source.html">facetracker.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -680,7 +751,7 @@ After this function is called, the <a class="el" href="class_face_tracker.html#a
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_face_tracker.html">FaceTracker</a></li>
-    <li class="footer">Generated on Mon Feb 18 2013 23:16:23 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 23:57:11 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

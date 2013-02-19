@@ -114,6 +114,20 @@ $(document).ready(function(){initNavTree('facetracker_8h.html','');});
 <code>#include &lt;QRect&gt;</code><br/>
 <code>#include &lt;QList&gt;</code><br/>
 <code>#include &lt;QImage&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for facetracker.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="facetracker_8h__incl.png" border="0" usemap="#src_2facetracker_8h" alt=""/></div>
+<map name="src_2facetracker_8h" id="src_2facetracker_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="facetracker_8h__dep__incl.png" border="0" usemap="#src_2facetracker_8hdep" alt=""/></div>
+<map name="src_2facetracker_8hdep" id="src_2facetracker_8hdep">
+<area shape="rect" id="node3" href="facetracker_8cpp_source.html" title="src/facetracker.cpp" alt="" coords="5,83,139,112"/><area shape="rect" id="node5" href="mainwindow_8h_source.html" title="src/mainwindow.h" alt="" coords="163,83,288,112"/><area shape="rect" id="node9" href="mainwindow_8cpp_source.html" title="src/mainwindow.cpp" alt="" coords="255,160,396,189"/><area shape="rect" id="node7" href="main_8cpp_source.html" title="src/main.cpp" alt="" coords="135,160,231,189"/></map>
+</div>
 </div>
 <p><a href="facetracker_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -124,27 +138,27 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aa0f2c912fc7872f22482246d6ede1897"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0f2c912fc7872f22482246d6ede1897"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#aa0f2c912fc7872f22482246d6ede1897">DEFAULT_MIN_FEATURE_SIZE</a>&#160;&#160;&#160;40</td></tr>
-<tr class="memdesc:aa0f2c912fc7872f22482246d6ede1897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for minimum feature size. <br/></td></tr>
-<tr class="memitem:a799ed8ea89fffe0133ac08d39c13074b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a799ed8ea89fffe0133ac08d39c13074b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#a799ed8ea89fffe0133ac08d39c13074b">DEFAULT_SEARCH_SCALE_FACTOR</a>&#160;&#160;&#160;1.1f</td></tr>
-<tr class="memdesc:a799ed8ea89fffe0133ac08d39c13074b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for search scale factor. <br/></td></tr>
-<tr class="memitem:aef4f451ce96817b7298b079a1e70484a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef4f451ce96817b7298b079a1e70484a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#aef4f451ce96817b7298b079a1e70484a">DEFAULT_MIN_NEIGHBORS_CUTOFF</a>&#160;&#160;&#160;4</td></tr>
-<tr class="memdesc:aef4f451ce96817b7298b079a1e70484a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for minimum neighbor cutoff value. <br/></td></tr>
 <tr class="memitem:ac41f43b017f28dfa597cd8395faa1c04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac41f43b017f28dfa597cd8395faa1c04"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#ac41f43b017f28dfa597cd8395faa1c04">DEFAULT_ADDITIONAL_FLAGS</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:ac41f43b017f28dfa597cd8395faa1c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default additional flags. <br/></td></tr>
 <tr class="memitem:acf1e2e12eee8465a524201bc600d2df9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf1e2e12eee8465a524201bc600d2df9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#acf1e2e12eee8465a524201bc600d2df9">DEFAULT_CLASSIFIER_XML_FILENAME</a>&#160;&#160;&#160;&quot;:/classifiers/lbpcascade_frontalface.xml&quot;</td></tr>
 <tr class="memdesc:acf1e2e12eee8465a524201bc600d2df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default classifier xml filename. <br/></td></tr>
-<tr class="memitem:a9033f12b48f4d6f37f5a66c0f278326d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9033f12b48f4d6f37f5a66c0f278326d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#a9033f12b48f4d6f37f5a66c0f278326d">DEFAULT_IMAGE_WIDTH</a>&#160;&#160;&#160;640</td></tr>
-<tr class="memdesc:a9033f12b48f4d6f37f5a66c0f278326d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Image Width. <br/></td></tr>
 <tr class="memitem:aa1fcecb983d1e39c1e68cd871327e858"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1fcecb983d1e39c1e68cd871327e858"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#aa1fcecb983d1e39c1e68cd871327e858">DEFAULT_IMAGE_HEIGHT</a>&#160;&#160;&#160;480</td></tr>
 <tr class="memdesc:aa1fcecb983d1e39c1e68cd871327e858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Image Height. <br/></td></tr>
+<tr class="memitem:a9033f12b48f4d6f37f5a66c0f278326d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9033f12b48f4d6f37f5a66c0f278326d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#a9033f12b48f4d6f37f5a66c0f278326d">DEFAULT_IMAGE_WIDTH</a>&#160;&#160;&#160;640</td></tr>
+<tr class="memdesc:a9033f12b48f4d6f37f5a66c0f278326d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Image Width. <br/></td></tr>
+<tr class="memitem:aa0f2c912fc7872f22482246d6ede1897"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0f2c912fc7872f22482246d6ede1897"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#aa0f2c912fc7872f22482246d6ede1897">DEFAULT_MIN_FEATURE_SIZE</a>&#160;&#160;&#160;40</td></tr>
+<tr class="memdesc:aa0f2c912fc7872f22482246d6ede1897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for minimum feature size. <br/></td></tr>
+<tr class="memitem:aef4f451ce96817b7298b079a1e70484a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef4f451ce96817b7298b079a1e70484a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#aef4f451ce96817b7298b079a1e70484a">DEFAULT_MIN_NEIGHBORS_CUTOFF</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:aef4f451ce96817b7298b079a1e70484a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for minimum neighbor cutoff value. <br/></td></tr>
+<tr class="memitem:a799ed8ea89fffe0133ac08d39c13074b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a799ed8ea89fffe0133ac08d39c13074b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html#a799ed8ea89fffe0133ac08d39c13074b">DEFAULT_SEARCH_SCALE_FACTOR</a>&#160;&#160;&#160;1.1f</td></tr>
+<tr class="memdesc:a799ed8ea89fffe0133ac08d39c13074b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value for search scale factor. <br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines the class for tracking a face as it moves using OpenCV. </p>
@@ -152,13 +166,15 @@ Macros</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>Feb, 2013 </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 No other classes or functions are defined in this class. </dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> </dd></dl>
+
+<p>Definition in file <a class="el" href="facetracker_8h_source.html">facetracker.h</a>.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="facetracker_8h.html">facetracker.h</a></li>
-    <li class="footer">Generated on Mon Feb 18 2013 23:16:23 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Feb 18 2013 23:57:11 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
