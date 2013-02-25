@@ -19,8 +19,8 @@ public:
 
 
 public slots:
-    void UpdateImage();
-    void UpdatePos(QImage *image);
+    void UpdateImage(QImage *image);
+    void UpdateFace(QImage *image);
 
     
 private:
@@ -36,7 +36,8 @@ public:
     PositionUpdater();
     PositionUpdater(FaceTracker *ft, QObject *parent = 0);
 signals:
-    void Updated(QImage *image);
+    void UpdateFullImage(QImage *image);
+    void UpdateFace(QImage *image);
 
 private:
     void run();

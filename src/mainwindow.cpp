@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ft->SetMinFeatureSize(5);
 
     PositionUpdater *pu = new PositionUpdater(ft);
-    connect(pu, SIGNAL(Updated(QImage*)), this, SLOT(UpdatePos(QImage*)));
+    connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
+    connect(pu, SIGNAL(UpdateFace(QImage*)), this, SLOT(UpdateFace(QImage*)));
     pu->start();
 }
 
@@ -22,15 +23,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::UpdateImage()
-{
-
-    QRect rect = ft->GetFacePosition();
-}
-
-void MainWindow::UpdatePos(QImage *image)
+void MainWindow::UpdateImage(QImage *image)
 {
     ui->label->setPixmap(QPixmap::fromImage(*image));
+    delete image;
+}
+
+void MainWindow::UpdateFace(QImage *image)
+{
+    ui->label_3->setPixmap(QPixmap::fromImage(*image));
     delete image;
 }
 
@@ -41,12 +42,14 @@ void PositionUpdater::run()
     while(1)
     {
         QRect rect = m_ft->GetFacePosition();
-        QImage *image = m_ft->GetFaceImage();
+        QImage *image = m_ft->GetLastImage();
         QPainter p;
         p.begin(image);
         p.setPen(QPen(Qt::red));
         p.drawRect(rect);
         p.end();
-        emit Updated(image);
+
+        emit UpdateFace(new QImage(image->copy(rect)));
+        emit UpdateFullImage(image);
     }
 }
