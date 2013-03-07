@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Lockheed Inanimation: src/ Directory Reference</title>
+<title>Lockheed Inanimation: Lockheed Inanimation Documentation Homepage</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -43,7 +43,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -77,7 +77,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('dir_68267d1309a1af8e8297ef4c3efbcdba.html','');});
+$(document).ready(function(){initNavTree('index.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -96,32 +96,27 @@ $(document).ready(function(){initNavTree('dir_68267d1309a1af8e8297ef4c3efbcdba.h
 
 <div class="header">
   <div class="headertitle">
-<div class="title">src Directory Reference</div>  </div>
+<div class="title">Lockheed Inanimation Documentation Homepage </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Directory dependency graph for src/:</div>
-<div class="dyncontent">
-<div class="center"><img src="dir_68267d1309a1af8e8297ef4c3efbcdba_dep.png" border="0" usemap="#dir__68267d1309a1af8e8297ef4c3efbcdba__dep" alt="src/"/></div>
-<map name="dir__68267d1309a1af8e8297ef4c3efbcdba__dep" id="dir__68267d1309a1af8e8297ef4c3efbcdba__dep">
-<area shape="rect" id="node1" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html" title="src" alt="" coords="5,5,77,53"/></map>
-</div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:facetracker_8cpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>facetracker.cpp</b> <a href="facetracker_8cpp_source.html">[code]</a></td></tr>
-<tr class="memitem:facetracker_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="facetracker_8h.html">facetracker.h</a> <a href="facetracker_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:facetracker_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the class for tracking a face as it moves using OpenCV. <br/></td></tr>
-<tr class="memitem:main_8cpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>main.cpp</b> <a href="main_8cpp_source.html">[code]</a></td></tr>
-<tr class="memitem:mainwindow_8cpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>mainwindow.cpp</b> <a href="mainwindow_8cpp_source.html">[code]</a></td></tr>
-<tr class="memitem:mainwindow_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>mainwindow.h</b> <a href="mainwindow_8h_source.html">[code]</a></td></tr>
-</table>
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="projectabstract"></a>
+Project Abstract</h1>
+<p>This project aims to <em>animate</em> a computer monitor, such that it detects the user's face and attempts to orient itself for a better viewing angle. Along with the useful core functionality of this project, additional non-essential "playful" features are available. The "playful" features include: </p>
+<ul>
+<li>Peekaboo - a user interactive children's game of Peekaboo. </li>
+<li>FaceInvaders - A space-invader's like game of dodging falling objects. </li>
+<li>"Sad" and evasive response to loud noises - Attempts to mimic avoiding getting yelled at.</li>
+</ul>
+<h1><a class="anchor" id="implementationdetails"></a>
+Implementation Details</h1>
+<p>OpenCV is used as the base for face recognition and implementing face tracking. The <a href="http://docs.opencv.org/doc/tutorials/objdetect/cascade_classifier/cascade_classifier.html">CascadeClassifier</a> is used to load a trained LBP classifier for a <em>fast</em> and reliable face detection. The <a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> class is a wrapper around OpenCV's CascadeClassifier and by keeping some extra information between processed frames, is able to track a face as it moves around in the camera's field of view. <a class="el" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> also provides easy access to the last processed frame as well as cropped images of the tracked face. The cropped images of the tracked face are used for FaceInvaders. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Documentation incomplete </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Continue documentation along side development</dd></dl>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>
     <li class="footer">Generated on Wed Mar 6 2013 18:58:26 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>

@@ -26,6 +26,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="LogoE-2.jpg"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">Lockheed Inanimation
    </div>
@@ -119,50 +120,53 @@ $(document).ready(function(){initNavTree('mainwindow_8cpp_source.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    ft-&gt;SetMinFeatureSize(5);</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_position_updater.html">PositionUpdater</a> *pu = <span class="keyword">new</span> <a class="code" href="class_position_updater.html">PositionUpdater</a>(ft);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    connect(pu, SIGNAL(Updated(QImage*)), <span class="keyword">this</span>, SLOT(UpdatePos(QImage*)));</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    pu-&gt;start();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;MainWindow::~MainWindow()</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">delete</span> ui;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> MainWindow::UpdateImage()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    QRect rect = ft-&gt;<a class="code" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966" title="Returns the rectangle of the currently tracked face.">GetFacePosition</a>();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> MainWindow::UpdatePos(QImage *image)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    ui-&gt;label-&gt;setPixmap(QPixmap::fromImage(*image));</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">delete</span> image;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;PositionUpdater::PositionUpdater() { }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;PositionUpdater::PositionUpdater(<a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> *ft, QObject *parent) { m_ft = ft; }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> PositionUpdater::run()</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">while</span>(1)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        QRect rect = m_ft-&gt;<a class="code" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966" title="Returns the rectangle of the currently tracked face.">GetFacePosition</a>();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        QImage *image = m_ft-&gt;<a class="code" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">GetFaceImage</a>();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        QPainter p;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        p.begin(image);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        p.setPen(QPen(Qt::red));</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        p.drawRect(rect);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        p.end();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        emit Updated(image);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    connect(pu, SIGNAL(UpdateFullImage(QImage*)), <span class="keyword">this</span>, SLOT(UpdateImage(QImage*)));</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    connect(pu, SIGNAL(UpdateFace(QImage*)), <span class="keyword">this</span>, SLOT(UpdateFace(QImage*)));</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    pu-&gt;start();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;MainWindow::~MainWindow()</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">delete</span> ui;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> MainWindow::UpdateImage(QImage *image)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    ui-&gt;label-&gt;setPixmap(QPixmap::fromImage(*image));</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">delete</span> image;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> MainWindow::UpdateFace(QImage *image)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ui-&gt;label_3-&gt;setPixmap(QPixmap::fromImage(*image));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">delete</span> image;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;PositionUpdater::PositionUpdater() { }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;PositionUpdater::PositionUpdater(<a class="code" href="class_face_tracker.html" title="Tracks a face as it moves around.">FaceTracker</a> *ft, QObject *parent) { m_ft = ft; }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> PositionUpdater::run()</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">while</span>(1)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        QRect rect = m_ft-&gt;<a class="code" href="class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966" title="Returns the rectangle of the currently tracked face.">GetFacePosition</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        QImage *image = m_ft-&gt;<a class="code" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571" title="Returns the last processed frame The tracker internally saves the last processed frame and this funct...">GetLastImage</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        QPainter p;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        p.begin(image);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        p.setPen(QPen(Qt::red));</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        p.drawRect(rect);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        p.end();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        emit UpdateFace(<span class="keyword">new</span> QImage(image-&gt;copy(rect)));</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        emit UpdateFullImage(image);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>mainwindow.cpp</b></li>
-    <li class="footer">Generated on Mon Feb 18 2013 23:57:11 for Lockheed Inanimation by
+    <li class="footer">Generated on Wed Mar 6 2013 18:58:26 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
