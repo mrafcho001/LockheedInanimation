@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QGraphicsEllipseItem>
 #include <QTimer>
+#include <QTime>
 
 FaceInvadersScene::FaceInvadersScene(QWidget *parent):
     QGraphicsScene(parent)
@@ -15,12 +16,6 @@ FaceInvadersScene::FaceInvadersScene(QWidget *parent):
     this->addItem(player);
 
     player->setPos(280, 350);
-
-    QTimer *timer = new QTimer();
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(advance()));
-    timer->start(1000);
-
-    QGraphicsItem item(
 }
 
 FaceInvadersScene::~FaceInvadersScene()
@@ -120,7 +115,7 @@ void PlayerItem::advance(int phase)
 
 
 Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
-    QGraphicsItems(parent, scene)
+    QGraphicsItem(parent, scene)
 {
     qsrand(QTime::currentTime().msec());
     m_type = (InvaderType)(qrand()%InvaderTypeCount);
@@ -139,7 +134,7 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
         initWatermelon();
         break;
     case Bug:
-        initBut();
+        initBug();
         break;
     default:
         /* Should never happen, just default to Apple I guess */
@@ -147,4 +142,41 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
         initApple();
         break;
     }
+}
+
+Invader::~Invader()
+{
+}
+
+QRectF Invader::boundingRect() const
+{
+}
+
+QPainterPath Invader::shape() const
+{
+}
+
+void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+}
+
+void Invader::advance(int phase)
+{
+}
+
+
+void Invader::initApple()
+{
+}
+
+void Invader::initBanana()
+{
+}
+
+void Invader::initWatermelon()
+{
+}
+
+void Invader::initBug()
+{
 }
