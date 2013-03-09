@@ -12,10 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ft = new FaceTracker(0);
     ft->SetMinFeatureSize(5);
 
-    PositionUpdater *pu = new PositionUpdater(ft);
+    pu = new PositionUpdater(ft);
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
     connect(pu, SIGNAL(UpdateFace(QImage*)), this, SLOT(UpdateFace(QImage*)));
     pu->start();
+    pu->PauseThread();
+
+    ui->tabWidget->setCurrentIndex(1);
+
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(HandleTabChange(int)));
 }
 
 MainWindow::~MainWindow()
@@ -35,12 +40,39 @@ void MainWindow::UpdateFace(QImage *image)
     delete image;
 }
 
+void MainWindow::HandleTabChange(int index)
+{
+    if(index == 0)
+        pu->ResumeThread();
+    else
+        pu->PauseThread();
+}
+
 PositionUpdater::PositionUpdater() { }
-PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent) { m_ft = ft; }
+PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent): m_ft(ft), stopped(false) { }
+
+void PositionUpdater::PauseThread()
+{
+    mutex.lock();
+    stopped = true;
+    mutex.unlock();
+}
+
+void PositionUpdater::ResumeThread()
+{
+    mutex.lock();
+    stopped = false;
+    condition.wakeAll();
+    mutex.unlock();
+}
 void PositionUpdater::run()
 {
     while(1)
     {
+        mutex.lock();
+        if(stopped) condition.wait(&mutex);
+        mutex.unlock();
+
         QRect rect = m_ft->GetFacePosition();
         QImage *image = m_ft->GetLastImage();
         QPainter p;

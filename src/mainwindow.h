@@ -3,11 +3,16 @@
 
 #include <QMainWindow>
 #include "facetracker.h"
+#include "faceinvaderswidget.h"
 #include <QThread>
+#include <QWaitCondition>
+#include <QMutex>
 
 namespace Ui {
 class MainWindow;
 }
+
+class PositionUpdater;
 
 class MainWindow : public QMainWindow
 {
@@ -22,11 +27,14 @@ public slots:
     void UpdateImage(QImage *image);
     void UpdateFace(QImage *image);
 
+    void HandleTabChange(int index);
+
     
 private:
     Ui::MainWindow *ui;
 
     FaceTracker *ft;
+    PositionUpdater *pu;
 };
 
 class PositionUpdater : public QThread
@@ -35,6 +43,8 @@ class PositionUpdater : public QThread
 public:
     PositionUpdater();
     PositionUpdater(FaceTracker *ft, QObject *parent = 0);
+    void PauseThread();
+    void ResumeThread();
 signals:
     void UpdateFullImage(QImage *image);
     void UpdateFace(QImage *image);
@@ -42,6 +52,10 @@ signals:
 private:
     void run();
     FaceTracker *m_ft;
+
+    QMutex mutex;
+    QWaitCondition condition;
+    bool stopped;
 };
 
 #endif // MAINWINDOW_H

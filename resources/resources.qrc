@@ -3,4 +3,9 @@
         <file>lbpcascade_frontalface.xml</file>
         <file>haarcascade_frontalface_default.xml</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>background.svg</file>
+        <file>background2.png</file>
+        <file>defaultUser.png</file>
+    </qresource>
 </RCC>

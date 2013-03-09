@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,10 +15,12 @@ LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_vid
 
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
-    src/facetracker.cpp
+    src/facetracker.cpp \
+    src/faceinvaderswidget.cpp
 
 HEADERS  += src/mainwindow.h \
-    src/facetracker.h
+    src/facetracker.h \
+    src/faceinvaderswidget.h
 
 FORMS    += resources/mainwindow.ui
 
