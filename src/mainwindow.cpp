@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
     connect(pu, SIGNAL(UpdateFace(QImage*)), this, SLOT(UpdateFace(QImage*)));
     pu->start();
-    pu->PauseThread();
+    //pu->PauseThread();
 
     ui->tabWidget->setCurrentIndex(1);
 
@@ -40,12 +40,25 @@ void MainWindow::UpdateFace(QImage *image)
     delete image;
 }
 
+void MainWindow::UpdatePosition(QRect rect)
+{
+    static_cast<FaceInvadersWidget*>(ui->graphicsView)->updatePlayerPosition(rect.center());
+}
+
 void MainWindow::HandleTabChange(int index)
 {
-    if(index == 0)
-        pu->ResumeThread();
+    if(index == 1)
+    {
+        connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+    }
     else
-        pu->PauseThread();
+    {
+        disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+    }
+    //if(index == 0)
+    //    pu->ResumeThread();
+    //else
+    //    pu->PauseThread();
 }
 
 PositionUpdater::PositionUpdater() { }
@@ -74,6 +87,7 @@ void PositionUpdater::run()
         mutex.unlock();
 
         QRect rect = m_ft->GetFacePosition();
+        QRect rect2 = m_ft->GetFacePosition(true);
         QImage *image = m_ft->GetLastImage();
         QPainter p;
         p.begin(image);
@@ -81,6 +95,7 @@ void PositionUpdater::run()
         p.drawRect(rect);
         p.end();
 
+        emit UpdatePosition(rect2);
         emit UpdateFace(new QImage(image->copy(rect)));
         emit UpdateFullImage(image);
     }

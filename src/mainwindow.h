@@ -26,6 +26,7 @@ public:
 public slots:
     void UpdateImage(QImage *image);
     void UpdateFace(QImage *image);
+    void UpdatePosition(QRect rect);
 
     void HandleTabChange(int index);
 
@@ -48,6 +49,7 @@ public:
 signals:
     void UpdateFullImage(QImage *image);
     void UpdateFace(QImage *image);
+    void UpdatePosition(QRect rect);
 
 private:
     void run();

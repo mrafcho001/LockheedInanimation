@@ -8,4 +8,10 @@
         <file>background2.png</file>
         <file>defaultUser.png</file>
     </qresource>
+    <qresource prefix="/images/invaders">
+        <file>AppleInvader.png</file>
+        <file>BananaInvader.png</file>
+        <file>BugInvader.png</file>
+        <file>WatermelonInvader.png</file>
+    </qresource>
 </RCC>

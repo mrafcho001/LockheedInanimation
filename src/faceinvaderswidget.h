@@ -20,6 +20,8 @@ public:
 signals:
 
 public slots:
+    void createNewInvaders();
+    void updatePlayerPosition(QPoint position);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -27,6 +29,11 @@ protected:
 private:
     QImage *background;
     PlayerItem *player;
+
+
+    //Timers
+    QTimer *m_advanceTimer;
+    QTimer *m_summonerTimer;
 };
 
 class FaceInvadersWidget : public QGraphicsView
@@ -97,6 +104,7 @@ private:
     InvaderType m_type;         //!< Indicates the type of invader represented
     QRectF m_boundingRect;      //!< The bounding rectangle of the invader
     QPainterPath m_shape;       //!< The shape of the invader
+    QImage *m_image;
 
     //Invader falling parameters
     qreal m_fallVelocity;       //!< The rate of falling from top to bottom of the Invader
