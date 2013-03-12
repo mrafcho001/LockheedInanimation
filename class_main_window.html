@@ -116,15 +116,19 @@ Collaboration diagram for MainWindow:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_main_window__coll__graph.png" border="0" usemap="#_main_window_coll__map" alt="Collaboration graph"/></div>
 <map name="_main_window_coll__map" id="_main_window_coll__map">
-<area shape="rect" id="node2" href="class_face_tracker.html" title="Tracks a face as it moves around." alt="" coords="21,200,115,229"/><area shape="rect" id="node4" title="STL class." alt="" coords="28,104,108,133"/><area shape="rect" id="node6" title="STL class." alt="" coords="5,6,131,53"/></map>
+<area shape="rect" id="node2" href="class_position_updater.html" title="PositionUpdater" alt="" coords="84,296,199,325"/><area shape="rect" id="node4" href="class_face_tracker.html" title="Tracks a face as it moves around." alt="" coords="21,200,115,229"/><area shape="rect" id="node6" title="STL class." alt="" coords="28,104,108,133"/><area shape="rect" id="node8" title="STL class." alt="" coords="5,6,131,53"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
+<tr class="memitem:af7a40c518e53c12edc7fa8ee6b14c3dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7a40c518e53c12edc7fa8ee6b14c3dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleTabChange</b> (int index)</td></tr>
 <tr class="memitem:a081f3bdcb39d84b6f612a403c8d21ae5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a081f3bdcb39d84b6f612a403c8d21ae5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateFace</b> (QImage *image)</td></tr>
 <tr class="memitem:adce103d2e0cf29b383feb3ca428b116d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adce103d2e0cf29b383feb3ca428b116d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateImage</b> (QImage *image)</td></tr>
+<tr class="memitem:a9780b1d2f9ba8d4c047a5ce2428646f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9780b1d2f9ba8d4c047a5ce2428646f1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdatePosition</b> (QRect rect)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -135,12 +139,14 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a5b8fc1838f90e6decb989b3c3f723b90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b8fc1838f90e6decb989b3c3f723b90"></a>
 <a class="el" href="class_face_tracker.html">FaceTracker</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ft</b></td></tr>
+<tr class="memitem:a1f1dadd2178d7084608c78fd4f08a28b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f1dadd2178d7084608c78fd4f08a28b"></a>
+<a class="el" href="class_position_updater.html">PositionUpdater</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pu</b></td></tr>
 <tr class="memitem:a35466a70ed47252a0191168126a352a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35466a70ed47252a0191168126a352a5"></a>
 Ui::MainWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>ui</b></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="mainwindow_8h_source.html#l00012">12</a> of file <a class="el" href="mainwindow_8h_source.html">mainwindow.h</a>.</p>
+<p>Definition at line <a class="el" href="mainwindow_8h_source.html#l00017">17</a> of file <a class="el" href="mainwindow_8h_source.html">mainwindow.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="mainwindow_8h_source.html">mainwindow.h</a></li>
 <li>src/<a class="el" href="mainwindow_8cpp_source.html">mainwindow.cpp</a></li>
@@ -151,7 +157,7 @@ Ui::MainWindow *&#160;</td><td class="memItemRight" valign="bottom"><b>ui</b></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_main_window.html">MainWindow</a></li>
-    <li class="footer">Generated on Wed Mar 6 2013 18:58:26 for Lockheed Inanimation by
+    <li class="footer">Generated on Mon Mar 11 2013 22:21:37 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
