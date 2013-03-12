@@ -46,6 +46,7 @@ public:
     PositionUpdater(FaceTracker *ft, QObject *parent = 0);
     void PauseThread();
     void ResumeThread();
+    void EnableImageUpdateSignals(bool enable = true);
 signals:
     void UpdateFullImage(QImage *image);
     void UpdateFace(QImage *image);
@@ -58,6 +59,7 @@ private:
     QMutex mutex;
     QWaitCondition condition;
     bool stopped;
+    bool images;
 };
 
 #endif // MAINWINDOW_H

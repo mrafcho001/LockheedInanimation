@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "facetracker.h"
 #include <QPainter>
+#include <QTime>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
     connect(pu, SIGNAL(UpdateFace(QImage*)), this, SLOT(UpdateFace(QImage*)));
     pu->start();
-    //pu->PauseThread();
 
     ui->tabWidget->setCurrentIndex(1);
 
@@ -49,19 +50,18 @@ void MainWindow::HandleTabChange(int index)
 {
     if(index == 1)
     {
+        pu->EnableImageUpdateSignals(false);
         connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+        static_cast<FaceInvadersWidget*>(ui->graphicsView)->beginGame();
     }
     else
     {
+        pu->EnableImageUpdateSignals();
         disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
     }
-    //if(index == 0)
-    //    pu->ResumeThread();
-    //else
-    //    pu->PauseThread();
 }
 
-PositionUpdater::PositionUpdater() { }
+PositionUpdater::PositionUpdater() : images(false) { }
 PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent): m_ft(ft), stopped(false) { }
 
 void PositionUpdater::PauseThread()
@@ -78,16 +78,39 @@ void PositionUpdater::ResumeThread()
     condition.wakeAll();
     mutex.unlock();
 }
+
+void PositionUpdater::EnableImageUpdateSignals(bool enable)
+{
+    images = enable;
+}
 void PositionUpdater::run()
 {
+    QTime time;
+    time.start();
+    int counter = 0;
     while(1)
     {
         mutex.lock();
         if(stopped) condition.wait(&mutex);
         mutex.unlock();
 
-        QRect rect = m_ft->GetFacePosition();
+        counter++;
+        if(counter == 30)
+        {
+            qDebug() << "Ellapsed: " << time.elapsed() << " ms";
+            counter = 0;
+            time.restart();
+        }
+
         QRect rect2 = m_ft->GetFacePosition(true);
+
+        if(!images)
+        {
+            emit UpdatePosition(rect2);
+            continue;
+        }
+
+        QRect rect = m_ft->GetFacePosition();
         QImage *image = m_ft->GetLastImage();
         QPainter p;
         p.begin(image);

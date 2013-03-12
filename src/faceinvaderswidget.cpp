@@ -8,27 +8,21 @@
 #include <cstdlib>
 
 FaceInvadersScene::FaceInvadersScene(QWidget *parent):
-    QGraphicsScene(parent)
+    QGraphicsScene(parent), player(new PlayerItem()), m_gameState(false)
 {
     this->setBackgroundBrush(QBrush(Qt::black));
 
     background = new QImage(QString(":/images/background2.png"));
 
-    player = new PlayerItem();
     this->addItem(player);
-
     player->setPos(280, 350);
 
     m_advanceTimer = new QTimer(this);
-
     connect(m_advanceTimer, SIGNAL(timeout()), this, SLOT(advance()));
-
     m_advanceTimer->start(1000/18);
-    int seed = QTime::currentTime().msec();
-    seed *= QTime::currentTime().second();
-    seed *= QTime::currentTime().minute();
+
+    int seed = QTime::currentTime().msec() * QTime::currentTime().second();
     srand(QThread::currentThreadId() * seed);
-    createNewInvaders();
 }
 
 FaceInvadersScene::~FaceInvadersScene()
@@ -38,6 +32,9 @@ FaceInvadersScene::~FaceInvadersScene()
 
 void FaceInvadersScene::createNewInvaders()
 {
+    if(!m_gameState)
+        return;
+
     int newInvaders = rand()%2;
     for(int i = 0; i < newInvaders; i++)
     {
@@ -54,6 +51,28 @@ void FaceInvadersScene::updatePlayerPosition(QPoint position)
     this->player->setPos(position.x()*6, 380);
 }
 
+void FaceInvadersScene::resetGame()
+{
+}
+
+void FaceInvadersScene::pauseGame()
+{
+    m_gameState = false;
+    m_advanceTimer->stop();
+}
+
+void FaceInvadersScene::endGame()
+{
+}
+
+void FaceInvadersScene::beginGame()
+{
+    m_gameState = true;
+    m_advanceTimer->start(1000/18);
+    createNewInvaders();
+}
+
+
 void FaceInvadersScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, Qt::black);
@@ -66,18 +85,6 @@ FaceInvadersWidget::FaceInvadersWidget(QWidget *parent) :
     m_scene = new FaceInvadersScene(this);
     this->setScene(m_scene);
     this->setRenderHint(QPainter::Antialiasing);
-
-    QPen pen(Qt::black);
-    QBrush brush(Qt::blue);
-    QGraphicsEllipseItem *ellipse = m_scene->addEllipse(0,0,30,30, pen, brush);
-
-    QFont font;
-    font.setPointSize(12);
-    QGraphicsTextItem *text1 = m_scene->addText("50,50",font);
-    QGraphicsTextItem *text2 = m_scene->addText("450,450",font);
-    text1->setPos(50,50);
-    text2->setPos(400,400);
-
 }
 
 int FaceInvadersWidget::heightForWidth(int w) const
@@ -99,6 +106,16 @@ void FaceInvadersWidget::resetGame()
 
 void FaceInvadersWidget::pauseGame()
 {
+}
+
+void FaceInvadersWidget::endGame()
+{
+
+}
+
+void FaceInvadersWidget::beginGame()
+{
+    m_scene->beginGame();
 }
 
 void FaceInvadersWidget::updatePlayerPosition(QPoint position)
@@ -143,6 +160,11 @@ void PlayerItem::setFace(QImage *image)
 
 void PlayerItem::advance(int phase)
 {
+    QList<QGraphicsItem*> colliding = this->collidingItems();
+    if(colliding.size() > 0)
+    {
+        emit PlayerHit();
+    }
 }
 
 
