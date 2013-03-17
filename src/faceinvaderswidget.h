@@ -57,12 +57,21 @@ class FaceInvadersScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
+    enum GameState { Playing, Paused, Stopped, InitState };
     /*! \brief Default constructor
         \param parent Sets the parent widget, \seeqtdoc
     */
     explicit FaceInvadersScene(QWidget *parent = 0);
     //! \brief Destructor
     ~FaceInvadersScene();
+
+
+    //! \brief Returns rectangle of the game space.
+    QRectF getGameScreenSize();
+    //! \brief Sets the rectangle for the game space.
+    void setGameScreenSize(QRectF &rect);
+
+    qreal getInvaderDeathLine();
 
 signals:
     /*! \brief Idicates game state transition to <i>game over</i>
@@ -111,6 +120,18 @@ public slots:
     //! \brief Transitions the game tion <i>playing</i> state
     void beginGame();
 
+    //! \brief Increase the falling velocity of invaders
+    void increaseInvaderSpeed();
+
+    //! \brief Decrease the falling velocity of invaders
+    void decreaseInvaderSpeed();
+
+    /*! \brief Set invader speed to specific value
+      \todo explain invader speed value...
+      \param speed ??
+    */
+    void setInvaderSpeed(qreal speed);
+
 protected:
     //! \brief Draws background for the game
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -119,11 +140,27 @@ private:
     QImage *background; //!< Image to be painted as the background
     PlayerItem *player; //!< PlayerItem for easy access
 
-    bool m_gameState;   //!< 1 - Game running, 0 - Game not running
+    GameState m_gameState;   //!< 1 - Game running, 0 - Game not running
 
+    //Game Parameters
+    //! The starting position of player, Y-coordinate is maintained throughout game play
+    QPointF m_playerStartingPosition;
+
+    //! The size of the graphics scene, larger values result in more detailed graphics and smaller invaders
+    QRectF m_gameSize;
+
+    //! The scaling of the invaders, <1 -> smaller, >1 -> larger, 1 -> unscaled
+    qreal m_invaderScale;
+
+    //! Invader speed parameter
+    qreal m_invaderSpeed;
 
     //Timers
     QTimer *m_advanceTimer;     //!< Timer for controlling Invader descent
+
+
+public:
+    static const QRect DefaultGameSize;
 };
 
 /*! \brief UI class for displaying the FaceInvaders game
@@ -221,6 +258,8 @@ protected:
 private:
     QImage *face;   //!< User face image
 
+    bool hit;
+
 };
 
 
@@ -231,6 +270,8 @@ public:
 
     explicit Invader(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
     ~Invader();
+
+    void setDeathLine(qreal y_pos);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
@@ -249,6 +290,7 @@ private:
     //Invader falling parameters
     qreal m_fallVelocity;       //!< The rate of falling from top to bottom of the Invader
     qreal m_angularVelocity;    //!< The rate of rotation of the Invader
+    qreal m_deathLine;
 
 
 

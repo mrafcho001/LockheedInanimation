@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ft = new FaceTracker(0);
     ft->SetMinFeatureSize(5);
+    ft->SetProcessingImageDimensions(640,480);
 
     pu = new PositionUpdater(ft);
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));

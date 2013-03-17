@@ -165,8 +165,8 @@ void FaceTracker::SetProcessingImageDimensions(int width, int height)
     m_imageWidth = width;
     m_imageHeight = height;
 
-    m_vc.set(CV_CAP_PROP_FRAME_WIDTH, m_imageWidth);
-    m_vc.set(CV_CAP_PROP_FRAME_HEIGHT, m_imageHeight);
+    //m_vc.set(CV_CAP_PROP_FRAME_WIDTH, m_imageWidth);
+    //m_vc.set(CV_CAP_PROP_FRAME_HEIGHT, m_imageHeight);
 }
 
 unsigned int FaceTracker::GetAdditionalFlags()
@@ -285,11 +285,13 @@ void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
         return;
     }
 
+    cv::resize(m_cameraFrame, cameraFrame,cv::Size(m_imageWidth,m_imageHeight));
+
     //To Grayscale
-    if(m_cameraFrame.channels() == 3)
-        cv::cvtColor(m_cameraFrame, cameraFrame, CV_BGR2GRAY);
-    else if(m_cameraFrame.channels() == 4)
-        cv::cvtColor(m_cameraFrame, cameraFrame, CV_BGRA2GRAY);
+    if(cameraFrame.channels() == 3)
+        cv::cvtColor(cameraFrame, cameraFrame, CV_BGR2GRAY);
+    else if(cameraFrame.channels() == 4)
+        cv::cvtColor(cameraFrame, cameraFrame, CV_BGRA2GRAY);
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);

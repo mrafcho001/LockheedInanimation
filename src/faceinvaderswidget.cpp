@@ -7,20 +7,26 @@
 #include <QThread>
 #include <cstdlib>
 
+const QRect FaceInvadersScene::DefaultGameSize = QRect(0,0, 600, 440);
+
 FaceInvadersScene::FaceInvadersScene(QWidget *parent):
-    QGraphicsScene(parent), player(new PlayerItem()), m_gameState(false)
+    QGraphicsScene(parent), player(new PlayerItem()), m_gameState(InitState),
+    m_invaderScale(1.0), m_invaderSpeed(1)
 {
     this->setBackgroundBrush(QBrush(Qt::black));
-
     background = new QImage(QString(":/images/background2.png"));
 
+    m_gameSize = FaceInvadersScene::DefaultGameSize;
+
+    m_playerStartingPosition.setX(280);
+    m_playerStartingPosition.setY(360);
     this->addItem(player);
-    player->setPos(280, 350);
+    player->setPos(m_playerStartingPosition);
 
     m_advanceTimer = new QTimer(this);
     connect(m_advanceTimer, SIGNAL(timeout()), this, SLOT(advance()));
-    m_advanceTimer->start(1000/18);
 
+    //Init rand() seed
     int seed = QTime::currentTime().msec() * QTime::currentTime().second();
     srand(QThread::currentThreadId() * seed);
 }
@@ -30,9 +36,24 @@ FaceInvadersScene::~FaceInvadersScene()
     delete background;
 }
 
+QRectF FaceInvadersScene::getGameScreenSize()
+{
+    return m_gameSize;
+}
+
+void FaceInvadersScene::setGameScreenSize(QRectF &rect)
+{
+    m_gameSize = rect;
+}
+
+qreal FaceInvadersScene::getInvaderDeathLine()
+{
+    return m_gameSize.height();
+}
+
 void FaceInvadersScene::createNewInvaders()
 {
-    if(!m_gameState)
+    if(m_gameState != Playing)
         return;
 
     int newInvaders = rand()%2;
@@ -41,37 +62,59 @@ void FaceInvadersScene::createNewInvaders()
         Invader *invader = new Invader();
         this->addItem(invader);
 
-        invader->setPos(rand()%600, -64);
+        invader->setPos(rand()%(int)m_gameSize.width(), -64*m_invaderScale);
     }
     QTimer::singleShot(300+(rand()%700), this, SLOT(createNewInvaders()));
 }
 
 void FaceInvadersScene::updatePlayerPosition(QPoint position)
 {
-    this->player->setPos(position.x()*6, 380);
+    this->player->setPos(position.x()*m_gameSize.width()/100,
+                         m_playerStartingPosition.y());
 }
 
 void FaceInvadersScene::resetGame()
 {
+    QList<QGraphicsItem*> items = this->items();
+    foreach(QGraphicsItem* item, items)
+    {
+        this->removeItem(item);
+        delete item;
+    }
+
+    this->addItem(player);
 }
 
 void FaceInvadersScene::pauseGame()
 {
-    m_gameState = false;
+    m_gameState = Paused;
     m_advanceTimer->stop();
 }
 
 void FaceInvadersScene::endGame()
 {
+    m_gameState = Stopped;
+    m_advanceTimer->stop();
 }
 
 void FaceInvadersScene::beginGame()
 {
-    m_gameState = true;
+    m_gameState = Playing;
     m_advanceTimer->start(1000/18);
     createNewInvaders();
 }
 
+void FaceInvadersScene::increaseInvaderSpeed()
+{
+}
+
+void FaceInvadersScene::decreaseInvaderSpeed()
+{
+}
+
+void FaceInvadersScene::setInvaderSpeed(qreal speed)
+{
+}
 
 void FaceInvadersScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
@@ -99,7 +142,6 @@ void FaceInvadersWidget::resizeEvent(QResizeEvent *)
     this->fitInView(0, 0, 600, 440, Qt::KeepAspectRatio);
 }
 
-
 void FaceInvadersWidget::resetGame()
 {
 }
@@ -122,8 +164,6 @@ void FaceInvadersWidget::updatePlayerPosition(QPoint position)
 {
     this->m_scene->updatePlayerPosition(position);
 }
-
-
 
 PlayerItem::PlayerItem(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsItem(parent, scene)
@@ -151,6 +191,11 @@ QPainterPath PlayerItem::shape() const
 void PlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->drawImage(QPoint(-32,-32), *face, QRect(0,0,64,64));
+    if(hit)
+    {
+        painter->setPen(Qt::red);
+        painter->drawRect(-32,-32,64,64);
+    }
 }
 
 void PlayerItem::setFace(QImage *image)
@@ -161,12 +206,12 @@ void PlayerItem::setFace(QImage *image)
 void PlayerItem::advance(int phase)
 {
     QList<QGraphicsItem*> colliding = this->collidingItems();
+    hit = (colliding.size() > 0);
     if(colliding.size() > 0)
     {
         emit PlayerHit();
     }
 }
-
 
 Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsItem(parent, scene)
@@ -175,6 +220,7 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
     m_type = (InvaderType)(rand()%InvaderTypeCount);
     m_fallVelocity = (qreal)(rand()%1000)/100+3;
     m_angularVelocity = (qreal)(rand()%1415)/1000;
+    m_deathLine = 300;
 
     switch(m_type)
     {
@@ -200,7 +246,12 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
 
 Invader::~Invader()
 {
-    delete m_image;
+        delete m_image;
+}
+
+void Invader::setDeathLine(qreal y_pos)
+{
+    m_deathLine = y_pos;
 }
 
 QRectF Invader::boundingRect() const
@@ -223,7 +274,8 @@ void Invader::advance(int phase)
     if(phase == 0)
         return;
 
-    if(this->pos().y() > 300)
+    qreal deathLine = static_cast<FaceInvadersScene*>(this->scene())->getInvaderDeathLine();
+    if(this->pos().y() > deathLine)
     {
         this->scene()->removeItem(this);
         delete this;
