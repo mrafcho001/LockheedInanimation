@@ -7,7 +7,7 @@
 #include <QTemporaryFile>
 #include <QDebug>
 #include <QResource>
-
+#include <QElapsedTimer>
 
 const QRect FaceTracker::InvalidQRect(1,1,0,0);
 
@@ -165,8 +165,8 @@ void FaceTracker::SetProcessingImageDimensions(int width, int height)
     m_imageWidth = width;
     m_imageHeight = height;
 
-    //m_vc.set(CV_CAP_PROP_FRAME_WIDTH, m_imageWidth);
-    //m_vc.set(CV_CAP_PROP_FRAME_HEIGHT, m_imageHeight);
+    m_vc.set(CV_CAP_PROP_FRAME_WIDTH, m_imageWidth);
+    m_vc.set(CV_CAP_PROP_FRAME_HEIGHT, m_imageHeight);
 }
 
 unsigned int FaceTracker::GetAdditionalFlags()
@@ -224,6 +224,8 @@ void FaceTracker::Init(int deviceID)
         throw std::invalid_argument(error.str());
     }
 
+    qDebug() << "CV_VERSION:" << CV_VERSION;
+
     SetProcessingImageDimensions(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
     QResource resource(QString(m_classifierXmlFilename.c_str()));
@@ -277,7 +279,11 @@ QRect FaceTracker::findClosest(const std::vector<cv::Rect> &rects, QPoint point)
 
 void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 {
+    QElapsedTimer timer;
+    timer.start();
     m_vc >> m_cameraFrame;
+
+    qint64 s1 = timer.elapsed();
 
     if(m_cameraFrame.empty())
     {
@@ -295,4 +301,7 @@ void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);
+    qint64 s2 = timer.elapsed();
+
+    qDebug() << "s1: " << s1 << "\ts2: " << s2;
 }
