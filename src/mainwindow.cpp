@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ft = new FaceTracker(0);
+    ft = new FaceTracker(1);
     ft->SetMinFeatureSize(5);
     ft->SetProcessingImageDimensions(640,480);
     ft->SetSearchScaleFactor(1.2f);
