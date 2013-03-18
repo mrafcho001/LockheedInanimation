@@ -102,7 +102,7 @@ void PositionUpdater::run()
         counter++;
         if(counter == 30)
         {
-            qDebug() << "FPS: " << 30.0f/time.elapsed() << " ms";
+            qDebug() << "FPS: " << 1000*30.0f/time.elapsed();
             counter = 0;
             time.restart();
         }
