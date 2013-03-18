@@ -87,22 +87,26 @@ void PositionUpdater::EnableImageUpdateSignals(bool enable)
 }
 void PositionUpdater::run()
 {
+#ifdef DEBUG_REPORT_FPS
     QTime time;
     time.start();
     int counter = 0;
+#endif
     while(1)
     {
         mutex.lock();
         if(stopped) condition.wait(&mutex);
         mutex.unlock();
 
+#ifdef DEBUG_REPORT_FPS
         counter++;
         if(counter == 30)
         {
-            qDebug() << "Ellapsed: " << time.elapsed() << " ms";
+            qDebug() << "FPS: " << 30.0f/time.elapsed() << " ms";
             counter = 0;
             time.restart();
         }
+#endif
 
         QRect rect2 = m_ft->GetFacePosition(true);
 
