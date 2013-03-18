@@ -59,3 +59,7 @@ OTHER_FILES += \
     docs/mainpage.dox \
     docs/explanations.dox
 
+DEFINES +=  DEBUG_FACETRACKING_TIMING=1 \
+            DEBUG_CAPTURE_TIMING=1
+
+

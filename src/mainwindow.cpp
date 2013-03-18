@@ -11,10 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ft = new FaceTracker(1);
+    ft = new FaceTracker(0);
     ft->SetMinFeatureSize(5);
-    ft->SetProcessingImageDimensions(640,480);
-    ft->SetSearchScaleFactor(1.2f);
+    ft->SetProcessingImageDimensions(160,120);
+    ft->SetSearchScaleFactor(1.1f);
 
     pu = new PositionUpdater(ft);
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));

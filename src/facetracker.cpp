@@ -29,6 +29,10 @@ void FaceTracker::ResetTracker()
 
 QRect FaceTracker::GetFacePosition(bool normalized)
 {
+#ifdef DEBUG_FACETRACKING_TIMING
+    QElapsedTimer timer;
+    timer.start();
+#endif
     cv::Mat cameraFrame;
     GetProcessReadyWebcamImage(cameraFrame);
     if(cameraFrame.empty())
@@ -52,6 +56,10 @@ QRect FaceTracker::GetFacePosition(bool normalized)
 
     //Find face closest to where the tracked face was last time
     m_lastPosition = findClosest(faceRects,m_lastPosition.center());
+
+#ifdef DEBUG_FACETRACKING_TIMING
+    qDebug() << "Face Detection took: " << timer.elapsed();
+#endif
 
     if(normalized)
     {
@@ -224,10 +232,6 @@ void FaceTracker::Init(int deviceID)
         throw std::invalid_argument(error.str());
     }
 
-    //m_vc.set(CV_CAP_PROP_AUTO_EXPOSURE, 0.0);
-
-    qDebug() << "CV_VERSION:" << CV_VERSION;
-
     SetProcessingImageDimensions(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
     QResource resource(QString(m_classifierXmlFilename.c_str()));
@@ -281,19 +285,23 @@ QRect FaceTracker::findClosest(const std::vector<cv::Rect> &rects, QPoint point)
 
 void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 {
+#ifdef DEBUG_CAPTURE_TIMING
     QElapsedTimer timer;
     timer.start();
+#endif
+
     m_vc >> m_cameraFrame;
 
+#ifdef DEBUG_CAPTURE_TIMING
     qint64 s1 = timer.elapsed();
+    timer.restart();
+#endif
 
     if(m_cameraFrame.empty())
     {
         cameraFrame = m_cameraFrame;
         return;
     }
-
-    //cv::resize(m_cameraFrame, cameraFrame,cv::Size(m_imageWidth,m_imageHeight));
 
     //To Grayscale
     if(m_cameraFrame.channels() == 3)
@@ -303,7 +311,9 @@ void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);
-    qint64 s2 = timer.elapsed();
 
-    qDebug() << "s1: " << s1 << "\ts2: " << s2;
+#ifdef DEBUG_CAPTURE_TIMING
+    qint64 s2 = timer.elapsed();
+    qDebug() << "Frame Capture Time: " << s1 << "\t Process Time: " << s2;
+#endif
 }
