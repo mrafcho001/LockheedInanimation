@@ -41,7 +41,8 @@ QRect FaceTracker::GetFacePosition(bool normalized)
     std::vector<cv::Rect> faceRects;
     m_faceDetector.detectMultiScale(cameraFrame, faceRects,
                                   m_searchScaleFactor, m_minNeighbors,
-                                  cv::CASCADE_SCALE_IMAGE | m_additionalFlags);
+                                  cv::CASCADE_SCALE_IMAGE | m_additionalFlags,
+                                    m_minFeatureSize);
 
     //No Faces detected
     if(faceRects.size() == 0)
@@ -58,7 +59,7 @@ QRect FaceTracker::GetFacePosition(bool normalized)
     m_lastPosition = findClosest(faceRects,m_lastPosition.center());
 
 #ifdef DEBUG_FACETRACKING_TIMING
-    qDebug() << "Face Detection took: " << timer.elapsed();
+    qDebug() << "Face Detection took: " << timer.elapsed() << " ms";
 #endif
 
     if(normalized)
