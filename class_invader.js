@@ -10,7 +10,10 @@ var class_invader =
     [ "Invader", "class_invader.html#aa77c5d4a253bfa7efddd36463c37afd1", null ],
     [ "~Invader", "class_invader.html#a3a5de7b32f8fc794426a81f7658fd5b9", null ],
     [ "advance", "class_invader.html#ad47fd4eb4d7808eba8ee7a65f2021b2d", null ],
+<<<<<<< HEAD
     [ "AlienDying", "class_invader.html#a926649933a14f9f141e32143009be011", null ],
+=======
+>>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
     [ "boundingRect", "class_invader.html#ad34322bcf625972fece6dc3ce2e9b742", null ],
     [ "initApple", "class_invader.html#a7f4d62bda9f600508ab28fdb6ae4fd08", null ],
     [ "initBanana", "class_invader.html#a96769e048fc0318398ddcbe5c9e7c569", null ],
@@ -22,7 +25,10 @@ var class_invader =
     [ "m_boundingRect", "class_invader.html#a9fb3ceb753808d4f786507584a5d7022", null ],
     [ "m_fallVelocity", "class_invader.html#a8d81cc44f75599f4ab11e2412d496574", null ],
     [ "m_image", "class_invader.html#a755eebb86f80d965c243b1dd5e0ad0c4", null ],
+<<<<<<< HEAD
     [ "m_pointValue", "class_invader.html#ab940fbaa4446e0cc220668f4481cd19c", null ],
+=======
+>>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
     [ "m_shape", "class_invader.html#a34b57b0ccf919e41414dca5c3c0100f1", null ],
     [ "m_type", "class_invader.html#a7622bcca0d20ab02fcd2d88a004011ec", null ]
 ];

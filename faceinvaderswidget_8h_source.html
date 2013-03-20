@@ -91,7 +91,11 @@ $(document).ready(function(){initNavTree('faceinvaderswidget_8h_source.html','')
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
+<<<<<<< HEAD
 <a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+=======
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+>>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,6 +116,7 @@ $(document).ready(function(){initNavTree('faceinvaderswidget_8h_source.html','')
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;QGraphicsView&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;QGraphicsScene&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;QGraphicsItem&gt;</span></div>
+<<<<<<< HEAD
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QGraphicsSimpleTextItem&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QPoint&gt;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;QImage&gt;</span></div>
@@ -341,13 +346,198 @@ $(document).ready(function(){initNavTree('faceinvaderswidget_8h_source.html','')
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+=======
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;QPoint&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QImage&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//Forward declaration</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">class </span><a class="code" href="class_player_item.html" title="This is the graphics item representing the user in the graphics scene.">PlayerItem</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="class_face_invaders_scene.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_face_invaders_scene.html" title="Manages game logic and graphical scene. This object is responsible for managing all of the players an...">FaceInvadersScene</a> : <span class="keyword">public</span> QGraphicsScene</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_face_invaders_scene.html#aa4bb7c6f1b5aea7c819ece39025db412" title="Default constructor.">FaceInvadersScene</a>(QWidget *parent = 0);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="class_face_invaders_scene.html#ab1da77fc959b93e02c3199314bb44651" title="Destructor.">~FaceInvadersScene</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;signals:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#ab781336646e658384b9a217f8f9ae04e" title="Idicates game state transition to game over">gameOver</a>(<span class="keywordtype">int</span> score);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#a42b58651b1d62675fd22a5ce0ee0e2c7" title="Indiccates game state transition from playing to paused">gamePaused</a>();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#a1ffa85d488eadcc6a0b6218d35e10b38" title="Indicates game state transition from paused to playing">gameResumed</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#af9777142e18c6760c6a24667b7dba77b" title="Indicates game state transition from stopped to playing">gameStarted</a>(<span class="keywordtype">bool</span> resumed);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#a1f19412b72b1feeed8c9cf7e690c8dba" title="Creates random number of Invaders, positioned randomly throughout the game screen.">createNewInvaders</a>();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#a2d6e81e83be4f2a2fd4cd1789c2aa62f" title="Updates the position of the player (only x-position!)">updatePlayerPosition</a>(QPoint position);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#aa5137d20e10f027bb0e9320bb4150005" title="Transitions the game into initial state.">resetGame</a>();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#ab73aac7f63fd2a2e90e3fae0cd110b19" title="Transitions the game into paused state.">pauseGame</a>();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#aff63cd8030aab3c3bce0d911b8e973b2" title="Transitions the game into stopped state.">endGame</a>();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#aa8a9e24901bdd1fd6b38a002ed41c006" title="Transitions the game tion playing state.">beginGame</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_scene.html#a1eca7a8be13e06d9dcb9c10a683b8aef" title="Draws background for the game.">drawBackground</a>(QPainter *painter, <span class="keyword">const</span> QRectF &amp;rect);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="code" href="class_face_invaders_scene.html#ab1bde6b272df7b8f60f9164116c5b352">  119</a></span>&#160;    QImage *<a class="code" href="class_face_invaders_scene.html#ab1bde6b272df7b8f60f9164116c5b352" title="Image to be painted as the background.">background</a>; </div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="code" href="class_face_invaders_scene.html#a2bea286ea79f59374e57e4ce2a8dcfd0">  120</a></span>&#160;    <a class="code" href="class_player_item.html" title="This is the graphics item representing the user in the graphics scene.">PlayerItem</a> *<a class="code" href="class_face_invaders_scene.html#a2bea286ea79f59374e57e4ce2a8dcfd0" title="PlayerItem for easy access.">player</a>; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="class_face_invaders_scene.html#a4cede481630a5b17f33f2205f3fd7969">  122</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_face_invaders_scene.html#a4cede481630a5b17f33f2205f3fd7969" title="1 - Game running, 0 - Game not running">m_gameState</a>;   </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">//Timers</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="code" href="class_face_invaders_scene.html#ac4a7d81aa0f32aca6a92ae84cf85ad07">  126</a></span>&#160;    QTimer *<a class="code" href="class_face_invaders_scene.html#ac4a7d81aa0f32aca6a92ae84cf85ad07" title="Timer for controlling Invader descent.">m_advanceTimer</a>;     </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;};</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="class_face_invaders_widget.html">  136</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_face_invaders_widget.html" title="UI class for displaying the FaceInvaders game.">FaceInvadersWidget</a> : <span class="keyword">public</span> QGraphicsView</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_face_invaders_widget.html#abd8e283f95f4c52cf143f31497da613e" title="Constructor.">FaceInvadersWidget</a>(QWidget *parent = 0);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_face_invaders_widget.html#a32b579ff80d821883c55c32cb3ff1388" title="Used to maintain aspect ratio of widget, See QT Docs">heightForWidth</a>(<span class="keywordtype">int</span> w) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;signals:</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#aca40fb8f38d20466398e32a1ae97f0fb" title="See FaceInvadersScene::gameOver()">gameOver</a>(<span class="keywordtype">int</span> score);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#aaf7d741447b5e537b2d916686662a659" title="See FaceInvadersScene::gamePaused()">gamePaused</a>();</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#abb2fbada3dba51f3ac823a41e092fc19" title="Calls FaceInvadersScene::resetGame()">resetGame</a>();</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#a9070088a0c135c5ac80e30dcd478ea74" title="Calls FaceInvadersScene::pauseGame()">pauseGame</a>();</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#a920e7d25fc782c8e67f2131099b9309f" title="Calls FaceInvadersScene::endGame()">endGame</a>();</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#a898cfdf860189e1d680729d900d06640" title="Calls FaceInvadersScene::beginGame()">beginGame</a>();</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#a431a1c398b26c2ba91bfe9b2e23fc2e8" title="Calls FaceInvadersScene::updatePlayerPosition()">updatePlayerPosition</a>(QPoint position);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_face_invaders_widget.html#a79e4888e15c4ea212d9c65a71bc8549b" title="Used to maintain aspect ratio, See QT Docs">resizeEvent</a>(QResizeEvent *);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="code" href="class_face_invaders_widget.html#ad7133bf14af4f7f6f19f0c3aea998f43">  177</a></span>&#160;    <a class="code" href="class_face_invaders_scene.html" title="Manages game logic and graphical scene. This object is responsible for managing all of the players an...">FaceInvadersScene</a> *<a class="code" href="class_face_invaders_widget.html#ad7133bf14af4f7f6f19f0c3aea998f43" title="The game graphics scene.">m_scene</a>; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;};</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="code" href="class_player_item.html">  188</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_player_item.html" title="This is the graphics item representing the user in the graphics scene.">PlayerItem</a> : <span class="keyword">public</span> QObject, <span class="keyword">public</span> QGraphicsItem</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;{</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_player_item.html#ae3bfc3fea2d5480a18631299db21a9e8" title="Constructor.">PlayerItem</a>(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="class_player_item.html#a79a3482009b4887a0b74a5deaecbe78e" title="Destructor.">~PlayerItem</a>();</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    QRectF <a class="code" href="class_player_item.html#aa06d4b232d4c51bf2b91af695ea27372" title="Bounding rectangle of the drawing area, See QT Docs">boundingRect</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    QPainterPath <a class="code" href="class_player_item.html#a2ffa78c17a98484710af6bb212687bc2" title="Accurate representation of the item, See QT Docs">shape</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player_item.html#a21a887d96431aff97e2fdc6b3a6f634c" title="Drawing of the item, See QT Docs">paint</a>(QPainter *painter, <span class="keyword">const</span> QStyleOptionGraphicsItem *option, QWidget *widget);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player_item.html#a7d50037d3db5293cfd40713338b67160" title="Sets the image for the user&#39;s face.">setFace</a>(QImage *image);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;signals:</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player_item.html#a5fdef6610e019751be22563952335ec2" title="Indicates the player has collided with an Invader.">PlayerHit</a>();</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_player_item.html#a2b333821a76cc14e3b9e31866f6da50a" title="Used for collision detection.">advance</a>(<span class="keywordtype">int</span> phase);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00222"></a><span class="lineno"><a class="code" href="class_player_item.html#af6d8299300e334a7ea2240d14cee7dd6">  222</a></span>&#160;    QImage *<a class="code" href="class_player_item.html#af6d8299300e334a7ea2240d14cee7dd6" title="User face image.">face</a>;   </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;};</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno"><a class="code" href="class_invader.html">  227</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_invader.html">Invader</a> : <span class="keyword">public</span> QGraphicsItem</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;{</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keyword">enum</span> InvaderType { Apple = 0, Banana, Watermelon, Bug, InvaderTypeCount };</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_invader.html">Invader</a>(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    ~<a class="code" href="class_invader.html">Invader</a>();</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    QRectF boundingRect() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    QPainterPath shape() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordtype">void</span> paint(QPainter *painter, <span class="keyword">const</span> QStyleOptionGraphicsItem *option, QWidget *widget);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordtype">void</span> advance(<span class="keywordtype">int</span> phase);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="code" href="class_invader.html#a7622bcca0d20ab02fcd2d88a004011ec">  244</a></span>&#160;    InvaderType <a class="code" href="class_invader.html#a7622bcca0d20ab02fcd2d88a004011ec" title="Indicates the type of invader represented.">m_type</a>;         </div>
+<div class="line"><a name="l00245"></a><span class="lineno"><a class="code" href="class_invader.html#a9fb3ceb753808d4f786507584a5d7022">  245</a></span>&#160;    QRectF <a class="code" href="class_invader.html#a9fb3ceb753808d4f786507584a5d7022" title="The bounding rectangle of the invader.">m_boundingRect</a>;      </div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="code" href="class_invader.html#a34b57b0ccf919e41414dca5c3c0100f1">  246</a></span>&#160;    QPainterPath <a class="code" href="class_invader.html#a34b57b0ccf919e41414dca5c3c0100f1" title="The shape of the invader.">m_shape</a>;       </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    QImage *m_image;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="comment">//Invader falling parameters</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno"><a class="code" href="class_invader.html#a8d81cc44f75599f4ab11e2412d496574">  250</a></span>&#160;    qreal <a class="code" href="class_invader.html#a8d81cc44f75599f4ab11e2412d496574" title="The rate of falling from top to bottom of the Invader.">m_fallVelocity</a>;       </div>
+<div class="line"><a name="l00251"></a><span class="lineno"><a class="code" href="class_invader.html#a3c224f6143b6ad5d1a995c7ef70b8489">  251</a></span>&#160;    qreal <a class="code" href="class_invader.html#a3c224f6143b6ad5d1a995c7ef70b8489" title="The rate of rotation of the Invader.">m_angularVelocity</a>;    </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordtype">void</span> initApple();</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keywordtype">void</span> initBanana();</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordtype">void</span> initWatermelon();</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordtype">void</span> initBug();</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;};</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="preprocessor">#endif // FACEINVADERSWIDGET_H</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+>>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="faceinvaderswidget_8h.html">faceinvaderswidget.h</a></li>
+<<<<<<< HEAD
     <li class="footer">Generated on Wed Mar 20 2013 00:13:06 for Lockheed Inanimation by
+=======
+    <li class="footer">Generated on Mon Mar 11 2013 22:21:37 for Lockheed Inanimation by
+>>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
