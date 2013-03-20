@@ -1,0 +1,4 @@
+<map id="FaceInvadersWidget" name="FaceInvadersWidget">
+<area shape="rect" id="node2" href="$class_face_invaders_scene.html" title="Manages game logic and graphical scene. This object is responsible for managing all of the players an..." alt="" coords="7,101,145,131"/>
+<area shape="rect" id="node4" href="$class_player_item.html" title="This is the graphics item representing the user in the graphics scene." alt="" coords="33,5,119,35"/>
+</map>

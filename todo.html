@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -100,11 +100,17 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280">FaceTracker::GetFaceImage</a>  ()</dt>
+<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="class_face_invaders_scene.html#ab9797ce388cc9da4e1cdc1051d7166cf">FaceInvadersScene::setGameScreenSize</a>  (QRectF &amp;rect)</dt>
+<dd>Make sure everything is updated and resized  </dd>
+<dt><a class="anchor" id="_todo000003"></a>Member <a class="el" href="class_face_invaders_scene.html#a4c96e2b1bb35475c48e2fcdb54e47521">FaceInvadersScene::setInvaderSpeed</a>  (qreal speed)</dt>
+<dd>explain invader speed value...  </dd>
+<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="class_face_invaders_widget.html#a2aba93d23afa97c872669722ec24c344">FaceInvadersWidget::drawForeground</a>  (QPainter *painter, const QRectF &amp;rect)</dt>
+<dd>Use QSettings to store highest score  </dd>
+<dt><a class="anchor" id="_todo000006"></a>Member <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280">FaceTracker::GetFaceImage</a>  ()</dt>
 <dd>This is very expensive and inefficient way of performing this action  </dd>
-<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">FaceTracker::GetLastImage</a>  ()</dt>
+<dt><a class="anchor" id="_todo000005"></a>Member <a class="el" href="class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571">FaceTracker::GetLastImage</a>  ()</dt>
 <dd>This will corrupt image if function called multiple times, or <a class="el" href="class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280" title="Returns the cropped image of the tracked face If there is currently a face being tracked, the face is cropped out of the last processed frame.">FaceTracker::GetFaceImage</a> gets called  </dd>
-<dt><a class="anchor" id="_todo000003"></a>page <a class="el" href="index.html">Lockheed Inanimation Documentation Homepage</a>  </dt>
+<dt><a class="anchor" id="_todo000007"></a>page <a class="el" href="index.html">Lockheed Inanimation Documentation Homepage</a>  </dt>
 <dd>Continue documentation along side development</dd>
 </dl>
 </div></div><!-- contents -->
@@ -112,7 +118,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Mar 6 2013 18:58:26 for Lockheed Inanimation by
+    <li class="footer">Generated on Wed Mar 20 2013 00:13:06 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
