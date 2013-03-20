@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('class_face_invaders_scene.html','');})
 </div><!--header-->
 <div class="contents">
 
-<p>Manages game logic and graphical scene. This object is responsible for managing all of the players and invaders on the graphical scene, as well as drawing the background. The graphical scene is used This object emits signals to notify of game state changes.  
+<p>Manages game logic and graphical scene.  
  <a href="class_face_invaders_scene.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="faceinvaderswidget_8h_source.html">faceinvaderswidget.h</a>&gt;</code></p>
@@ -251,7 +251,8 @@ QGraphicsSimpleTextItem *&#160;</td><td class="memItemRight" valign="bottom"><a 
 <tr class="memdesc:a2bea286ea79f59374e57e4ce2a8dcfd0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player_item.html" title="This is the graphics item representing the user in the graphics scene.">PlayerItem</a> for easy access. <br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Manages game logic and graphical scene. This object is responsible for managing all of the players and invaders on the graphical scene, as well as drawing the background. The graphical scene is used This object emits signals to notify of game state changes. </p>
+<div class="textblock"><p>Manages game logic and graphical scene. </p>
+<p>This object is responsible for managing all of the players and invaders on the graphical scene, as well as drawing the background. The graphical scene is used This object emits signals to notify of game state changes.</p>
 <p>The game can be paused, resumed, ended, and reset. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_face_invaders_scene.html#ab73aac7f63fd2a2e90e3fae0cd110b19" title="Transitions the game into paused state.">FaceInvadersScene::pauseGame()</a> </dd>
 <dd>
@@ -262,7 +263,7 @@ QGraphicsSimpleTextItem *&#160;</td><td class="memItemRight" valign="bottom"><a 
 <a class="el" href="class_face_invaders_scene.html#aa5137d20e10f027bb0e9320bb4150005" title="Transitions the game into initial state.">FaceInvadersScene::resetGame()</a></dd></dl>
 <p><b>Game State Transitioning</b> To transition between, what is normally thought of "Paused", "Stopped", and "Playing" states, the class provides several functions. <a class="el" href="class_face_invaders_scene.html#aa8a9e24901bdd1fd6b38a002ed41c006" title="Transitions the game tion playing state.">FaceInvadersScene::beginGame()</a> can be used to go into "Playing" mode without changing the current state of the scene. This allows flexibility for setting up the scene as desired and beginning the game from there. This function makes the existance of a "resume()" function unnecessary. <a class="el" href="class_face_invaders_scene.html#aa5137d20e10f027bb0e9320bb4150005" title="Transitions the game into initial state.">FaceInvadersScene::resetGame()</a> resets the scene state to an clear state having no Invaders, and a 0 score. <a class="el" href="class_face_invaders_scene.html#aff63cd8030aab3c3bce0d911b8e973b2" title="Transitions the game into stopped state.">FaceInvadersScene::endGame()</a> forces the game to stop and display a game end message, whereas <a class="el" href="class_face_invaders_scene.html#ab73aac7f63fd2a2e90e3fae0cd110b19" title="Transitions the game into paused state.">FaceInvadersScene::pauseGame()</a> stops the game and displays a paused game message. </p>
 
-<p>Definition at line <a class="el" href="faceinvaderswidget_8h_source.html#l00057">57</a> of file <a class="el" href="faceinvaderswidget_8h_source.html">faceinvaderswidget.h</a>.</p>
+<p>Definition at line <a class="el" href="faceinvaderswidget_8h_source.html#l00058">58</a> of file <a class="el" href="faceinvaderswidget_8h_source.html">faceinvaderswidget.h</a>.</p>
 </div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa4bb7c6f1b5aea7c819ece39025db412"></a>
 <div class="memitem">
@@ -296,7 +297,7 @@ QGraphicsSimpleTextItem *&#160;</td><td class="memItemRight" valign="bottom"><a 
 
 <p>Definition at line <a class="el" href="faceinvaderswidget_8cpp_source.html#l00014">14</a> of file <a class="el" href="faceinvaderswidget_8cpp_source.html">faceinvaderswidget.cpp</a>.</p>
 
-<p>References <a class="el" href="faceinvaderswidget_8cpp_source.html#l00156">alienEvaded()</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00152">background</a>, <a class="el" href="faceinvaderswidget_8cpp_source.html#l00129">endGame()</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00172">m_advanceTimer</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00164">m_gameSize</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00161">m_playerStartingPosition</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00154">m_scoreItem</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00153">player</a>, and <a class="el" href="faceinvaderswidget_8cpp_source.html#l00170">updateScorePosition()</a>.</p>
+<p>References <a class="el" href="faceinvaderswidget_8cpp_source.html#l00156">alienEvaded()</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00153">background</a>, <a class="el" href="faceinvaderswidget_8cpp_source.html#l00129">endGame()</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00173">m_advanceTimer</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00165">m_gameSize</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00162">m_playerStartingPosition</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00155">m_scoreItem</a>, <a class="el" href="faceinvaderswidget_8h_source.html#l00154">player</a>, and <a class="el" href="faceinvaderswidget_8cpp_source.html#l00170">updateScorePosition()</a>.</p>
 
 </div>
 </div>
@@ -413,7 +414,7 @@ QGraphicsSimpleTextItem *&#160;</td><td class="memItemRight" valign="bottom"><a 
 
 <p>Definition at line <a class="el" href="faceinvaderswidget_8cpp_source.html#l00060">60</a> of file <a class="el" href="faceinvaderswidget_8cpp_source.html">faceinvaderswidget.cpp</a>.</p>
 
-<p>References <a class="el" href="faceinvaderswidget_8h_source.html#l00164">m_gameSize</a>, and <a class="el" href="faceinvaderswidget_8cpp_source.html#l00170">updateScorePosition()</a>.</p>
+<p>References <a class="el" href="faceinvaderswidget_8h_source.html#l00165">m_gameSize</a>, and <a class="el" href="faceinvaderswidget_8cpp_source.html#l00170">updateScorePosition()</a>.</p>
 
 </div>
 </div>
@@ -462,7 +463,7 @@ QGraphicsSimpleTextItem *&#160;</td><td class="memItemRight" valign="bottom"><a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_face_invaders_scene.html">FaceInvadersScene</a></li>
-    <li class="footer">Generated on Wed Mar 20 2013 00:13:06 for Lockheed Inanimation by
+    <li class="footer">Generated on Wed Mar 20 2013 00:18:41 for Lockheed Inanimation by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
