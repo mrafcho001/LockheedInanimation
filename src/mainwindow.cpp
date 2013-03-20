@@ -12,9 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ft = new FaceTracker(0);
-    ft->SetMinFeatureSize(5);
-    ft->SetProcessingImageDimensions(160,120);
+    ft->SetMinFeatureSize(25);
+    ft->SetProcessingImageDimensions(640,480);
     ft->SetSearchScaleFactor(1.1f);
+
+    connect(ui->graphicsView, SIGNAL(gameOver(int)), this, SLOT(DisableFacePositionUpdates()));
+    connect(ui->graphicsView, SIGNAL(gamePaused()), this, SLOT(DisableFacePositionUpdates()));
+    connect(ui->graphicsView, SIGNAL(gameStarted(bool)), this, SLOT(EnableFacePositionUpdates()));
 
     pu = new PositionUpdater(ft);
     connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
@@ -45,7 +49,19 @@ void MainWindow::UpdateFace(QImage *image)
 
 void MainWindow::UpdatePosition(QRect rect)
 {
-    static_cast<FaceInvadersWidget*>(ui->graphicsView)->updatePlayerPosition(rect.center());
+    if(rect.isValid())
+        static_cast<FaceInvadersWidget*>(ui->graphicsView)->updatePlayerPosition(rect.center());
+}
+
+void MainWindow::DisableFacePositionUpdates()
+{
+    qDebug() << "Disable updates...";
+    disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+}
+
+void MainWindow::EnableFacePositionUpdates()
+{
+    connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)), Qt::UniqueConnection);
 }
 
 void MainWindow::HandleTabChange(int index)
@@ -53,13 +69,13 @@ void MainWindow::HandleTabChange(int index)
     if(index == 1)
     {
         pu->EnableImageUpdateSignals(false);
-        connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+        EnableFacePositionUpdates();
         static_cast<FaceInvadersWidget*>(ui->graphicsView)->beginGame();
     }
     else
     {
         pu->EnableImageUpdateSignals();
-        disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
+        DisableFacePositionUpdates();
     }
 }
 

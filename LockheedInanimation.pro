@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg
+QT       += core gui svg opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -62,4 +62,5 @@ OTHER_FILES += \
 DEFINES +=  #DEBUG_FACETRACKING_TIMING=1
 DEFINES +=  #DEBUG_CAPTURE_TIMING=1
 DEFINES +=  DEBUG_REPORT_FPS=1
+DEFINES +=  #DEBUG_INVADER_SHAPE=1
 

@@ -23,6 +23,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <QGraphicsSimpleTextItem>
 #include <QPoint>
 #include <QImage>
 
@@ -71,7 +72,14 @@ public:
     //! \brief Sets the rectangle for the game space.
     void setGameScreenSize(QRectF &rect);
 
+    //! \brief Sets the line past which all invaders are destroyed
     qreal getInvaderDeathLine();
+
+    //! \brief Returns the current state of the game
+    GameState getState() const;
+
+    //! \brief Returns the score of the game
+    int getGameScore() const;
 
 signals:
     /*! \brief Idicates game state transition to <i>game over</i>
@@ -82,7 +90,7 @@ signals:
       \sa FaceInvadersScene::gamePaused()
       \param score The score of the game that just ended
     */
-    void gameOver(int score);
+    void gameOver(int m_scoreItem);
 
     /*! \brief Indiccates game state transition from <i>playing</i> to <i>paused</i>
 
@@ -90,9 +98,6 @@ signals:
       \sa FaceInvadersScene::pauseGame()
     */
     void gamePaused();
-
-    //! \brief Indicates game state transition from <i>paused</i> to <i>playing</i>
-    void gameResumed();
 
     /*! \brief Indicates game state transition from <i>stopped</i> to <i>playing</i>
         \param resumed Indicates if game was resumed, or fresh game was started
@@ -132,15 +137,24 @@ public slots:
     */
     void setInvaderSpeed(qreal speed);
 
+    //! \brief Invader has died, award points to player
+    void alienEvaded(int points);
+
 protected:
     //! \brief Draws background for the game
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
+    //! \brief Makes sure the score is always visible and does not run off the viewable area.
+    void updateScorePosition();
+
+
     QImage *background; //!< Image to be painted as the background
     PlayerItem *player; //!< PlayerItem for easy access
+    QGraphicsSimpleTextItem *m_scoreItem;  //!< Displays game score
 
     GameState m_gameState;   //!< 1 - Game running, 0 - Game not running
+    int m_gameScore;         //!< Maintains the game score
 
     //Game Parameters
     //! The starting position of player, Y-coordinate is maintained throughout game play
@@ -151,7 +165,6 @@ private:
 
     //! The scaling of the invaders, <1 -> smaller, >1 -> larger, 1 -> unscaled
     qreal m_invaderScale;
-
     //! Invader speed parameter
     qreal m_invaderSpeed;
 
@@ -188,6 +201,11 @@ signals:
 
     //! \brief See FaceInvadersScene::gamePaused()
     void gamePaused();
+
+    /*! \brief Indicates game state transition from <i>stopped</i> to <i>playing</i>
+        \param resumed Indicates if game was resumed, or fresh game was started
+    */
+    void gameStarted(bool resumed);
     
 public slots:
     //! \brief Calls FaceInvadersScene::resetGame()
@@ -210,9 +228,19 @@ protected:
     //! \brief Used to maintain aspect ratio, \seeqtdoc
     void resizeEvent(QResizeEvent *);
 
+    //! \brief Displays Game Over message
+    void drawForeground(QPainter *painter, const QRectF &rect);
+protected slots:
+    //! \brief Initializes countdown timer for new game
+    void m_gameOver(int score);
+
+    //! \brief Updates countdown for starting new game
+    void timerExpired();
+
 private:
     FaceInvadersScene *m_scene; //!< The game graphics scene
 
+    int m_secondsToRestart;     //!< Maintains count down for starting new game
 
 };
 
@@ -258,40 +286,49 @@ protected:
 private:
     QImage *face;   //!< User face image
 
-    bool hit;
+    bool hit; //Tempurary variable...
 
 };
 
 
-class Invader : public QGraphicsItem
+class Invader : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
 public:
+    //! Identifies the type of invader
     enum InvaderType { Apple = 0, Banana, Watermelon, Bug, InvaderTypeCount };
 
+    //! \brief Default Constructor
     explicit Invader(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    //! \brief Destructor
     ~Invader();
 
-    void setDeathLine(qreal y_pos);
-
+    //! \brief Defines the drawing area of the invader
     QRectF boundingRect() const;
+    //! \brief Defines the collision detection shape of the invader
     QPainterPath shape() const;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+signals:
+    //! \brief Notify scene of player successfully evading the invader
+    void AlienDying(int points);
+
 protected:
+    //! \brief Used for animation
     void advance(int phase);
 
 private:
     InvaderType m_type;         //!< Indicates the type of invader represented
     QRectF m_boundingRect;      //!< The bounding rectangle of the invader
     QPainterPath m_shape;       //!< The shape of the invader
-    QImage *m_image;
+    QImage *m_image;            //!< Image of the invader
 
     //Invader falling parameters
     qreal m_fallVelocity;       //!< The rate of falling from top to bottom of the Invader
     qreal m_angularVelocity;    //!< The rate of rotation of the Invader
-    qreal m_deathLine;
 
+    int m_pointValue;           //!< The points awarded to player to evading
 
 
     void initApple();

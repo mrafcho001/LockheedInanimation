@@ -27,6 +27,8 @@ public slots:
     void UpdateImage(QImage *image);
     void UpdateFace(QImage *image);
     void UpdatePosition(QRect rect);
+    void DisableFacePositionUpdates();
+    void EnableFacePositionUpdates();
 
     void HandleTabChange(int index);
 
