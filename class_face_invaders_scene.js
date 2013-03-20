@@ -1,6 +1,5 @@
 var class_face_invaders_scene =
 [
-<<<<<<< HEAD
     [ "GameState", "class_face_invaders_scene.html#ae6135b3847433287365b1eca16c1723c", [
       [ "Playing", "class_face_invaders_scene.html#ae6135b3847433287365b1eca16c1723ca24cc5ad76fc1b40b3d93584daf2caad0", null ],
       [ "Paused", "class_face_invaders_scene.html#ae6135b3847433287365b1eca16c1723ca0147e36678eb3ce6706e194ddf64492f", null ],
@@ -39,23 +38,5 @@ var class_face_invaders_scene =
     [ "m_invaderSpeed", "class_face_invaders_scene.html#a07bf148dd2ad743d2e9d012fdc7f47f6", null ],
     [ "m_playerStartingPosition", "class_face_invaders_scene.html#a4694d161ac803234f3e9e7592d89a31a", null ],
     [ "m_scoreItem", "class_face_invaders_scene.html#a8fd663fd681c2437c8391a67dfc41281", null ],
-=======
-    [ "FaceInvadersScene", "class_face_invaders_scene.html#aa4bb7c6f1b5aea7c819ece39025db412", null ],
-    [ "~FaceInvadersScene", "class_face_invaders_scene.html#ab1da77fc959b93e02c3199314bb44651", null ],
-    [ "beginGame", "class_face_invaders_scene.html#aa8a9e24901bdd1fd6b38a002ed41c006", null ],
-    [ "createNewInvaders", "class_face_invaders_scene.html#a1f19412b72b1feeed8c9cf7e690c8dba", null ],
-    [ "drawBackground", "class_face_invaders_scene.html#a1eca7a8be13e06d9dcb9c10a683b8aef", null ],
-    [ "endGame", "class_face_invaders_scene.html#aff63cd8030aab3c3bce0d911b8e973b2", null ],
-    [ "gameOver", "class_face_invaders_scene.html#ab781336646e658384b9a217f8f9ae04e", null ],
-    [ "gamePaused", "class_face_invaders_scene.html#a42b58651b1d62675fd22a5ce0ee0e2c7", null ],
-    [ "gameResumed", "class_face_invaders_scene.html#a1ffa85d488eadcc6a0b6218d35e10b38", null ],
-    [ "gameStarted", "class_face_invaders_scene.html#af9777142e18c6760c6a24667b7dba77b", null ],
-    [ "pauseGame", "class_face_invaders_scene.html#ab73aac7f63fd2a2e90e3fae0cd110b19", null ],
-    [ "resetGame", "class_face_invaders_scene.html#aa5137d20e10f027bb0e9320bb4150005", null ],
-    [ "updatePlayerPosition", "class_face_invaders_scene.html#a2d6e81e83be4f2a2fd4cd1789c2aa62f", null ],
-    [ "background", "class_face_invaders_scene.html#ab1bde6b272df7b8f60f9164116c5b352", null ],
-    [ "m_advanceTimer", "class_face_invaders_scene.html#ac4a7d81aa0f32aca6a92ae84cf85ad07", null ],
-    [ "m_gameState", "class_face_invaders_scene.html#a4cede481630a5b17f33f2205f3fd7969", null ],
->>>>>>> 7790a1ece7f917bb6f4fa81293f289ed0e90fe8f
     [ "player", "class_face_invaders_scene.html#a2bea286ea79f59374e57e4ce2a8dcfd0", null ]
 ];
