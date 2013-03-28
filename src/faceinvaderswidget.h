@@ -32,6 +32,7 @@ class PlayerItem;
 
 
 /*! \brief Manages game logic and graphical scene.
+
   This object is responsible for managing all of the players and invaders on the
   graphical scene, as well as drawing the background. The graphical scene is used
   This object emits signals to notify of game state changes.
@@ -140,6 +141,12 @@ public slots:
     //! \brief Invader has died, award points to player
     void alienEvaded(int points);
 
+    //! \brief Get Player image
+    QImage *getPlayerImage();
+
+    //! \brief Sets the player image
+    void setPlayerImage(QImage *image);
+
 protected:
     //! \brief Draws background for the game
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -206,6 +213,13 @@ signals:
         \param resumed Indicates if game was resumed, or fresh game was started
     */
     void gameStarted(bool resumed);
+
+    //! \brief Indicates that the class wants to recieve updates for the player iamge
+    void faceImageUpdatesRequest();
+
+    /*! \brief Indicates that the class no longer wants to recieve updates for
+               the player image. */
+    void ceaseImageUpdates();
     
 public slots:
     //! \brief Calls FaceInvadersScene::resetGame()
@@ -223,6 +237,15 @@ public slots:
     //! \brief Calls FaceInvadersScene::updatePlayerPosition()
     void updatePlayerPosition(QPoint position);
 
+    /*! \brief Shows a brief screen to acquire user image
+
+        This function emits RequestFaceImageUpdates, and
+        expects the owner to supply images through the
+    */
+    void initScreen();
+
+    //! \brief Sets the player image
+    void updatePlayerImage(QImage *image);
 
 protected:
     //! \brief Used to maintain aspect ratio, \seeqtdoc
@@ -235,13 +258,27 @@ protected slots:
     void m_gameOver(int score);
 
     //! \brief Updates countdown for starting new game
-    void timerExpired();
+    void resetTimerExpired();
+
+    //! \brief Updates countdown for user face image acquisition
+    void initTimerExpired();
 
 private:
     FaceInvadersScene *m_scene; //!< The game graphics scene
 
     int m_secondsToRestart;     //!< Maintains count down for starting new game
 
+    bool m_initScreen;
+    int m_initScreenCountDown;
+
+
+    //Tunable variables
+    int m_secondsBetweenGagmes;
+    int m_initScreenSeconds;
+
+public:
+    static const int DefaultInitScreenTime = 10;
+    static const int DefaultTimeBetweenGames = 10;
 };
 
 /*! \brief  This is the graphics item representing the user in the
@@ -274,6 +311,9 @@ public:
       and frees the memory when done.
     */
     void setFace(QImage *image);
+
+    //! \brief Gets the face image of the player
+    QImage *getFace();
 
 signals:
     //! \brief Indicates the player has collided with an Invader

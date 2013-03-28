@@ -122,12 +122,18 @@ void FaceInvadersScene::resetGame()
 
 void FaceInvadersScene::pauseGame()
 {
+    if(m_gameState == Paused)
+        return;
+
     m_gameState = Paused;
     m_advanceTimer->stop();
 }
 
 void FaceInvadersScene::endGame()
 {
+    if(m_gameState == Stopped)
+        return;
+
     m_gameState = Stopped;
     m_advanceTimer->stop();
     emit gameOver(m_gameScore);
@@ -135,6 +141,9 @@ void FaceInvadersScene::endGame()
 
 void FaceInvadersScene::beginGame()
 {
+    if(m_gameState == Playing)
+        return;
+
     m_gameState = Playing;
     m_advanceTimer->start(1000/18);
     createNewInvaders();
@@ -161,6 +170,16 @@ void FaceInvadersScene::alienEvaded(int points)
     updateScorePosition();
 }
 
+QImage *FaceInvadersScene::getPlayerImage()
+{
+    return player->getFace();
+}
+
+void FaceInvadersScene::setPlayerImage(QImage *image)
+{
+    player->setFace(image);
+}
+
 void FaceInvadersScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, Qt::black);
@@ -173,9 +192,10 @@ void FaceInvadersScene::updateScorePosition()
 }
 
 FaceInvadersWidget::FaceInvadersWidget(QWidget *parent) :
-    QGraphicsView(parent)
+    QGraphicsView(parent), m_scene(new FaceInvadersScene(this)),
+    m_secondsBetweenGagmes(FaceInvadersWidget::DefaultTimeBetweenGames),
+    m_initScreenSeconds(FaceInvadersWidget::DefaultInitScreenTime)
 {
-    m_scene = new FaceInvadersScene(this);
     this->setScene(m_scene);
     this->setRenderHint(QPainter::Antialiasing);
     this->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
@@ -205,10 +225,52 @@ void FaceInvadersWidget::resizeEvent(QResizeEvent *)
 
 void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    FaceInvadersScene *scene = static_cast<FaceInvadersScene*>(this->scene());
-    if(scene->getState() != FaceInvadersScene::Playing)
+    if(m_initScreen)
     {
-        QRectF gameRect = scene->getGameScreenSize();
+        QRectF gameRect = m_scene->getGameScreenSize();
+        QRectF rect2(gameRect.width()/4, gameRect.height()/4,
+                    gameRect.width()/2, gameRect.height()/2);
+        QPen pen(Qt::black);
+        pen.setWidth(3);
+        painter->setPen(pen);
+        QBrush brush(QColor(0,0,0,196));
+        painter->setBrush(brush);
+        painter->drawRoundedRect(rect2, 8, 8);
+
+        QRectF textRect(rect2.width()/8+rect2.x(),
+                        rect2.height()/16+rect2.y(),
+                        3*rect2.width()/4,
+                        rect2.width()/8);
+
+        QFont f("Helvetica", 20, QFont::Bold);
+        pen.setColor(QColor(255,255,255,230));
+        painter->setPen(pen);
+        painter->setFont(f);
+        painter->drawText(textRect, QString("Smile!"), QTextOption(Qt::AlignCenter));
+
+        textRect.adjust(-rect2.width()/16, rect2.height()/6,
+                        rect2.width()/8, rect2.height()/4);
+        f.setPointSize(8);
+        painter->setFont(f);
+        pen.setColor(QColor(0xFA, 0xED, 0x57));
+        painter->setPen(pen);
+        painter->drawText(textRect, QString("At the end of the timer, your image will be captured."), QTextOption(Qt::AlignLeft));
+
+        QImage *playerImage = m_scene->getPlayerImage();
+        QPointF imagePoint(rect2.x() + rect2.width()/2-playerImage->width()/2,
+                           textRect.y()+rect2.height()/6);
+        painter->drawImage(imagePoint, *playerImage);
+        painter->drawRect(QRectF(imagePoint, playerImage->size()));
+
+        textRect.setY(imagePoint.y() + playerImage->height() + rect2.height()/16);
+        textRect.setHeight(rect2.height()/8);
+
+        painter->drawText(textRect, QString("Capturing image in %1....").arg(m_initScreenCountDown), QTextOption(Qt::AlignCenter));
+
+    }
+    else if(m_scene->getState() != FaceInvadersScene::Playing)
+    {
+        QRectF gameRect = m_scene->getGameScreenSize();
         QRectF rect2(gameRect.width()/4, gameRect.height()/4,
                     gameRect.width()/2, gameRect.height()/2);
         QPen pen(Qt::black);
@@ -234,7 +296,7 @@ void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
         painter->setFont(f);
         pen.setColor(QColor(0xFA, 0xED, 0x57));
         painter->setPen(pen);
-        painter->drawText(textRect, QString("Your Score: %1").arg(scene->getGameScore(),5,10,QChar('0')), QTextOption(Qt::AlignLeft));
+        painter->drawText(textRect, QString("Your Score: %1").arg(m_scene->getGameScore(),5,10,QChar('0')), QTextOption(Qt::AlignLeft));
 
 
         pen.setColor(QColor(0x82, 0xC1, 0xE8));
@@ -255,11 +317,11 @@ void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
 void FaceInvadersWidget::m_gameOver(int score)
 {
     //Begin timer for game reset
-    QTimer::singleShot(1000, this, SLOT(timerExpired()));
+    QTimer::singleShot(1000, this, SLOT(resetTimerExpired()));
     m_secondsToRestart = 8;
 }
 
-void FaceInvadersWidget::timerExpired()
+void FaceInvadersWidget::resetTimerExpired()
 {
     m_secondsToRestart--;
     this->viewport()->update();
@@ -271,7 +333,22 @@ void FaceInvadersWidget::timerExpired()
         scene->beginGame();
     }
     else
-        QTimer::singleShot(1000, this, SLOT(timerExpired()));
+        QTimer::singleShot(1000, this, SLOT(resetTimerExpired()));
+}
+
+void FaceInvadersWidget::initTimerExpired()
+{
+    m_initScreenCountDown--;
+    this->viewport()->update();
+    if(m_initScreenCountDown == 0)
+    {
+        //Start game
+        this->beginGame();
+        m_initScreen = false;
+        emit ceaseImageUpdates();
+    }
+    else
+        QTimer::singleShot(1000, this, SLOT(initTimerExpired()));
 }
 
 void FaceInvadersWidget::resetGame()
@@ -295,6 +372,29 @@ void FaceInvadersWidget::beginGame()
 void FaceInvadersWidget::updatePlayerPosition(QPoint position)
 {
     this->m_scene->updatePlayerPosition(position);
+}
+
+void FaceInvadersWidget::initScreen()
+{
+    if(m_initScreen)
+    {
+        m_initScreenCountDown = m_initScreenSeconds;
+        return;
+    }
+
+    m_initScreen = true;
+    m_initScreenCountDown = m_initScreenSeconds;
+    m_scene->resetGame();
+    this->viewport()->update();
+
+    QTimer::singleShot(1000, this, SLOT(initTimerExpired()));
+
+    emit faceImageUpdatesRequest();
+}
+
+void FaceInvadersWidget::updatePlayerImage(QImage *image)
+{
+    m_scene->setPlayerImage(image);
 }
 
 PlayerItem::PlayerItem(QGraphicsItem *parent, QGraphicsScene *scene) :
@@ -332,7 +432,16 @@ void PlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 
 void PlayerItem::setFace(QImage *image)
 {
+    if(image == NULL)
+        return;
+
+    delete face;
     face = image;
+}
+
+QImage *PlayerItem::getFace()
+{
+    return face;
 }
 
 void PlayerItem::advance(int phase)

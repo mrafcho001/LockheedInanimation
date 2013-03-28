@@ -24,6 +24,8 @@ HEADERS  += src/mainwindow.h \
 
 FORMS    += resources/mainwindow.ui
 
+ARDUINO_SOURCES += src/Arduino/arduino_sketch.ino
+
 OBJECTS_DIR = build/.obj
 MOC_DIR = build/.moc
 RCC_DIR = build/.rcc
@@ -50,7 +52,7 @@ QMAKE_CLEAN += Makefile -r build/.[a-z]* build/*
 docs.depends = $(SOURCES)
 docs.commands = doxygen Doxyfile
 
-QMAKE_EXTRA_TARGETS += docs
+QMAKE_EXTRA_TARGETS += docs arduino
 
 RESOURCES += \
     resources/resources.qrc
@@ -63,4 +65,8 @@ DEFINES +=  #DEBUG_FACETRACKING_TIMING=1
 DEFINES +=  #DEBUG_CAPTURE_TIMING=1
 DEFINES +=  DEBUG_REPORT_FPS=1
 DEFINES +=  #DEBUG_INVADER_SHAPE=1
+
+#Arduino Sketch
+arduino.depends = $(ARDUINO_SOURCES)
+arduino.commands = make -C src/Arduino/
 

@@ -32,6 +32,9 @@ public slots:
 
     void HandleTabChange(int index);
 
+    void enableFaceImageUpdates();
+    void disableFaceImageUpdates();
+
     
 private:
     Ui::MainWindow *ui;
@@ -48,10 +51,13 @@ public:
     PositionUpdater(FaceTracker *ft, QObject *parent = 0);
     void PauseThread();
     void ResumeThread();
-    void EnableImageUpdateSignals(bool enable = true);
+    void EnableFullImageUpdates(bool enable = true);
+    void EnablePositionUpdates(bool enable = true);
+    void EnableFaceOnlyUpdates(bool enable = true);
+    void EnableFaceHighlighting(bool enable = true);
 signals:
     void UpdateFullImage(QImage *image);
-    void UpdateFace(QImage *image);
+    void UpdateFaceImage(QImage *image);
     void UpdatePosition(QRect rect);
 
 private:
@@ -61,7 +67,13 @@ private:
     QMutex mutex;
     QWaitCondition condition;
     bool stopped;
-    bool images;
+    /*! \brief Indicates update types to emit
+      bit 0 - position updates
+      bit 1 - face image only updates
+      bit 2 - full image update
+      bit 3 - highlight face in full image
+    */
+    quint8 m_updateMask;
 };
 
 #endif // MAINWINDOW_H

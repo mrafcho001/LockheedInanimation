@@ -26,7 +26,7 @@
 #define DEFAULT_SEARCH_SCALE_FACTOR     1.1f
 
 //! \brief Default value for minimum neighbor cutoff value
-#define DEFAULT_MIN_NEIGHBORS_CUTOFF    4
+#define DEFAULT_MIN_NEIGHBORS_CUTOFF    3
 
 //! \brief Default additional flags
 #define DEFAULT_ADDITIONAL_FLAGS        0
@@ -209,6 +209,13 @@ public:
                was detected in the last processed frame.
     */
     QImage *GetFaceImage();
+
+    /*! \brief Returns the last known position of the user
+
+      This function does not acquire a new image and run face recognition on it.
+      Simply returns the last location.
+    */
+    QRect GetLastPosition(bool normalized = false);
 
 
 private:

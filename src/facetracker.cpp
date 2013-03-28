@@ -216,6 +216,19 @@ QImage *FaceTracker::GetFaceImage()
     return result;
 }
 
+QRect FaceTracker::GetLastPosition(bool normalized)
+{
+    if(normalized)
+    {
+        return QRect(100*m_lastPosition.x()/m_imageWidth,
+                     100*m_lastPosition.y()/m_imageHeight,
+                     100*m_lastPosition.width()/m_imageWidth,
+                     100*m_lastPosition.height()/m_imageHeight);
+    }
+
+    return m_lastPosition;
+}
+
 
 void FaceTracker::Init(int deviceID)
 {
