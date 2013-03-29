@@ -15,21 +15,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ft->SetProcessingImageDimensions(320,240);
     ft->SetSearchScaleFactor(1.2f);
 
-    connect(ui->graphicsView, SIGNAL(gameOver(int)), this, SLOT(DisableFacePositionUpdates()));
-    connect(ui->graphicsView, SIGNAL(gamePaused()), this, SLOT(DisableFacePositionUpdates()));
-    connect(ui->graphicsView, SIGNAL(gameStarted(bool)), this, SLOT(EnableFacePositionUpdates()));
     connect(ui->graphicsView, SIGNAL(ceaseImageUpdates()), this, SLOT(disableFaceImageUpdates()));
     connect(ui->graphicsView, SIGNAL(faceImageUpdatesRequest()), this, SLOT(enableFaceImageUpdates()));
 
-    ui->graphicsView->initScreen();
+    connect(pu, SIGNAL(UpdateFullImage(QImageSharedPointer)),
+            this, SLOT(UpdateImage(QImageSharedPointer)));
 
-    connect(pu, SIGNAL(UpdateFullImage(QImage*)), this, SLOT(UpdateImage(QImage*)));
-    connect(pu, SIGNAL(UpdateFaceImage(QImage*)), this, SLOT(UpdateFace(QImage*)));
-    pu->start();
-
-    ui->tabWidget->setCurrentIndex(1);
+    connect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
+            this, SLOT(UpdateFace(QImageSharedPointer)));
 
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(HandleTabChange(int)));
+    ui->tabWidget->setCurrentIndex(1);
+
+    EnableFacePositionUpdates();
+
+    QThread *thread = new QThread(this);
+    connect(thread, SIGNAL(started()), pu, SLOT(run()), Qt::QueuedConnection);
+    pu->moveToThread(thread);
+    thread->start();
+    ui->graphicsView->initScreen();
 }
 
 MainWindow::~MainWindow()
@@ -37,22 +41,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::UpdateImage(QImage *image)
+void MainWindow::UpdateImage(QImageSharedPointer image)
 {
-    if(image == NULL)
+    if(image.data() == NULL)
         return;
 
     ui->label->setPixmap(QPixmap::fromImage(*image));
-    delete image;
 }
 
-void MainWindow::UpdateFace(QImage *image)
+void MainWindow::UpdateFace(QImageSharedPointer image)
 {
-    if(image == NULL)
+    if(image.data() == NULL)
         return;
 
     ui->label_3->setPixmap(QPixmap::fromImage(*image));
-    //delete image;
 }
 
 void MainWindow::UpdatePosition(QRect rect)
@@ -63,11 +65,13 @@ void MainWindow::UpdatePosition(QRect rect)
 
 void MainWindow::DisableFacePositionUpdates()
 {
+    pu->EnablePositionUpdates(false);
     disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
 }
 
 void MainWindow::EnableFacePositionUpdates()
 {
+    pu->EnablePositionUpdates();
     connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)), Qt::UniqueConnection);
 }
 
@@ -78,8 +82,8 @@ void MainWindow::HandleTabChange(int index)
         pu->EnableFullImageUpdates(false);
         pu->EnableFaceOnlyUpdates(false);
         pu->EnableFaceHighlighting(false);
-        EnableFacePositionUpdates();
         static_cast<FaceInvadersWidget*>(ui->graphicsView)->initScreen();
+        EnableFacePositionUpdates();
     }
     else
     {
@@ -92,22 +96,23 @@ void MainWindow::HandleTabChange(int index)
 
 void MainWindow::enableFaceImageUpdates()
 {
-    qDebug() << "enableFaceImageUpdates()";
     pu->EnableFaceOnlyUpdates();
-    FaceInvadersWidget *fiw = static_cast<FaceInvadersWidget*>(ui->graphicsView);
-    connect(pu, SIGNAL(UpdateFaceImage(QImage*)), fiw, SLOT(updatePlayerImage(QImage*)));
+
+    connect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
+            ui->graphicsView, SLOT(updatePlayerImage(QImageSharedPointer)), Qt::UniqueConnection);
 }
 
 void MainWindow::disableFaceImageUpdates()
 {
-    qDebug() << "disableFaceImageUpdates()";
     pu->EnableFaceOnlyUpdates(false);
-    FaceInvadersWidget *fiw = static_cast<FaceInvadersWidget*>(ui->graphicsView);
-    disconnect(pu, SIGNAL(UpdateFaceImage(QImage*)), fiw, SLOT(updatePlayerImage(QImage*)));
+
+    disconnect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
+            ui->graphicsView, SLOT(updatePlayerImage(QImageSharedPointer)));
 }
 
-PositionUpdater::PositionUpdater() : m_updateMask(0x01) { }
-PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent): m_ft(ft), stopped(false) { }
+PositionUpdater::PositionUpdater() : QObject(), m_updateMask(0x01) { }
+PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent):
+    QObject(parent), m_ft(ft), stopped(false) { }
 
 void PositionUpdater::PauseThread()
 {
@@ -187,11 +192,11 @@ void PositionUpdater::run()
         {
             fullImage = m_ft->GetLastImage();
         }
-        if(m_updateMask & static_cast<quint8>(1U<<2))
+        if(m_updateMask & static_cast<quint8>(1U<<1))
         {
             faceImage = new QImage(fullImage->copy(m_ft->GetLastPosition()));
         }
-        if(m_updateMask & static_cast<quint8>(1U<<3))
+        if((m_updateMask & static_cast<quint8>(1U<<3)) && fullImage != NULL)
         {
             QPainter p;
             p.begin(fullImage);
@@ -203,8 +208,14 @@ void PositionUpdater::run()
         if(m_updateMask & static_cast<quint8>(0x01U))
             emit UpdatePosition(facePosition);
         if(m_updateMask & static_cast<quint8>(0x01U<<1))
-            emit UpdateFaceImage(faceImage);
+        {
+            QImageSharedPointer imagePtr(faceImage);
+            emit UpdateFaceImage(imagePtr);
+        }
         if(m_updateMask & static_cast<quint8>(0x01U<<2))
-            emit UpdateFullImage(fullImage);
+        {
+            QImageSharedPointer imagePtr(fullImage);
+            emit UpdateFullImage(imagePtr);
+        }
     }
 }

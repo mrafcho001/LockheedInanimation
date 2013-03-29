@@ -99,6 +99,9 @@ void FaceInvadersScene::createNewInvaders()
 
 void FaceInvadersScene::updatePlayerPosition(QPoint position)
 {
+    if(m_gameState != Playing)
+        return;
+
     this->player->setPos(position.x()*m_gameSize.width()/100,
                          m_playerStartingPosition.y());
 }
@@ -170,12 +173,12 @@ void FaceInvadersScene::alienEvaded(int points)
     updateScorePosition();
 }
 
-QImage *FaceInvadersScene::getPlayerImage()
+QPixmap *FaceInvadersScene::getPlayerImage()
 {
     return player->getFace();
 }
 
-void FaceInvadersScene::setPlayerImage(QImage *image)
+void FaceInvadersScene::setPlayerImage(const QPixmap &image)
 {
     player->setFace(image);
 }
@@ -209,6 +212,10 @@ FaceInvadersWidget::FaceInvadersWidget(QWidget *parent) :
     //For Displaying GameOver message
     connect(m_scene, SIGNAL(gameOver(int)), this, SLOT(update()));
     connect(m_scene, SIGNAL(gameOver(int)), this, SLOT(m_gameOver(int)));
+
+    //Timers
+    connect(&m_initTimer, SIGNAL(timeout()), this, SLOT(initTimerExpired()));
+    connect(&m_restartTimer, SIGNAL(timeout()), this, SLOT(resetTimerExpired()));
 }
 
 int FaceInvadersWidget::heightForWidth(int w) const
@@ -256,13 +263,14 @@ void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
         painter->setPen(pen);
         painter->drawText(textRect, QString("At the end of the timer, your image will be captured."), QTextOption(Qt::AlignLeft));
 
-        QImage *playerImage = m_scene->getPlayerImage();
-        QPointF imagePoint(rect2.x() + rect2.width()/2-playerImage->width()/2,
+        QPixmap *playerPixmap = m_scene->getPlayerImage();
+        QPointF imagePoint(rect2.x() + rect2.width()/2-playerPixmap->width()/2,
                            textRect.y()+rect2.height()/6);
-        painter->drawImage(imagePoint, *playerImage);
-        painter->drawRect(QRectF(imagePoint, playerImage->size()));
+        painter->drawPixmap(imagePoint, *playerPixmap);
+        painter->setBrush(Qt::transparent);
+        painter->drawRect(QRectF(imagePoint, playerPixmap->size()));
 
-        textRect.setY(imagePoint.y() + playerImage->height() + rect2.height()/16);
+        textRect.setY(imagePoint.y() + playerPixmap->height() + rect2.height()/16);
         textRect.setHeight(rect2.height()/8);
 
         painter->drawText(textRect, QString("Capturing image in %1....").arg(m_initScreenCountDown), QTextOption(Qt::AlignCenter));
@@ -317,7 +325,7 @@ void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
 void FaceInvadersWidget::m_gameOver(int score)
 {
     //Begin timer for game reset
-    QTimer::singleShot(1000, this, SLOT(resetTimerExpired()));
+    m_restartTimer.start(1000);
     m_secondsToRestart = 8;
 }
 
@@ -328,12 +336,11 @@ void FaceInvadersWidget::resetTimerExpired()
     if(m_secondsToRestart == 0)
     {
         //Start new game
+        m_restartTimer.stop();
         FaceInvadersScene *scene = static_cast<FaceInvadersScene*>(this->scene());
         scene->resetGame();
         scene->beginGame();
     }
-    else
-        QTimer::singleShot(1000, this, SLOT(resetTimerExpired()));
 }
 
 void FaceInvadersWidget::initTimerExpired()
@@ -342,13 +349,12 @@ void FaceInvadersWidget::initTimerExpired()
     this->viewport()->update();
     if(m_initScreenCountDown == 0)
     {
+        m_initTimer.stop();
         //Start game
         this->beginGame();
         m_initScreen = false;
         emit ceaseImageUpdates();
     }
-    else
-        QTimer::singleShot(1000, this, SLOT(initTimerExpired()));
 }
 
 void FaceInvadersWidget::resetGame()
@@ -376,36 +382,36 @@ void FaceInvadersWidget::updatePlayerPosition(QPoint position)
 
 void FaceInvadersWidget::initScreen()
 {
-    if(m_initScreen)
-    {
-        m_initScreenCountDown = m_initScreenSeconds;
-        return;
-    }
-
+    m_restartTimer.stop();
     m_initScreen = true;
     m_initScreenCountDown = m_initScreenSeconds;
     m_scene->resetGame();
     this->viewport()->update();
 
-    QTimer::singleShot(1000, this, SLOT(initTimerExpired()));
+    m_initTimer.start(1000);
 
     emit faceImageUpdatesRequest();
 }
 
-void FaceInvadersWidget::updatePlayerImage(QImage *image)
+void FaceInvadersWidget::updatePlayerImage(QImageSharedPointer image)
 {
-    m_scene->setPlayerImage(image);
+    if(image.data() == NULL)
+        return;
+
+    m_scene->setPlayerImage(QPixmap::fromImage(*image));
+
+    this->viewport()->update();
 }
 
 PlayerItem::PlayerItem(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsItem(parent, scene)
 {
-    face = new QImage(":/images/defaultUser.png");
+    m_face = new QPixmap(":/images/defaultUser.png");
 }
 
 PlayerItem::~PlayerItem()
 {
-    delete face;
+    delete m_face;
 }
 
 QRectF PlayerItem::boundingRect() const
@@ -422,7 +428,7 @@ QPainterPath PlayerItem::shape() const
 
 void PlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    painter->drawImage(QPoint(-32,-32), *face, QRect(0,0,64,64));
+    painter->drawPixmap(QPoint(-32,-32), *m_face, QRect(0,0,64,64));
     if(hit)
     {
         painter->setPen(Qt::red);
@@ -430,18 +436,19 @@ void PlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
 }
 
-void PlayerItem::setFace(QImage *image)
+void PlayerItem::setFace(const QPixmap &image)
 {
-    if(image == NULL)
-        return;
+    delete m_face;
 
-    delete face;
-    face = image;
+    if(image.width() > image.height())
+        m_face = new QPixmap(image.scaledToWidth(64));
+    else
+        m_face = new QPixmap(image.scaledToHeight(64));
 }
 
-QImage *PlayerItem::getFace()
+QPixmap *PlayerItem::getFace()
 {
-    return face;
+    return m_face;
 }
 
 void PlayerItem::advance(int phase)
@@ -502,7 +509,7 @@ QPainterPath Invader::shape() const
 
 void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->drawImage(m_boundingRect.topLeft(), *m_image, m_image->rect());
+    painter->drawPixmap(m_boundingRect.topLeft(), *m_image, m_image->rect());
 #ifdef DEBUG_INVADER_SHAPE
     painter->drawPath(m_shape);
 #endif
@@ -526,28 +533,28 @@ void Invader::advance(int phase)
 
 void Invader::initApple()
 {
-    m_image = new QImage(":/images/invaders/AppleInvader.png");
+    m_image = new QPixmap(":/images/invaders/AppleInvader.png");
     m_boundingRect = QRectF(-32,-32,64,64);
     m_shape.addEllipse(-23,-20,50,50);
 }
 
 void Invader::initBanana()
 {
-    m_image = new QImage(":/images/invaders/BananaInvader.png");
+    m_image = new QPixmap(":/images/invaders/BananaInvader.png");
     m_boundingRect = QRectF(-32,-32,64,64);
     m_shape.addRect(-26,-16,58,30);
 }
 
 void Invader::initWatermelon()
 {
-    m_image = new QImage(":/images/invaders/WatermelonInvader.png");
+    m_image = new QPixmap(":/images/invaders/WatermelonInvader.png");
     m_boundingRect = QRectF(-32,-32,64,64);
     m_shape.addEllipse(-30,-30,60,60);
 }
 
 void Invader::initBug()
 {
-    m_image = new QImage(":/images/invaders/BugInvader.png");
+    m_image = new QPixmap(":/images/invaders/BugInvader.png");
     m_boundingRect = QRectF(-32,-32,64,64);
     m_shape.addRect(-32,-32,64,64);
 }

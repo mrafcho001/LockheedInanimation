@@ -25,7 +25,13 @@
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
 #include <QPoint>
-#include <QImage>
+#include <QPixmap>
+#include <QSharedPointer>
+#include <QTimer>
+
+
+typedef QSharedPointer<QImage> QImageSharedPointer;
+Q_DECLARE_METATYPE(QImageSharedPointer);
 
 //Forward declaration
 class PlayerItem;
@@ -142,10 +148,10 @@ public slots:
     void alienEvaded(int points);
 
     //! \brief Get Player image
-    QImage *getPlayerImage();
+    QPixmap *getPlayerImage();
 
     //! \brief Sets the player image
-    void setPlayerImage(QImage *image);
+    void setPlayerImage(const QPixmap &image);
 
 protected:
     //! \brief Draws background for the game
@@ -245,7 +251,7 @@ public slots:
     void initScreen();
 
     //! \brief Sets the player image
-    void updatePlayerImage(QImage *image);
+    void updatePlayerImage(QImageSharedPointer image);
 
 protected:
     //! \brief Used to maintain aspect ratio, \seeqtdoc
@@ -275,6 +281,9 @@ private:
     //Tunable variables
     int m_secondsBetweenGagmes;
     int m_initScreenSeconds;
+
+    QTimer m_initTimer;
+    QTimer m_restartTimer;
 
 public:
     static const int DefaultInitScreenTime = 10;
@@ -310,10 +319,10 @@ public:
       \warning The image is not copied! This class takes ownership of the pointer
       and frees the memory when done.
     */
-    void setFace(QImage *image);
+    void setFace(const QPixmap &image);
 
     //! \brief Gets the face image of the player
-    QImage *getFace();
+    QPixmap *getFace();
 
 signals:
     //! \brief Indicates the player has collided with an Invader
@@ -324,7 +333,7 @@ protected:
     void advance(int phase);
 
 private:
-    QImage *face;   //!< User face image
+    QPixmap *m_face;   //!< User face image
 
     bool hit; //Tempurary variable...
 
@@ -362,7 +371,7 @@ private:
     InvaderType m_type;         //!< Indicates the type of invader represented
     QRectF m_boundingRect;      //!< The bounding rectangle of the invader
     QPainterPath m_shape;       //!< The shape of the invader
-    QImage *m_image;            //!< Image of the invader
+    QPixmap *m_image;            //!< Image of the invader
 
     //Invader falling parameters
     qreal m_fallVelocity;       //!< The rate of falling from top to bottom of the Invader

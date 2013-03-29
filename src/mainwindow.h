@@ -24,8 +24,8 @@ public:
 
 
 public slots:
-    void UpdateImage(QImage *image);
-    void UpdateFace(QImage *image);
+    void UpdateImage(QImageSharedPointer image);
+    void UpdateFace(QImageSharedPointer image);
     void UpdatePosition(QRect rect);
     void DisableFacePositionUpdates();
     void EnableFacePositionUpdates();
@@ -43,7 +43,7 @@ private:
     PositionUpdater *pu;
 };
 
-class PositionUpdater : public QThread
+class PositionUpdater : public QObject
 {
     Q_OBJECT
 public:
@@ -56,12 +56,14 @@ public:
     void EnableFaceOnlyUpdates(bool enable = true);
     void EnableFaceHighlighting(bool enable = true);
 signals:
-    void UpdateFullImage(QImage *image);
-    void UpdateFaceImage(QImage *image);
+    void UpdateFullImage(QImageSharedPointer image);
+    void UpdateFaceImage(QImageSharedPointer image);
     void UpdatePosition(QRect rect);
 
-private:
+public slots:
     void run();
+
+private:
     FaceTracker *m_ft;
 
     QMutex mutex;
