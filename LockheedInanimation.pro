@@ -16,11 +16,18 @@ LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_vid
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/facetracker.cpp \
-    src/faceinvaderswidget.cpp
+    src/faceinvaderswidget.cpp \
+    src/serial.cpp \
+    src/corefeaturewidget.cpp \
+    src/hardwaremanager.cpp
 
 HEADERS  += src/mainwindow.h \
     src/facetracker.h \
-    src/faceinvaderswidget.h
+    src/faceinvaderswidget.h \
+    src/serial.h \
+    src/corefeaturewidget.h \
+    src/CommunicationProtocol.h \
+    src/hardwaremanager.h
 
 FORMS    += resources/mainwindow.ui
 
@@ -52,7 +59,7 @@ QMAKE_CLEAN += Makefile -r build/.[a-z]* build/*
 docs.depends = $(SOURCES)
 docs.commands = doxygen Doxyfile
 
-QMAKE_EXTRA_TARGETS += docs arduino
+QMAKE_EXTRA_TARGETS += docs arduino arduino_upload
 
 RESOURCES += \
     resources/resources.qrc
@@ -65,9 +72,11 @@ DEFINES +=  #DEBUG_FACETRACKING_TIMING=1
 DEFINES +=  #DEBUG_CAPTURE_TIMING=1
 DEFINES +=  DEBUG_REPORT_FPS=1
 DEFINES +=  #DEBUG_INVADER_SHAPE=1
-DEFINES += QT_FATAL_WARNINGS=1
+DEFINES +=  DEBUG_QTHREADS=1
 
 #Arduino Sketch
 arduino.depends = $(ARDUINO_SOURCES)
 arduino.commands = make -C src/Arduino/
 
+arduino_upload.depends = arduino
+arduino_upload.commands = make -C src/Arduino/ upload

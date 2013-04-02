@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_faceTracking">
        <attribute name="title">
@@ -83,6 +83,16 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>CoreFeatures</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="CoreFeatureWidget" name="wCoreFeatures" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -93,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>997</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -113,6 +123,12 @@
    <class>FaceInvadersWidget</class>
    <extends>QGraphicsView</extends>
    <header>src/faceinvaderswidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CoreFeatureWidget</class>
+   <extends>QWidget</extends>
+   <header>src/corefeaturewidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
