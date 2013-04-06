@@ -5,8 +5,91 @@
 #endif
 
 HardwareManager::HardwareManager(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_comm(new HardwareComm(this))
 {
+    connect(m_comm, SIGNAL(modeSwitchTriggered()), this, SIGNAL(ModeSwitchTriggered()));
+    connect(m_comm, SIGNAL(horizontalPositionChanged(qreal)), this, SLOT(m_updateHPosition(qreal)));
+    connect(m_comm, SIGNAL(verticalPositionChanged(qreal)), this, SLOT(m_updateVPosition(qreal)));
+
+    m_monitorH_ROM = HardwareManager::DefaultHorizontalROM;
+    m_monitorV_ROM = HardwareManager::DefaultVerticalROM;
+    m_cameraH_FOV = HardwareManager::DefaultCameraHFOV;
+    m_cameraV_FOV = HardwareManager::DefaultCameraVFOV;
+    m_toleranceH = HardwareManager::DefaultHTolerance;
+    m_toleranceV = HardwareManager::DefaultVTolerance;
+}
+
+bool HardwareManager::SetManualMode(bool manual_mode)
+{
+    return m_comm->enableManualControls(!manual_mode);
+}
+
+void HardwareManager::UpdateFacePosition(QPointF normalized_face_pos)
+{
+    //Determine if monitor position needs to be adjusted
+    if(qAbs(normalized_face_pos.x() - 0.5)*m_cameraH_FOV > m_toleranceH && !m_hMotion)
+    {
+        //Adjust H position
+        m_hMotion = true;
+        qreal newPosition = m_posH + (normalized_face_pos.x() - 0.5)*(m_cameraH_FOV/m_monitorH_ROM);
+
+        m_comm->setHorizontalPosition(newPosition);
+    }
+    if(qAbs(normalized_face_pos.y() - 0.5)*m_cameraV_FOV > m_toleranceV && !m_hMotion)
+    {
+        //Adjust V position
+        m_vMotion = true;
+        qreal newPosition = m_posV + (normalized_face_pos.y() - 0.5)*(m_cameraV_FOV/m_monitorV_ROM);
+
+        m_comm->setHorizontalPosition(newPosition);
+    }
+}
+
+void HardwareManager::SetCameraHFOV(qreal fov)
+{
+    m_cameraH_FOV = fov;
+}
+
+void HardwareManager::SetCameraVFOV(qreal fov)
+{
+    m_cameraV_FOV = fov;
+}
+
+void HardwareManager::SetCameraHTolerance(qreal tolerance)
+{
+    m_toleranceH = tolerance;
+}
+
+void HardwareManager::SetCameraVTolerance(qreal tolerance)
+{
+    m_toleranceV = tolerance;
+}
+
+void HardwareManager::SetPanROM(qreal rom)
+{
+    m_monitorH_ROM = rom;
+}
+
+void HardwareManager::SetTiltROM(qreal rom)
+{
+    m_monitorV_ROM = rom;
+}
+
+void HardwareManager::SetSerialPort(std::string &port)
+{
+    m_comm->setSerialTTY(port);
+}
+
+void HardwareManager::m_updateHPosition(qreal pos)
+{
+    m_posH = pos;
+    emit PositionChanged(m_posH, m_posV);
+}
+
+void HardwareManager::m_updateVPosition(qreal pos)
+{
+    m_posV = pos;
+    emit PositionChanged(m_posH, m_posV);
 }
 
 HardwareComm::HardwareComm(QObject *parent) :
@@ -111,6 +194,11 @@ void HardwareComm::processAsyncEvent(HardwareComm::Message msg)
         break;
 #endif
     }
+}
+
+void HardwareComm::setSerialTTY(std::string &tty)
+{
+    m_serialComm->setSerialTTY(tty);
 }
 
 bool HardwareComm::m_setPositionHelper(Message &msg, qreal position)
@@ -237,4 +325,9 @@ void ThreadSafeAsyncSerial::stop()
 #endif
     m_ceaseRequested = true;
     *m_serial << HardwareComm::Message();
+}
+
+void ThreadSafeAsyncSerial::setSerialTTY(std::string &tty)
+{
+    m_serial->open(tty);
 }

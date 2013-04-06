@@ -10,6 +10,10 @@ with the useful core functionality of this project, additional non-essential
 \li FaceInvaders - A space-invader's like game of dodging falling objects.
 \li "Sad" and evasive response to loud noises - Attempts to mimic avoiding getting yelled at.
 
+<b>Abandoned Features:</b>
+\li Peekaboo
+\li Evasive responses to loud noises
+
 \section implementationdetails Implementation Details
 OpenCV is used as the base for face recognition and implementing face tracking.
 The <a href="http://docs.opencv.org/doc/tutorials/objdetect/cascade_classifier/cascade_classifier.html">CascadeClassifier</a>
