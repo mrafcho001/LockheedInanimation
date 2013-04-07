@@ -24,22 +24,23 @@ bool HardwareManager::SetManualMode(bool manual_mode)
     return m_comm->enableManualControls(!manual_mode);
 }
 
-void HardwareManager::UpdateFacePosition(QPointF normalized_face_pos)
+void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
 {
+    QPointF center = normalized_face_pos.center();
     //Determine if monitor position needs to be adjusted
-    if(qAbs(normalized_face_pos.x() - 0.5)*m_cameraH_FOV > m_toleranceH && !m_hMotion)
+    if(qAbs(center.x() - 0.5)*m_cameraH_FOV > m_toleranceH && !m_hMotion)
     {
         //Adjust H position
         m_hMotion = true;
-        qreal newPosition = m_posH + (normalized_face_pos.x() - 0.5)*(m_cameraH_FOV/m_monitorH_ROM);
+        qreal newPosition = m_posH + (center.x() - 0.5)*(m_cameraH_FOV/m_monitorH_ROM);
 
         m_comm->setHorizontalPosition(newPosition);
     }
-    if(qAbs(normalized_face_pos.y() - 0.5)*m_cameraV_FOV > m_toleranceV && !m_hMotion)
+    if(qAbs(center.y() - 0.5)*m_cameraV_FOV > m_toleranceV && !m_hMotion)
     {
         //Adjust V position
         m_vMotion = true;
-        qreal newPosition = m_posV + (normalized_face_pos.y() - 0.5)*(m_cameraV_FOV/m_monitorV_ROM);
+        qreal newPosition = m_posV + (center.y() - 0.5)*(m_cameraV_FOV/m_monitorV_ROM);
 
         m_comm->setHorizontalPosition(newPosition);
     }
@@ -104,7 +105,10 @@ HardwareComm::HardwareComm(QObject *parent) :
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
     connect(m_serialComm, SIGNAL(AsyncMessage(HardwareComm::Message)),
-            this, SLOT(processAsyncEvent(Message)));
+            this, SLOT(processAsyncEvent(HardwareComm::Message)));
+    thread->start();
+
+    qRegisterMetaType<HardwareComm::Message>("HardwareComm::Message");
 }
 
 HardwareComm::~HardwareComm()
@@ -251,11 +255,13 @@ Serial& operator<<(Serial &serial, const HardwareComm::Message &msg)
 
 Serial& operator>>(Serial &serial, HardwareComm::Message &msg)
 {
+    qDebug() << "Reading...";
     serial >> msg.msg;
     if(msg.paramCount() == 1)
         serial >> msg.params.one;
     else if(msg.paramCount() == 1)
         serial >> msg.params.one >> msg.params.two;
+    qDebug() << "Read: " << msg.msg;
 
     return serial;
 }
@@ -272,10 +278,15 @@ HardwareComm::Message &HardwareComm::Message::operator =(const HardwareComm::Mes
 ThreadSafeAsyncSerial::ThreadSafeAsyncSerial(QObject *parent):
     QObject(parent), m_ceaseRequested(false), m_serial(new Serial)
 {
+    if(m_serial->is_open())
+        qDebug() << "Opened";
+    else
+        qDebug() << "Failed to open";
 }
 
 bool ThreadSafeAsyncSerial::sendMessage(const HardwareComm::Message &msg, HardwareComm::Message &response)
 {
+    qDebug() << "Sending: " << msg.msg;
     Sender sender;
     m_queueMutex.lock();
 
@@ -295,6 +306,7 @@ bool ThreadSafeAsyncSerial::sendMessage(const HardwareComm::Message &msg, Hardwa
 
 void ThreadSafeAsyncSerial::begin()
 {
+    qDebug() << "Beginning...";
     HardwareComm::Message readMsg;
     while(!m_ceaseRequested)
     {
@@ -309,10 +321,15 @@ void ThreadSafeAsyncSerial::begin()
         {
             //Check queue and return to proper receiver
             m_queueMutex.lock();
-            Sender *sender = m_senderQueue.dequeue();
-            sender->msg = readMsg;
-            m_queueMutex.unlock();
-            sender->cond.wakeOne();
+            if(!m_senderQueue.empty())
+            {
+                Sender *sender = m_senderQueue.dequeue();
+                sender->msg = readMsg;
+                m_queueMutex.unlock();
+                sender->cond.wakeOne();
+            }
+            else
+                m_queueMutex.unlock();
         }
     }
     emit finished();

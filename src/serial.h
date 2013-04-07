@@ -13,7 +13,7 @@ public:
 
     bool is_open() const;
     bool open();
-    bool open(std::string ttyDevice);
+    bool open(const std::string &ttyDevice);
     bool close();
     int error() const;
 

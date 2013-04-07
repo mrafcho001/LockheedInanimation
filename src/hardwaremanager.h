@@ -7,7 +7,8 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QQueue>
-#include <QPointF>
+#include <QRectF>
+#include <QMetaType>
 
 
 class HardwareComm;
@@ -26,7 +27,7 @@ signals:
 public slots:
     bool SetManualMode(bool manual_mode = true);
 
-    void UpdateFacePosition(QPointF normalized_face_pos);
+    void UpdateFacePosition(QRect normalized_face_pos);
 
     // Parameter setting
     /*! \brief Set the Camera horizontal FOV (Degrees) */
@@ -105,7 +106,6 @@ public:
             };
         }params;
     };
-
     qreal positionH() const;
     qreal positionV() const;
 
@@ -118,7 +118,7 @@ public slots:
 
     bool enableManualControls(bool enable = true);
 
-    void processAsyncEvent(Message msg);
+    void processAsyncEvent(HardwareComm::Message msg);
     void setSerialTTY(std::string &tty);
 
 signals:
@@ -137,6 +137,7 @@ private:
 
     ThreadSafeAsyncSerial *m_serialComm;
 };
+Q_DECLARE_METATYPE(HardwareComm::Message);
 
 Serial& operator<<(Serial& serial, const HardwareComm::Message &msg);
 Serial& operator>>(Serial& serial, HardwareComm::Message &msg);

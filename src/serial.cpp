@@ -5,11 +5,12 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-const std::string Serial::DefaultTTYDevice = "/dev/ttyUSB0";
+const std::string Serial::DefaultTTYDevice = "/dev/ttyACM0";
 
 Serial::Serial() :
     m_tty(Serial::DefaultTTYDevice)
 {
+    this->open();
 }
 
 Serial::Serial(const std::string ttyDevice) :
@@ -34,6 +35,12 @@ bool Serial::open()
     m_fd = ::open(m_tty.c_str(), O_RDWR | O_NOCTTY);
 
     return (m_fd != -1);
+}
+
+bool Serial::open(const std::string &ttyDevice)
+{
+    m_tty = ttyDevice;
+    return this->open();
 }
 
 bool Serial::close()
@@ -71,7 +78,7 @@ bool Serial::readByte(quint8 &data) const
 
 int Serial::writeBytes(const char *buffer, int nbytes)
 {
-    return read(m_fd, (void*)buffer, nbytes);
+    return write(m_fd, (void*)buffer, nbytes);
 }
 
 bool Serial::writeInt(const int integer)

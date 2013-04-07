@@ -4,9 +4,11 @@
 #include <QMainWindow>
 #include "facetracker.h"
 #include "faceinvaderswidget.h"
+#include "hardwaremanager.h"
 #include <QThread>
 #include <QWaitCondition>
 #include <QMutex>
+#include <QStateMachine>
 
 namespace Ui {
 class MainWindow;
@@ -17,7 +19,7 @@ class PositionUpdater;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -26,21 +28,29 @@ public:
 public slots:
     void UpdateImage(QImageSharedPointer image);
     void UpdateFace(QImageSharedPointer image);
-    void UpdatePosition(QRect rect);
-    void DisableFacePositionUpdates();
-    void EnableFacePositionUpdates();
-
-    void HandleTabChange(int index);
 
     void enableFaceImageUpdates();
     void disableFaceImageUpdates();
 
-    
+    void enterAutomaticMode();
+    void exitAutomaticMode();
+    void enterManualMode();
+    void exitManualMode();
+    void enterFaceInvadersMode();
+    void exitFaceInvadersMode();
+
+    void modeSwitched();
+
+signals:
+    void ModeSwitchTriggered();
+
 private:
     Ui::MainWindow *ui;
 
     FaceTracker *ft;
     PositionUpdater *pu;
+    QStateMachine *m_stateMachine;
+    HardwareManager *m_hardwareManager;
 };
 
 class PositionUpdater : public QObject

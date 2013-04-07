@@ -7,6 +7,7 @@
         <file>background.svg</file>
         <file>background2.png</file>
         <file>defaultUser.png</file>
+        <file>joystick.png</file>
     </qresource>
     <qresource prefix="/images/invaders">
         <file>AppleInvader.png</file>

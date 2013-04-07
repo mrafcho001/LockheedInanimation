@@ -380,6 +380,12 @@ void FaceInvadersWidget::updatePlayerPosition(QPoint position)
     this->m_scene->updatePlayerPosition(position);
 }
 
+void FaceInvadersWidget::updatePlayerPosition(QRect position)
+{
+    if(position.isValid())
+        this->updatePlayerPosition(position.center());
+}
+
 void FaceInvadersWidget::initScreen()
 {
     m_restartTimer.stop();

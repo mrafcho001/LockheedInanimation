@@ -4,10 +4,12 @@
 #include <QPainter>
 #include <QTime>
 #include <QDebug>
+#include <QState>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), ft(new FaceTracker(0)), pu(new PositionUpdater(ft))
+    ui(new Ui::MainWindow), ft(new FaceTracker(0)), pu(new PositionUpdater(ft)),
+    m_stateMachine(new QStateMachine(this)), m_hardwareManager(new HardwareManager(this))
 {
     ui->setupUi(this);
 
@@ -15,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ft->SetProcessingImageDimensions(320,240);
     ft->SetSearchScaleFactor(1.2f);
 
-    connect(ui->graphicsView, SIGNAL(ceaseImageUpdates()), this, SLOT(disableFaceImageUpdates()));
-    connect(ui->graphicsView, SIGNAL(faceImageUpdatesRequest()), this, SLOT(enableFaceImageUpdates()));
+    connect(ui->gvFaceInvaders, SIGNAL(ceaseImageUpdates()), this, SLOT(disableFaceImageUpdates()));
+    connect(ui->gvFaceInvaders, SIGNAL(faceImageUpdatesRequest()), this, SLOT(enableFaceImageUpdates()));
 
     connect(pu, SIGNAL(UpdateFullImage(QImageSharedPointer)),
             this, SLOT(UpdateImage(QImageSharedPointer)));
@@ -24,16 +26,38 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
             this, SLOT(UpdateFace(QImageSharedPointer)));
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(HandleTabChange(int)));
-    ui->tabWidget->setCurrentIndex(1);
-
-    EnableFacePositionUpdates();
-
     QThread *thread = new QThread(this);
     connect(thread, SIGNAL(started()), pu, SLOT(run()), Qt::QueuedConnection);
     pu->moveToThread(thread);
     thread->start();
-    ui->graphicsView->initScreen();
+
+    this->addAction(ui->actionModeSwitch);
+    connect(m_hardwareManager, SIGNAL(ModeSwitchTriggered()), this, SIGNAL(ModeSwitchTriggered()));
+    connect(ui->actionModeSwitch, SIGNAL(triggered()), this, SIGNAL(ModeSwitchTriggered()));
+    connect(this, SIGNAL(ModeSwitchTriggered()), this, SLOT(modeSwitched()));
+
+    //Setup statemachine
+    QState *automatic = new QState();
+    QState *manual = new QState();
+    QState *faceInvaders = new QState();
+
+    automatic->addTransition(this, SIGNAL(ModeSwitchTriggered()), manual);
+    connect(automatic, SIGNAL(exited()), this, SLOT(exitAutomaticMode()));
+    connect(automatic, SIGNAL(entered()), this, SLOT(enterAutomaticMode()));
+
+    manual->addTransition(this, SIGNAL(ModeSwitchTriggered()), faceInvaders);
+    connect(manual, SIGNAL(exited()), this, SLOT(exitManualMode()));
+    connect(manual, SIGNAL(entered()), this, SLOT(enterManualMode()));
+
+    faceInvaders->addTransition(this, SIGNAL(ModeSwitchTriggered()), automatic);
+    connect(faceInvaders, SIGNAL(exited()), this, SLOT(exitFaceInvadersMode()));
+    connect(faceInvaders, SIGNAL(entered()), this, SLOT(enterFaceInvadersMode()));
+
+    m_stateMachine->addState(automatic);
+    m_stateMachine->addState(manual);
+    m_stateMachine->addState(faceInvaders);
+    m_stateMachine->setInitialState(automatic);
+    m_stateMachine->start();
 }
 
 MainWindow::~MainWindow()
@@ -57,49 +81,12 @@ void MainWindow::UpdateFace(QImageSharedPointer image)
     ui->label_3->setPixmap(QPixmap::fromImage(*image));
 }
 
-void MainWindow::UpdatePosition(QRect rect)
-{
-    if(rect.isValid())
-        static_cast<FaceInvadersWidget*>(ui->graphicsView)->updatePlayerPosition(rect.center());
-}
-
-void MainWindow::DisableFacePositionUpdates()
-{
-    pu->EnablePositionUpdates(false);
-    disconnect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)));
-}
-
-void MainWindow::EnableFacePositionUpdates()
-{
-    pu->EnablePositionUpdates();
-    connect(pu, SIGNAL(UpdatePosition(QRect)), this, SLOT(UpdatePosition(QRect)), Qt::UniqueConnection);
-}
-
-void MainWindow::HandleTabChange(int index)
-{
-    if(index == 1)
-    {
-        pu->EnableFullImageUpdates(false);
-        pu->EnableFaceOnlyUpdates(false);
-        pu->EnableFaceHighlighting(false);
-        static_cast<FaceInvadersWidget*>(ui->graphicsView)->initScreen();
-        EnableFacePositionUpdates();
-    }
-    else
-    {
-        pu->EnableFullImageUpdates();
-        pu->EnableFaceHighlighting();
-        pu->EnableFaceOnlyUpdates();
-        DisableFacePositionUpdates();
-    }
-}
-
 void MainWindow::enableFaceImageUpdates()
 {
     pu->EnableFaceOnlyUpdates();
 
     connect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
-            ui->graphicsView, SLOT(updatePlayerImage(QImageSharedPointer)), Qt::UniqueConnection);
+            ui->gvFaceInvaders, SLOT(updatePlayerImage(QImageSharedPointer)), Qt::UniqueConnection);
 }
 
 void MainWindow::disableFaceImageUpdates()
@@ -107,7 +94,60 @@ void MainWindow::disableFaceImageUpdates()
     pu->EnableFaceOnlyUpdates(false);
 
     disconnect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
-            ui->graphicsView, SLOT(updatePlayerImage(QImageSharedPointer)));
+               ui->gvFaceInvaders, SLOT(updatePlayerImage(QImageSharedPointer)));
+}
+
+void MainWindow::enterAutomaticMode()
+{
+    pu->ResumeThread();
+    pu->EnablePositionUpdates(true);
+    pu->EnableFaceHighlighting(false);
+    pu->EnableFaceOnlyUpdates(false);
+    pu->EnableFullImageUpdates(false);
+
+    connect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
+    ui->tabWidget->setCurrentWidget(ui->tabAutomaticMode);
+}
+
+void MainWindow::exitAutomaticMode()
+{
+    pu->PauseThread();
+    disconnect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
+}
+
+void MainWindow::enterManualMode()
+{
+    pu->PauseThread();
+    ui->tabWidget->setCurrentWidget(ui->tabManualMode);
+    m_hardwareManager->SetManualMode(true);
+}
+
+void MainWindow::exitManualMode()
+{
+    //Nothing to be done??
+    m_hardwareManager->SetManualMode(false);
+}
+
+void MainWindow::enterFaceInvadersMode()
+{
+    pu->ResumeThread();
+    pu->EnablePositionUpdates(true);
+    connect(pu, SIGNAL(UpdatePosition(QRect)), ui->gvFaceInvaders, SLOT(updatePlayerPosition(QRect)), Qt::UniqueConnection);
+    ui->tabWidget->setCurrentWidget(ui->tabFaceInvaders);
+    ui->gvFaceInvaders->resetGame();
+    ui->gvFaceInvaders->initScreen();
+}
+
+void MainWindow::exitFaceInvadersMode()
+{
+    disconnect(pu, SIGNAL(UpdatePosition(QRect)), ui->gvFaceInvaders, SLOT(updatePlayerPosition(QRect)));
+    ui->gvFaceInvaders->endGame();
+    ui->gvFaceInvaders->resetGame();
+}
+
+void MainWindow::modeSwitched()
+{
+    qDebug() << "Mode switch triggered...";
 }
 
 PositionUpdater::PositionUpdater() : QObject(), m_updateMask(0x01) { }

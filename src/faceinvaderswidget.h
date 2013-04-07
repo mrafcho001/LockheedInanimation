@@ -207,7 +207,7 @@ public:
 
     //! \brief Used to maintain aspect ratio of widget, \seeqtdoc
     int heightForWidth(int w) const;
-    
+
 signals:
     //! \brief See FaceInvadersScene::gameOver()
     void gameOver(int score);
@@ -226,7 +226,7 @@ signals:
     /*! \brief Indicates that the class no longer wants to recieve updates for
                the player image. */
     void ceaseImageUpdates();
-    
+
 public slots:
     //! \brief Calls FaceInvadersScene::resetGame()
     void resetGame();
@@ -242,6 +242,8 @@ public slots:
 
     //! \brief Calls FaceInvadersScene::updatePlayerPosition()
     void updatePlayerPosition(QPoint position);
+    //! \brief Calls FaceInvadersScene::updatePlayerPosition()
+    void updatePlayerPosition(QRect position);
 
     /*! \brief Shows a brief screen to acquire user image
 

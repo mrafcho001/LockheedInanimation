@@ -27,7 +27,8 @@ HEADERS  += src/mainwindow.h \
     src/serial.h \
     src/corefeaturewidget.h \
     src/CommunicationProtocol.h \
-    src/hardwaremanager.h
+    src/hardwaremanager.h \
+    src/Arduino/arduino_sketch.ino
 
 FORMS    += resources/mainwindow.ui
 
