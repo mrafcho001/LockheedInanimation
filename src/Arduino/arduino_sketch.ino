@@ -86,13 +86,17 @@ bool getMessage(Message &msg)
 {
     if(Serial.available() >= 2)
     {
-        //Serial.readBytes((char*)&msg.msg, 2);
-        byte lsb = Serial.read();
-        byte msb = Serial.read();
-        msg.msg = word(msb, lsb);
-        if((GET_MSG_PARAM_COUNT(msg.msg) >= 1) && (Serial.available() >= 1))
+        //byte lsb = Serial.read();
+        //byte msb = Serial.read();
+        //msg.msg = word(msb, lsb);
+        msg.msg = Serial.parseInt();
+        while(GET_MSG_PARAM_COUNT(msg.msg) > Serial.available())
+        {
+            //wait extra bytes
+        }
+        if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
             msg.param1 = Serial.read();
-        if((GET_MSG_PARAM_COUNT(msg.msg) == 2) && (Serial.available() >= 1))
+        if(GET_MSG_PARAM_COUNT(msg.msg) == 2)
             msg.param2 = Serial.read();
     }
     else
@@ -103,6 +107,7 @@ void sendMessage(Message &msg)
 {
     Serial.write(lowByte(msg.msg));
     Serial.write(highByte(msg.msg));
+    Serial.print(msg.msg);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
         Serial.write(msg.param1);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 2)
@@ -146,14 +151,17 @@ bool performSimple(Message &msg)
         digitalWrite(13,LOW);
         break;
     case MESSAGE_ADJUST_H_POSITION:
+        response.msg = MESSAGE_NACK;
 
         break;
     case MESSAGE_ADJUST_V_POSITION:
+        response.msg = MESSAGE_NACK;
 
         break;
 
     default:
-        return false;
+        response.msg = MESSAGE_NACK;
+        //return false;
     }
 
     sendMessage(response);

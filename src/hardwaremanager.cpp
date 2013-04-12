@@ -241,9 +241,53 @@ bool HardwareComm::Message::isAsync() const
     return this->msg & MESSAGE_TYPE_ASYNC;
 }
 
+QString msgToString(quint16 msg)
+{
+    switch(msg)
+    {
+    case MESSAGE_ECHO_REQUEST:
+        return QString("MESSAGE_ECHO_REQUEST");
+    case MESSAGE_ECHO_RESPONSE:
+        return QString("MESSAGE_ECHO_RESPONSE");
+    case MESSAGE_ACK:
+        return QString("MESSAGE_ACK");
+    case MESSAGE_NACK:
+        return QString("MESSAGE_NACK");
+    case MESSAGE_ENABLE_MANUAL_CONTROLS:
+        return QString("MESSAGE_ENABLE_MANUAL_CONTROLS");
+    case MESSAGE_DISABLE_MANUAL_CONTROLS:
+        return QString("MESSAGE_DISABLE_MANUAL_CONTROLS");
+    case MESSAGE_ADJUST_H_POSITION:
+        return QString("MESSAGE_ADJUST_H_POSITION");
+    case MESSAGE_ADJUST_V_POSITION:
+        return QString("MESSAGE_ADJUST_V_POSITION");
+    case MESSAGE_POSITION_REQUEST:
+        return QString("MESSAGE_POSITION_REQUEST");
+    case MESSAGE_POSITION_RESPONSE:
+        return QString("MESSAGE_POSITION_RESPONSE");
+    case MESSAGE_POSITION_H_REQUEST:
+        return QString("MESSAGE_POSITION_H_REQUEST");
+    case MESSAGE_POSITION_V_REQUEST:
+        return QString("MESSAGE_POSITION_V_REQUEST");
+    case MESSAGE_POSITION_V_RESPONSE:
+        return QString("MESSAGE_POSITION_V_RESPONSE");
+    case MESSAGE_POSITION_H_RESPONSE:
+        return QString("MESSAGE_POSITION_H_RESPONSE");
+    case MESSAGE_POSITION_UPDATE:
+        return QString("MESSAGE_POSITION_UPDATE");
+    case MESSAGE_POSITION_REACHED:
+        return QString("MESSAGE_POSITION_REACHED");
+    case MESSAGE_POSITION_H_REACHED:
+        return QString("MESSAGE_POSITION_H_REACHED");
+    case MESSAGE_POSITION_V_REACHED:
+        return QString("MESSAGE_POSITION_V_REACHED");
+    }
+    return QString("unrecognized message! %1").arg(msg);
+}
 
 Serial& operator<<(Serial &serial, const HardwareComm::Message &msg)
 {
+    qDebug() << "Writing: " << msgToString(msg.msg);
     serial << msg.msg;
     if(msg.paramCount() == 1)
         serial << msg.params.one;
@@ -259,9 +303,9 @@ Serial& operator>>(Serial &serial, HardwareComm::Message &msg)
     serial >> msg.msg;
     if(msg.paramCount() == 1)
         serial >> msg.params.one;
-    else if(msg.paramCount() == 1)
+    else if(msg.paramCount() == 2)
         serial >> msg.params.one >> msg.params.two;
-    qDebug() << "Read: " << msg.msg;
+    qDebug() << "Read: " << msgToString(msg.msg);
 
     return serial;
 }

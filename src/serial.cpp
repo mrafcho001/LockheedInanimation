@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <QDebug>
+#include <stdio.h>
 
 const std::string Serial::DefaultTTYDevice = "/dev/ttyACM0";
 
@@ -63,7 +65,15 @@ int Serial::readBytes(char *buffer, int nbytes) const
 
 bool Serial::readInt(int &data) const
 {
-    return read(m_fd, (void*)&data, sizeof(int)) == sizeof(int);
+    data = 0;
+    quint8 byte;
+    for(unsigned int i = 0; i < sizeof(int); i++)
+    {
+        if(read(m_fd, (void*)&byte, sizeof(quint8)) != sizeof(int))
+            return false;
+        data |= ((unsigned int)byte)<<(i*8);
+    }
+    return true;
 }
 
 bool Serial::readChar(char &data) const
@@ -83,7 +93,16 @@ int Serial::writeBytes(const char *buffer, int nbytes)
 
 bool Serial::writeInt(const int integer)
 {
-    return write(m_fd, (void*)&integer, sizeof(int)) == sizeof(int);
+    unsigned int val = integer;
+    bool retValue = true;
+    for(unsigned int i = 0; i < sizeof(int); i++)
+    {
+        quint8 byte = val & 0xFF;
+        retValue &= write(m_fd, (void*)&byte, sizeof(quint8)) == sizeof(quint8);
+        val = val >> 8;
+    }
+
+    return retValue;
 }
 
 bool Serial::writeChar(const char character)
@@ -98,48 +117,64 @@ bool Serial::writeByte(const quint8 &data) const
 
 Serial &Serial::operator <<(const int &integer)
 {
+    qDebug() << "Triggering operator<<(int)";
     m_failbit = !this->writeInt(integer);
     return *this;
 }
 
 Serial &Serial::operator <<(const char &character)
 {
+    qDebug() << "Triggering operator<<(char)";
     m_failbit = !this->writeChar(character);
     return *this;
 }
 
 Serial &Serial::operator <<(const quint16 &data)
 {
-    m_failbit = !this->writeBytes((char*)&data, sizeof(data));
+    qDebug() << "Triggering operator<<(quint16)";
+//    m_failbit = !this->writeByte((quint8)data);
+//    m_failbit |= !this->writeByte((quint8)(data>>8));
+    FILE *f = fdopen(m_fd, "w");
+    fprintf(f, "%d", data);
+
     return *this;
 }
 
 Serial &Serial::operator <<(const quint8 &data)
 {
+    qDebug() << "Triggering operator<<(quint8)";
     m_failbit = !this->writeByte(data);
     return *this;
 }
 
 Serial &Serial::operator >>(int &integer)
 {
+    qDebug() << "Triggering operator>>(int)";
     m_failbit = !this->readInt(integer);
     return *this;
 }
 
 Serial &Serial::operator >>(char &character)
 {
+    qDebug() << "Triggering operator>>(char)";
     m_failbit = !this->readChar(character);
     return *this;
 }
 
 Serial &Serial::operator >>(quint16 &data)
 {
-    m_failbit = !this->readBytes((char*)&data, sizeof(data));
+    data = 0;
+    quint8 lsb, msb;
+    m_failbit = !this->readByte(lsb);
+    m_failbit |= !this->readByte(msb);
+    data = (quint16)msb| (((quint16)lsb) << 8);
+
     return *this;
 }
 
 Serial &Serial::operator >>(quint8 &data)
 {
+    qDebug() << "Triggering operator>>(quint8)";
     m_failbit = !this->readByte(data);
     return *this;
 }
