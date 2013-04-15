@@ -1,5 +1,6 @@
 #include "hardwaremanager.h"
 #include <QThread>
+#include <QTimer>
 #if defined(DEBUG_UNHANDLED_MESSAGES) || defined(DEBUG_QTHREADS)
 #include <QDebug>
 #endif
@@ -21,7 +22,7 @@ HardwareManager::HardwareManager(QObject *parent) :
 
 bool HardwareManager::SetManualMode(bool manual_mode)
 {
-    return m_comm->enableManualControls(!manual_mode);
+    return m_comm->enableManualControls(manual_mode);
 }
 
 void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
@@ -96,17 +97,21 @@ void HardwareManager::m_updateVPosition(qreal pos)
 HardwareComm::HardwareComm(QObject *parent) :
     QObject(parent), m_serialComm(new ThreadSafeAsyncSerial)
 {
-    QThread *thread = new QThread;
+    m_serialCommThread = new QThread;
 
-    m_serialComm->moveToThread(thread);
-    connect(thread, SIGNAL(started()), m_serialComm, SLOT(begin()));
-    connect(m_serialComm, SIGNAL(finished()), thread, SLOT(quit()));
-    connect(thread, SIGNAL(finished()), m_serialComm, SLOT(deleteLater()));
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    m_serialComm->moveToThread(m_serialCommThread);
+    connect(m_serialCommThread, SIGNAL(started()), m_serialComm, SLOT(begin()));
+    connect(m_serialComm, SIGNAL(finished()), m_serialCommThread, SLOT(quit()));
+    connect(m_serialCommThread, SIGNAL(finished()), m_serialComm, SLOT(deleteLater()));
+    connect(m_serialCommThread, SIGNAL(finished()), m_serialCommThread, SLOT(deleteLater()));
 
     connect(m_serialComm, SIGNAL(AsyncMessage(HardwareComm::Message)),
             this, SLOT(processAsyncEvent(HardwareComm::Message)));
-    thread->start();
+    m_serialCommThread->start();
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(setCommReady()));
+    this->setSerialTTY(Serial::DefaultTTYDevice);
 
     qRegisterMetaType<HardwareComm::Message>("HardwareComm::Message");
 }
@@ -114,6 +119,8 @@ HardwareComm::HardwareComm(QObject *parent) :
 HardwareComm::~HardwareComm()
 {
     m_serialComm->stop();
+    m_serialCommThread->quit();
+    m_serialCommThread->wait();
 }
 
 qreal HardwareComm::positionH() const
@@ -128,9 +135,14 @@ qreal HardwareComm::positionV() const
 
 qreal HardwareComm::retrievePositionH()
 {
+    if(!m_serialComm->isReady())
+        return -1.0;
+
     Message msg(MESSAGE_POSITION_H_REQUEST);
     Message response;
-    m_serialComm->sendMessage(msg, response);
+    if(!m_serialComm->sendMessage(msg, response))
+        return -1.0;
+
     m_hPosition = response.params.one;
 
     return m_hPosition;
@@ -140,7 +152,9 @@ qreal HardwareComm::retrievePositionV()
 {
     Message msg(MESSAGE_POSITION_V_REQUEST);
     Message response;
-    m_serialComm->sendMessage(msg, response);
+    if(!m_serialComm->sendMessage(msg, response))
+        return -1.0;
+
     m_vPosition = response.params.one;
 
     return m_vPosition;
@@ -200,13 +214,25 @@ void HardwareComm::processAsyncEvent(HardwareComm::Message msg)
     }
 }
 
-void HardwareComm::setSerialTTY(std::string &tty)
+void HardwareComm::setSerialTTY(const std::string &tty)
 {
-    m_serialComm->setSerialTTY(tty);
+    m_serialComm->openSerialTTY(tty);
+    m_timer->setSingleShot(true);
+    m_timer->start(1000);
+}
+
+void HardwareComm::setCommReady()
+{
+    qDebug() << "setCommRead()...";
+    if(!m_serialComm->isReady())
+        m_serialComm->setReady();
 }
 
 bool HardwareComm::m_setPositionHelper(Message &msg, qreal position)
 {
+    if(m_serialComm->isReady())
+        return false;
+
     if(position > 1.0f)
         msg.params.one = 255;
     else if(position < 0.0f)
@@ -287,7 +313,6 @@ QString msgToString(quint16 msg)
 
 Serial& operator<<(Serial &serial, const HardwareComm::Message &msg)
 {
-    qDebug() << "Writing: " << msgToString(msg.msg);
     serial << msg.msg;
     if(msg.paramCount() == 1)
         serial << msg.params.one;
@@ -299,13 +324,11 @@ Serial& operator<<(Serial &serial, const HardwareComm::Message &msg)
 
 Serial& operator>>(Serial &serial, HardwareComm::Message &msg)
 {
-    qDebug() << "Reading...";
     serial >> msg.msg;
     if(msg.paramCount() == 1)
         serial >> msg.params.one;
     else if(msg.paramCount() == 2)
         serial >> msg.params.one >> msg.params.two;
-    qDebug() << "Read: " << msgToString(msg.msg);
 
     return serial;
 }
@@ -320,40 +343,57 @@ HardwareComm::Message &HardwareComm::Message::operator =(const HardwareComm::Mes
 
 
 ThreadSafeAsyncSerial::ThreadSafeAsyncSerial(QObject *parent):
-    QObject(parent), m_ceaseRequested(false), m_serial(new Serial)
+    QObject(parent), m_ceaseRequested(false), m_serial(new Serial), m_isReady(false)
 {
-    if(m_serial->is_open())
-        qDebug() << "Opened";
-    else
-        qDebug() << "Failed to open";
+    m_readyMutex.tryLock();
 }
 
 bool ThreadSafeAsyncSerial::sendMessage(const HardwareComm::Message &msg, HardwareComm::Message &response)
 {
-    qDebug() << "Sending: " << msg.msg;
+    QMutexLocker locker(&m_queueMutex);
+    if(!m_isReady)
+        return false;
+#ifdef DEBUG_SERIAL_COMM
+    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): Sending: " << msgToString(msg.msg);
+#endif
     Sender sender;
-    m_queueMutex.lock();
 
     m_senderQueue.enqueue(&sender);
     *m_serial << msg;
     sender.cond.wait(&m_queueMutex);
 
-    m_queueMutex.unlock();
+#ifdef DEBUG_SERIAL_COMM
+    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): response: " << msgToString(sender.response.msg);
+#endif
 
-    response = sender.msg;
-    if( (sender.msg.msg & MESSAGE_ACK) == MESSAGE_ACK )
-        return true;
-    //else if( (sender.msg.msg ^ MESSAGE_NACK) == 0 )
-    return false;
+    response = sender.response;
+    return true;
+}
+
+bool ThreadSafeAsyncSerial::isReady() const
+{
+    return m_isReady;
 }
 
 
 void ThreadSafeAsyncSerial::begin()
 {
-    qDebug() << "Beginning...";
+#ifdef DEBUG_QTHREADS
+    qDebug() << "begin(): called";
+#endif
     HardwareComm::Message readMsg;
     while(!m_ceaseRequested)
     {
+        if(!m_isReady)
+        {
+#ifdef DEBUG_QTHREADS
+            qDebug() << "begin(): not ready, blocking on mutex...";
+#endif
+            m_readyMutex.lock();
+            m_readyMutex.unlock();
+            if(m_ceaseRequested)
+                break;
+        }
         if(!((*m_serial) >> readMsg))
             continue;
 
@@ -368,7 +408,7 @@ void ThreadSafeAsyncSerial::begin()
             if(!m_senderQueue.empty())
             {
                 Sender *sender = m_senderQueue.dequeue();
-                sender->msg = readMsg;
+                sender->response = readMsg;
                 m_queueMutex.unlock();
                 sender->cond.wakeOne();
             }
@@ -376,19 +416,38 @@ void ThreadSafeAsyncSerial::begin()
                 m_queueMutex.unlock();
         }
     }
+#ifdef DEBUG_QTHREADS
+    qDebug() << "ThreadSafeAsyncSerial::begin(): loop complete.";
+#endif
     emit finished();
 }
 
 void ThreadSafeAsyncSerial::stop()
 {
 #ifdef DEBUG_QTHREADS
-    qDebug() << "ThreadSafeAsyncSerial::stop()";
+    qDebug() << "ThreadSafeAsyncSerial::stop(): attempting to stop read loop";
 #endif
     m_ceaseRequested = true;
+    if(!m_isReady)
+        m_readyMutex.unlock();
     *m_serial << HardwareComm::Message();
 }
 
-void ThreadSafeAsyncSerial::setSerialTTY(std::string &tty)
+bool ThreadSafeAsyncSerial::openSerialTTY(const std::string &tty)
 {
+    this->m_readyMutex.tryLock();
+    m_isReady = false;
     m_serial->open(tty);
+    return m_serial->is_open();
+}
+
+
+void ThreadSafeAsyncSerial::setReady()
+{
+#ifdef DEBUG_QTHREADS
+    qDebug() << "ThreadSafeAsyncSerial::setReady(): ublocking read loop";
+#endif
+
+    this->m_isReady = true;
+    this->m_readyMutex.unlock();
 }

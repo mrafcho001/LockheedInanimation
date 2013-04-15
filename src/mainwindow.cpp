@@ -3,8 +3,10 @@
 #include "facetracker.h"
 #include <QPainter>
 #include <QTime>
-#include <QDebug>
 #include <QState>
+#if defined(DEBUG_MODE_SWITCHING)
+#include <QDebug>
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -26,15 +28,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pu, SIGNAL(UpdateFaceImage(QImageSharedPointer)),
             this, SLOT(UpdateFace(QImageSharedPointer)));
 
-    QThread *thread = new QThread(this);
-    connect(thread, SIGNAL(started()), pu, SLOT(run()), Qt::QueuedConnection);
-    pu->moveToThread(thread);
-    thread->start();
+    m_puThread = new QThread(this);
+    connect(m_puThread, SIGNAL(started()), pu, SLOT(run()), Qt::QueuedConnection);
+    pu->moveToThread(m_puThread);
+    m_puThread->start();
 
     this->addAction(ui->actionModeSwitch);
     connect(m_hardwareManager, SIGNAL(ModeSwitchTriggered()), this, SIGNAL(ModeSwitchTriggered()));
     connect(ui->actionModeSwitch, SIGNAL(triggered()), this, SIGNAL(ModeSwitchTriggered()));
+#if defined(DEBUG_MODE_SWITCHING)
     connect(this, SIGNAL(ModeSwitchTriggered()), this, SLOT(modeSwitched()));
+#endif
 
     //Setup statemachine
     QState *automatic = new QState();
@@ -107,6 +111,9 @@ void MainWindow::enterAutomaticMode()
 
     connect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
     ui->tabWidget->setCurrentWidget(ui->tabAutomaticMode);
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::enterAutomaticMode(): done";
+#endif
 }
 
 void MainWindow::exitAutomaticMode()
@@ -136,6 +143,10 @@ void MainWindow::enterFaceInvadersMode()
     ui->tabWidget->setCurrentWidget(ui->tabFaceInvaders);
     ui->gvFaceInvaders->resetGame();
     ui->gvFaceInvaders->initScreen();
+
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::enterFaceInvadersMode(): done";
+#endif
 }
 
 void MainWindow::exitFaceInvadersMode()
@@ -143,6 +154,10 @@ void MainWindow::exitFaceInvadersMode()
     disconnect(pu, SIGNAL(UpdatePosition(QRect)), ui->gvFaceInvaders, SLOT(updatePlayerPosition(QRect)));
     ui->gvFaceInvaders->endGame();
     ui->gvFaceInvaders->resetGame();
+
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::exitFaceInvadersMode(): done";
+#endif
 }
 
 void MainWindow::modeSwitched()
@@ -150,9 +165,17 @@ void MainWindow::modeSwitched()
     qDebug() << "Mode switch triggered...";
 }
 
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    pu->Quit();
+    m_puThread->quit();
+    m_puThread->wait();
+}
+
+
 PositionUpdater::PositionUpdater() : QObject(), m_updateMask(0x01) { }
 PositionUpdater::PositionUpdater(FaceTracker *ft, QObject *parent):
-    QObject(parent), m_ft(ft), stopped(false) { }
+    QObject(parent), m_ft(ft), stopped(false), m_quitRequested(false) { }
 
 void PositionUpdater::PauseThread()
 {
@@ -167,6 +190,9 @@ void PositionUpdater::ResumeThread()
     stopped = false;
     condition.wakeAll();
     mutex.unlock();
+#ifdef DEBUG_QTHREADS
+    qDebug() << "PositionUpdater::ResumeThread(): done";
+#endif
 }
 
 void PositionUpdater::EnableFullImageUpdates(bool enable)
@@ -201,6 +227,13 @@ void PositionUpdater::EnableFaceHighlighting(bool enable)
         m_updateMask &= ~(static_cast<quint8>(1)<<3);
 }
 
+void PositionUpdater::Quit()
+{
+    m_quitRequested = true;
+    if(stopped)
+        condition.wakeAll();
+}
+
 void PositionUpdater::run()
 {
 #ifdef DEBUG_REPORT_FPS
@@ -208,10 +241,15 @@ void PositionUpdater::run()
     time.start();
     int counter = 0;
 #endif
-    while(1)
+    while(!m_quitRequested)
     {
         mutex.lock();
-        if(stopped) condition.wait(&mutex);
+        if(stopped)
+        {
+            condition.wait(&mutex);
+            if(m_quitRequested)
+                return;
+        }
         mutex.unlock();
 
 #ifdef DEBUG_REPORT_FPS
@@ -258,4 +296,7 @@ void PositionUpdater::run()
             emit UpdateFullImage(imagePtr);
         }
     }
+#ifdef DEBUG_QTHREADS
+    qDebug() << "PositionUpdater::run(): done";
+#endif
 }

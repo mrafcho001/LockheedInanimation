@@ -9,6 +9,7 @@
 #include <QQueue>
 #include <QRectF>
 #include <QMetaType>
+#include <QTimer>
 
 
 class HardwareComm;
@@ -119,7 +120,8 @@ public slots:
     bool enableManualControls(bool enable = true);
 
     void processAsyncEvent(HardwareComm::Message msg);
-    void setSerialTTY(std::string &tty);
+    void setSerialTTY(const std::string &tty);
+    void setCommReady();
 
 signals:
     void verticalPositionChanged(qreal position);
@@ -136,6 +138,8 @@ private:
     qreal m_vPosition;
 
     ThreadSafeAsyncSerial *m_serialComm;
+    QThread *m_serialCommThread;
+    QTimer *m_timer;
 };
 Q_DECLARE_METATYPE(HardwareComm::Message);
 
@@ -148,16 +152,19 @@ class ThreadSafeAsyncSerial : public QObject
 public:
     explicit ThreadSafeAsyncSerial(QObject *parent = 0);
     bool sendMessage(const HardwareComm::Message &msg, HardwareComm::Message &response);
+    bool isReady() const;
 
 public slots:
     void begin();
     void stop();
 
-    void setSerialTTY(std::string &tty);
+    bool openSerialTTY(const std::string &tty);
+    void setReady();
 
 signals:
     void AsyncMessage(HardwareComm::Message msg);
     void finished();
+
 
 private:
     bool m_ceaseRequested;
@@ -167,10 +174,13 @@ private:
     struct Sender
     {
         QWaitCondition cond;
-        HardwareComm::Message msg;
+        HardwareComm::Message response;
     };
     QQueue<Sender*> m_senderQueue;
     QMutex m_queueMutex;
+
+    bool m_isReady;
+    QMutex m_readyMutex;
 
 };
 

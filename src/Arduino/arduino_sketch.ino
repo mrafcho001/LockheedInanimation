@@ -86,17 +86,17 @@ bool getMessage(Message &msg)
 {
     if(Serial.available() >= 2)
     {
-        //byte lsb = Serial.read();
-        //byte msb = Serial.read();
-        //msg.msg = word(msb, lsb);
-        msg.msg = Serial.parseInt();
+        byte lsb = Serial.read();
+        byte msb = Serial.read();
+        msg.msg = word(msb, lsb);
+        //msg.msg = Serial.parseInt();
         while(GET_MSG_PARAM_COUNT(msg.msg) > Serial.available())
         {
             //wait extra bytes
         }
         if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
             msg.param1 = Serial.read();
-        if(GET_MSG_PARAM_COUNT(msg.msg) == 2)
+        if(GET_MSG_PARAM_COUNT(msg.msg) >= 2)
             msg.param2 = Serial.read();
     }
     else
@@ -107,7 +107,6 @@ void sendMessage(Message &msg)
 {
     Serial.write(lowByte(msg.msg));
     Serial.write(highByte(msg.msg));
-    Serial.print(msg.msg);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
         Serial.write(msg.param1);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 2)

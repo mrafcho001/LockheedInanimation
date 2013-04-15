@@ -12,13 +12,11 @@ const std::string Serial::DefaultTTYDevice = "/dev/ttyACM0";
 Serial::Serial() :
     m_tty(Serial::DefaultTTYDevice)
 {
-    this->open();
 }
 
 Serial::Serial(const std::string ttyDevice) :
     m_tty(ttyDevice)
 {
-    this->open();
 }
 
 bool Serial::is_open() const
@@ -117,46 +115,38 @@ bool Serial::writeByte(const quint8 &data) const
 
 Serial &Serial::operator <<(const int &integer)
 {
-    qDebug() << "Triggering operator<<(int)";
     m_failbit = !this->writeInt(integer);
     return *this;
 }
 
 Serial &Serial::operator <<(const char &character)
 {
-    qDebug() << "Triggering operator<<(char)";
     m_failbit = !this->writeChar(character);
     return *this;
 }
 
 Serial &Serial::operator <<(const quint16 &data)
 {
-    qDebug() << "Triggering operator<<(quint16)";
-//    m_failbit = !this->writeByte((quint8)data);
-//    m_failbit |= !this->writeByte((quint8)(data>>8));
-    FILE *f = fdopen(m_fd, "w");
-    fprintf(f, "%d", data);
+    m_failbit = !this->writeByte((quint8)(data&0xFF));
+    m_failbit |= !this->writeByte((quint8)(data>>8));
 
     return *this;
 }
 
 Serial &Serial::operator <<(const quint8 &data)
 {
-    qDebug() << "Triggering operator<<(quint8)";
     m_failbit = !this->writeByte(data);
     return *this;
 }
 
 Serial &Serial::operator >>(int &integer)
 {
-    qDebug() << "Triggering operator>>(int)";
     m_failbit = !this->readInt(integer);
     return *this;
 }
 
 Serial &Serial::operator >>(char &character)
 {
-    qDebug() << "Triggering operator>>(char)";
     m_failbit = !this->readChar(character);
     return *this;
 }
@@ -167,14 +157,13 @@ Serial &Serial::operator >>(quint16 &data)
     quint8 lsb, msb;
     m_failbit = !this->readByte(lsb);
     m_failbit |= !this->readByte(msb);
-    data = (quint16)msb| (((quint16)lsb) << 8);
+    data = (quint16)lsb| (((quint16)msb) << 8);
 
     return *this;
 }
 
 Serial &Serial::operator >>(quint8 &data)
 {
-    qDebug() << "Triggering operator>>(quint8)";
     m_failbit = !this->readByte(data);
     return *this;
 }

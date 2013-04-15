@@ -44,11 +44,15 @@ public slots:
 signals:
     void ModeSwitchTriggered();
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 private:
     Ui::MainWindow *ui;
 
     FaceTracker *ft;
     PositionUpdater *pu;
+    QThread *m_puThread;
     QStateMachine *m_stateMachine;
     HardwareManager *m_hardwareManager;
 };
@@ -71,6 +75,7 @@ signals:
     void UpdatePosition(QRect rect);
 
 public slots:
+    void Quit();
     void run();
 
 private:
@@ -86,6 +91,7 @@ private:
       bit 3 - highlight face in full image
     */
     quint8 m_updateMask;
+    bool m_quitRequested;
 };
 
 #endif // MAINWINDOW_H
