@@ -4,9 +4,9 @@ const int vert_extend = 3;        // pin 3 controls the extention of the vertica
 const int vert_retract = 5;       // pin 5 controls the retraction of the vertical actuator
 const int horiz_extend = 7;       // pin 7 controls the extention of the horizontal actuator
 const int horiz_retract = 9;      // pin 9 controls the retraction of the horizotnal actuator
-const int vert_wiper = A0;
-const int horiz_wiper = A1;
-const int joy_vert = A2;
+const int vert_wiper = A1;
+const int horiz_wiper = A2;
+const int joy_vert = A4;
 const int joy_horiz = A3;
 const int joy_sel = 2;           // pin 12 reads the push button of the joystick
 
@@ -26,16 +26,20 @@ struct Message
 
 unsigned int requestQueue;
 #define JOYSTICK_PRESSED_QUEUE            (1<<0)
+#define POSITION_H_REACHED_QUEUE            (1<<1)
+#define POSITION_V_REACHED_QUEUE            (1<<2)
 
 Message lastMSG;
 bool manualModeEnabled = false;
 bool adjustingH = false;
+int requestedH = 0;
+int requestedV = 0;
 bool adjustingV = false;
 
-const int actuatorVMax = 200;
-const int actuatorVMin = 50;
-const int actuatorHMax = 200;
-const int actuatorHMin = 50;
+const int actuatorVMax = 95;
+const int actuatorVMin = 22;
+const int actuatorHMax = 130;
+const int actuatorHMin = 10;
 
 enum ActuatorDirection { ACTUATOR_FORWARD, ACTUATOR_STOP, ACTUATOR_REVERSE };
 
@@ -44,6 +48,7 @@ enum ActuatorDirection { ACTUATOR_FORWARD, ACTUATOR_STOP, ACTUATOR_REVERSE };
 void joystickPressed();
 void processQueue(bool onlyOne = false);
 void processManualMode();
+void performAdjust();
 void setActuatorDirection(int extend, int retract, ActuatorDirection dir);
 void setVActuatorDirection(ActuatorDirection dir);
 void setHActuatorDirection(ActuatorDirection dir);
@@ -57,10 +62,16 @@ void setup()
 {
 
     pinMode(vert_extend, OUTPUT);
+    digitalWrite(vert_extend, 0);
+
     pinMode(vert_retract, OUTPUT);
+    digitalWrite(vert_retract, 0);
+
     pinMode(horiz_extend, OUTPUT);
+    digitalWrite(horiz_extend, 0);
+
     pinMode(horiz_retract, OUTPUT);
-    pinMode(13, OUTPUT);
+    digitalWrite(horiz_retract, 0);
 
     pinMode(joy_vert, INPUT);
     pinMode(joy_horiz, INPUT);
@@ -69,7 +80,8 @@ void setup()
 
     Serial.begin(9600);
 
-    attachInterrupt(0, joystickPressed, FALLING);
+    attachInterrupt(1, joystickPressed, FALLING);
+    //manualModeEnabled = true;
 
 }
 void loop()
@@ -80,6 +92,8 @@ void loop()
 
     if(manualModeEnabled)
         processManualMode();
+    if(adjustingH || adjustingV)
+        performAdjust();
 }
 
 bool getMessage(Message &msg)
@@ -107,6 +121,7 @@ void sendMessage(Message &msg)
 {
     Serial.write(lowByte(msg.msg));
     Serial.write(highByte(msg.msg));
+    //Serial.print(msg.msg, HEX);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
         Serial.write(msg.param1);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 2)
@@ -116,55 +131,76 @@ void sendMessage(Message &msg)
 
 bool performSimple(Message &msg)
 {
+    bool performed = true;
     Message response;
     switch(msg.msg)
     {
     case MESSAGE_ECHO_REQUEST:
         response.msg = MESSAGE_ECHO_RESPONSE;
         break;
+
     case MESSAGE_POSITION_H_REQUEST:
         response.msg = MESSAGE_POSITION_H_RESPONSE;
-        response.param1 = getHPosition();
+        response.param1 = map(getHPosition(), 0, 255, actuatorHMin, actuatorHMax);
         break;
+
     case MESSAGE_POSITION_V_REQUEST:
         response.msg = MESSAGE_POSITION_V_RESPONSE;
-        response.param1 = getVPosition();
+        response.param1 = map(getVPosition(), 0, 255, actuatorVMin, actuatorVMax);
         break;
+
     case MESSAGE_POSITION_REQUEST:
         response.msg = MESSAGE_POSITION_RESPONSE;
-        response.param1 = getHPosition();
-        response.param2 = getVPosition();
+        response.param1 = map(getHPosition(), 0, 255, actuatorHMin, actuatorHMax);
+        response.param2 = map(getVPosition(), 0, 255, actuatorVMin, actuatorVMax);
         break;
+
     case MESSAGE_ENABLE_MANUAL_CONTROLS:
         setVActuatorDirection(ACTUATOR_STOP);
         setHActuatorDirection(ACTUATOR_STOP);
         manualModeEnabled = true;
         response.msg = MESSAGE_ACK;
-        digitalWrite(13,HIGH);
         break;
+
     case MESSAGE_DISABLE_MANUAL_CONTROLS:
         setVActuatorDirection(ACTUATOR_STOP);
         setHActuatorDirection(ACTUATOR_STOP);
         manualModeEnabled = false;
         response.msg = MESSAGE_ACK;
-        digitalWrite(13,LOW);
         break;
+
     case MESSAGE_ADJUST_H_POSITION:
-        response.msg = MESSAGE_NACK;
+        requestedH = msg.param1;
+        if(requestedH < actuatorHMin)
+            requestedH = actuatorHMin;
+        if(requestedH > actuatorHMax)
+            requestedH = actuatorHMax;
 
+        adjustingH = true;
+
+        response.msg = MESSAGE_ACK;
         break;
-    case MESSAGE_ADJUST_V_POSITION:
-        response.msg = MESSAGE_NACK;
 
+    case MESSAGE_ADJUST_V_POSITION:
+        requestedV = msg.param1;
+        if(requestedV < actuatorVMin)
+            requestedV = actuatorVMin;
+        if(requestedV > actuatorVMax)
+            requestedV = actuatorVMax;
+
+        adjustingV = true;
+
+        response.msg = MESSAGE_ACK;
         break;
 
     default:
         response.msg = MESSAGE_NACK;
-        //return false;
+        performed = false;
+        break;
     }
 
     sendMessage(response);
-    return true;
+    return performed;
 }
 
 byte getHPosition()
@@ -211,6 +247,11 @@ void processManualMode()
     int vertical = analogRead(joy_vert);
     int horizontal = analogRead(joy_horiz);
 
+    //Serial.print("v: "); Serial.print(vertical);
+    //Serial.print("     h: "); Serial.print(horizontal);
+    //Serial.print("     av: "); Serial.print(getVPosition());
+    //Serial.print("     ah: "); Serial.println(getHPosition());
+
     if(vertical > 700)
     {
         if(getVPosition() >= actuatorVMax)
@@ -246,9 +287,52 @@ void processManualMode()
         setHActuatorDirection(ACTUATOR_STOP);
 }
 
+void performAdjust()
+{
+    int vPos = getVPosition();
+    int hPos = getHPosition();
+
+    if(adjustingH && abs(requestedH - hPos) > 3)
+    {
+        //adjust h
+        if(requestedH < hPos)
+            setHActuatorDirection(ACTUATOR_REVERSE);
+        else if(requestedH > hPos)
+            setHActuatorDirection(ACTUATOR_FORWARD);
+        else
+            setHActuatorDirection(ACTUATOR_STOP);
+    }
+    else if(adjustingH)
+    {
+        adjustingH = false;
+        setHActuatorDirection(ACTUATOR_STOP);
+        requestQueue |= POSITION_H_REACHED_QUEUE;
+    }
+    else
+        setHActuatorDirection(ACTUATOR_STOP);
+
+    if(adjustingV && abs(requestedV - vPos) > 3)
+    {
+        //adjust v
+        if(requestedV < vPos)
+            setVActuatorDirection(ACTUATOR_REVERSE);
+        else if(requestedV > vPos)
+            setVActuatorDirection(ACTUATOR_FORWARD);
+        else
+            setVActuatorDirection(ACTUATOR_STOP);
+    }
+    else if(adjustingV)
+    {
+        adjustingV = false;
+        setVActuatorDirection(ACTUATOR_STOP);
+        requestQueue |= POSITION_V_REACHED_QUEUE;
+    }
+    else
+        setVActuatorDirection(ACTUATOR_STOP);
+}
+
 void processQueue(bool onlyOne)
 {
-//#error not implemented
     if(requestQueue == 0)
         return;
 
@@ -257,7 +341,23 @@ void processQueue(bool onlyOne)
         Message msg;
         msg.msg = MESSAGE_MODE_SWITCH;
         sendMessage(msg);
-        requestQueue = 0;
+        requestQueue &= ~JOYSTICK_PRESSED_QUEUE;
+    }
+    if(requestQueue & POSITION_H_REACHED_QUEUE)
+    {
+        Message msg;
+        msg.msg = MESSAGE_POSITION_H_REACHED;
+        msg.param1 = map(getHPosition(), 0,255, actuatorHMin,actuatorHMax);
+        sendMessage(msg);
+        requestQueue &= ~POSITION_H_REACHED_QUEUE;
+    }
+    if(requestQueue & POSITION_V_REACHED_QUEUE)
+    {
+        Message msg;
+        msg.msg = MESSAGE_POSITION_V_REACHED;
+        msg.param1 = map(getVPosition(), 0,255, actuatorVMin,actuatorVMax);
+        sendMessage(msg);
+        requestQueue &= ~POSITION_V_REACHED_QUEUE;
     }
 }
 

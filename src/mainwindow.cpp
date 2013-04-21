@@ -120,6 +120,9 @@ void MainWindow::exitAutomaticMode()
 {
     pu->PauseThread();
     disconnect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::exitAutomaticMode(): done";
+#endif
 }
 
 void MainWindow::enterManualMode()
@@ -127,12 +130,18 @@ void MainWindow::enterManualMode()
     pu->PauseThread();
     ui->tabWidget->setCurrentWidget(ui->tabManualMode);
     m_hardwareManager->SetManualMode(true);
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::enterManualMode(): done";
+#endif
 }
 
 void MainWindow::exitManualMode()
 {
     //Nothing to be done??
     m_hardwareManager->SetManualMode(false);
+#ifdef DEBUG_MODE_SWITCHING
+    qDebug() << "MainWindow::exitManualMode(): done";
+#endif
 }
 
 void MainWindow::enterFaceInvadersMode()
@@ -246,9 +255,11 @@ void PositionUpdater::run()
         mutex.lock();
         if(stopped)
         {
+            qDebug() << "Sleeping pu...";
             condition.wait(&mutex);
             if(m_quitRequested)
                 return;
+            qDebug() << "pu woke up...";
         }
         mutex.unlock();
 

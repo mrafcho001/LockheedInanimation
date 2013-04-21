@@ -75,7 +75,7 @@ public:
     static const qreal DefaultVerticalROM = 25.0;
     static const qreal DefaultCameraHFOV = 50.0;
     static const qreal DefaultCameraVFOV = 36.0;
-    static const qreal DefaultHTolerance = 10.0;
+    static const qreal DefaultHTolerance = 8.0;
     static const qreal DefaultVTolerance = 6.0;
 };
 
@@ -113,9 +113,11 @@ public:
     qreal retrievePositionH();
     qreal retrievePositionV();
 
+    bool isReady() const;
+
 public slots:
-    bool setVerticalPosition(qreal position);
-    bool setHorizontalPosition(qreal position);
+    bool setVerticalPosition(quint8 position);
+    bool setHorizontalPosition(quint8 position);
 
     bool enableManualControls(bool enable = true);
 
@@ -132,8 +134,10 @@ signals:
 
     void modeSwitchTriggered();
 
+    void CommReady();
+
 private:
-    bool m_setPositionHelper(Message &msg, qreal position);
+    bool m_setPositionHelper(quint16 msg, quint8 position);
     qreal m_hPosition;
     qreal m_vPosition;
 
@@ -141,7 +145,8 @@ private:
     QThread *m_serialCommThread;
     QTimer *m_timer;
 };
-Q_DECLARE_METATYPE(HardwareComm::Message);
+
+Q_DECLARE_METATYPE(HardwareComm::Message)
 
 Serial& operator<<(Serial& serial, const HardwareComm::Message &msg);
 Serial& operator>>(Serial& serial, HardwareComm::Message &msg);
