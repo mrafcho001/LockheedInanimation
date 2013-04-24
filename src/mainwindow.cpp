@@ -11,7 +11,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow), ft(new FaceTracker(0)), pu(new PositionUpdater(ft)),
-    m_stateMachine(new QStateMachine(this)), m_hardwareManager(new HardwareManager(this))
+    m_stateMachine(new QStateMachine(this)), m_hardwareManager(new HardwareManager(this)),
+    m_ad(NULL), m_isFullScreen(false)
 {
     ui->setupUi(this);
 
@@ -40,6 +41,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(ModeSwitchTriggered()), this, SLOT(modeSwitched()));
 #endif
 
+    connect(ui->actionFullScreen, SIGNAL(triggered()), this, SLOT(fullScreenToggle()));
+    connect(ui->actionAboutDialog, SIGNAL(triggered()), this, SLOT(displayAbout()));
+
+    //debugging signal/slots
+    connect(m_hardwareManager, SIGNAL(PositionHUpdate(int)), ui->lblHPos, SLOT(setNum(int)));
+    connect(m_hardwareManager, SIGNAL(PositionVUpdate(int)), ui->lblVpos, SLOT(setNum(int)));
+    connect(m_hardwareManager, SIGNAL(RequestingHPosition(int)), ui->lblRequestedHPos, SLOT(setNum(int)));
+    connect(m_hardwareManager, SIGNAL(RequestingVPosition(int)), ui->lblRequestedVPos, SLOT(setNum(int)));
+
     //Setup statemachine
     QState *automatic = new QState();
     QState *manual = new QState();
@@ -60,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_stateMachine->addState(automatic);
     m_stateMachine->addState(manual);
     m_stateMachine->addState(faceInvaders);
-    m_stateMachine->setInitialState(automatic);
+    m_stateMachine->setInitialState(manual);
     m_stateMachine->start();
 }
 
@@ -105,12 +115,12 @@ void MainWindow::enterAutomaticMode()
 {
     pu->ResumeThread();
     pu->EnablePositionUpdates(true);
-    pu->EnableFaceHighlighting(false);
+    pu->EnableFaceHighlighting(true);
     pu->EnableFaceOnlyUpdates(false);
-    pu->EnableFullImageUpdates(false);
+    pu->EnableFullImageUpdates(true);
 
     connect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
-    ui->tabWidget->setCurrentWidget(ui->tabAutomaticMode);
+    ui->tabWidget->setCurrentWidget(ui->tabImageTracking);
 #ifdef DEBUG_MODE_SWITCHING
     qDebug() << "MainWindow::enterAutomaticMode(): done";
 #endif
@@ -146,8 +156,11 @@ void MainWindow::exitManualMode()
 
 void MainWindow::enterFaceInvadersMode()
 {
-    pu->ResumeThread();
     pu->EnablePositionUpdates(true);
+    pu->EnableFaceHighlighting(false);
+    pu->EnableFaceOnlyUpdates(false);
+    pu->EnableFullImageUpdates(false);
+    pu->ResumeThread();
     connect(pu, SIGNAL(UpdatePosition(QRect)), ui->gvFaceInvaders, SLOT(updatePlayerPosition(QRect)), Qt::UniqueConnection);
     ui->tabWidget->setCurrentWidget(ui->tabFaceInvaders);
     ui->gvFaceInvaders->resetGame();
@@ -172,6 +185,27 @@ void MainWindow::exitFaceInvadersMode()
 void MainWindow::modeSwitched()
 {
     qDebug() << "Mode switch triggered...";
+}
+
+void MainWindow::displayAbout()
+{
+    if(m_ad == NULL)
+        m_ad = new AboutDialog(this);
+
+    if(m_ad->isVisible())
+        m_ad->hide();
+    else
+        m_ad->show();
+}
+
+void MainWindow::fullScreenToggle()
+{
+    if(m_isFullScreen)
+        this->showFullScreen();
+    else
+        this->showNormal();
+
+    m_isFullScreen = !m_isFullScreen;
 }
 
 void MainWindow::closeEvent(QCloseEvent *)
@@ -294,7 +328,7 @@ void PositionUpdater::run()
             p.end();
         }
 
-        if(m_updateMask & static_cast<quint8>(0x01U))
+        if(m_updateMask & static_cast<quint8>(0x01U) && facePosition.isValid())
             emit UpdatePosition(facePosition);
         if(m_updateMask & static_cast<quint8>(0x01U<<1))
         {

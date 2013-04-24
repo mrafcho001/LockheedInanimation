@@ -11,6 +11,8 @@ HardwareManager::HardwareManager(QObject *parent) :
     connect(m_comm, SIGNAL(modeSwitchTriggered()), this, SIGNAL(ModeSwitchTriggered()));
     connect(m_comm, SIGNAL(horizontalPositionChanged(qreal)), this, SLOT(m_updateHPosition(qreal)));
     connect(m_comm, SIGNAL(verticalPositionChanged(qreal)), this, SLOT(m_updateVPosition(qreal)));
+    connect(m_comm, SIGNAL(finalHorizontalPositionReached(qreal)), this, SLOT(positionHReached(qreal)));
+    connect(m_comm, SIGNAL(finalVerticalPositionReached(qreal)), this, SLOT(positionVReached(qreal)));
 
     m_monitorH_ROM = HardwareManager::DefaultHorizontalROM;
     m_monitorV_ROM = HardwareManager::DefaultVerticalROM;
@@ -32,15 +34,20 @@ void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
 
     quint8 hpos = m_comm->retrievePositionH();
     quint8 vpos = m_comm->retrievePositionV();
+    emit PositionHUpdate(hpos);
+    emit PositionVUpdate(vpos);
 
     QPointF center = normalized_face_pos.center();
+    qDebug() << "Center: " << center;
+    if(center.x() < 5 && center.y() < 5)
+        return;
     center /= 100;
     //Determine if monitor position needs to be adjusted
-    if(qAbs(center.x() - 0.5)*m_cameraH_FOV > m_toleranceH && !m_hMotion)
+    if(qAbs(center.x() - 0.5)*m_cameraH_FOV > m_toleranceH )//&& !m_hMotion)
     {
         //Adjust H position
         m_hMotion = true;
-        qreal hdeg = (center.x() - 0.5)*(m_cameraH_FOV/m_monitorH_ROM);
+        qreal hdeg = (center.x() - 0.5)*m_cameraH_FOV;
 
         int newPosition = hpos + hdeg/m_monitorH_ROM*255;
         if(newPosition > 255)
@@ -48,13 +55,14 @@ void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
         else if(newPosition < 0)
             newPosition = 0;
 
-        m_comm->setHorizontalPosition(newPosition);
+        m_hMotion = m_comm->setHorizontalPosition(newPosition);
+        emit RequestingHPosition((quint8)newPosition);
     }
-    if(qAbs(center.y() - 0.5)*m_cameraV_FOV > m_toleranceV && !m_hMotion)
+    if(qAbs(center.y() - 0.5)*m_cameraV_FOV > m_toleranceV)// && !m_hMotion)
     {
         //Adjust V position
         m_vMotion = true;
-        qreal vdeg = (center.y() - 0.5)*(m_cameraV_FOV/m_monitorV_ROM);
+        qreal vdeg = (center.y() - 0.5)*m_cameraV_FOV;
 
         int newPosition = vpos + vdeg/m_monitorV_ROM*255;
         if(newPosition > 255)
@@ -62,7 +70,8 @@ void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
         else if(newPosition < 0)
             newPosition = 0;
 
-        m_comm->setHorizontalPosition(newPosition);
+        m_vMotion = m_comm->setHorizontalPosition(newPosition);
+        emit RequestingVPosition((quint8)newPosition);
     }
 }
 
@@ -99,6 +108,16 @@ void HardwareManager::SetTiltROM(qreal rom)
 void HardwareManager::SetSerialPort(std::string &port)
 {
     m_comm->setSerialTTY(port);
+}
+
+void HardwareManager::positionHReached(qreal pos)
+{
+    m_hMotion = false;
+}
+
+void HardwareManager::positionVReached(qreal pos)
+{
+    m_vMotion = false;
 }
 
 void HardwareManager::m_updateHPosition(qreal pos)
@@ -254,7 +273,7 @@ void HardwareComm::setCommReady()
 
 bool HardwareComm::m_setPositionHelper(quint16 msg, quint8 position)
 {
-    if(m_serialComm->isReady())
+    if(!m_serialComm->isReady())
         return false;
 
     Message sendMsg;
@@ -288,9 +307,9 @@ bool HardwareComm::Message::isAsync() const
     return this->msg & MESSAGE_TYPE_ASYNC;
 }
 
-QString msgToString(quint16 msg)
+QString printMsg(HardwareComm::Message msg)
 {
-    switch(msg)
+    switch(msg.msg)
     {
     case MESSAGE_ECHO_REQUEST:
         return QString("MESSAGE_ECHO_REQUEST");
@@ -305,33 +324,33 @@ QString msgToString(quint16 msg)
     case MESSAGE_DISABLE_MANUAL_CONTROLS:
         return QString("MESSAGE_DISABLE_MANUAL_CONTROLS");
     case MESSAGE_ADJUST_H_POSITION:
-        return QString("MESSAGE_ADJUST_H_POSITION");
+        return QString("MESSAGE_ADJUST_H_POSITION (%1)").arg(msg.params.one);
     case MESSAGE_ADJUST_V_POSITION:
-        return QString("MESSAGE_ADJUST_V_POSITION");
+        return QString("MESSAGE_ADJUST_V_POSITION (%1)").arg(msg.params.one);
     case MESSAGE_POSITION_REQUEST:
         return QString("MESSAGE_POSITION_REQUEST");
     case MESSAGE_POSITION_RESPONSE:
-        return QString("MESSAGE_POSITION_RESPONSE");
+        return QString("MESSAGE_POSITION_RESPONSE (%1,%2)").arg(msg.params.one).arg(msg.params.two);
     case MESSAGE_POSITION_H_REQUEST:
         return QString("MESSAGE_POSITION_H_REQUEST");
     case MESSAGE_POSITION_V_REQUEST:
         return QString("MESSAGE_POSITION_V_REQUEST");
     case MESSAGE_POSITION_V_RESPONSE:
-        return QString("MESSAGE_POSITION_V_RESPONSE");
+        return QString("MESSAGE_POSITION_V_RESPONSE (%1)").arg(msg.params.one);
     case MESSAGE_POSITION_H_RESPONSE:
-        return QString("MESSAGE_POSITION_H_RESPONSE");
+        return QString("MESSAGE_POSITION_H_RESPONSE (%1)").arg(msg.params.one);
     case MESSAGE_POSITION_UPDATE:
-        return QString("MESSAGE_POSITION_UPDATE");
+        return QString("MESSAGE_POSITION_UPDATE (%1,%2)").arg(msg.params.one).arg(msg.params.two);
     case MESSAGE_POSITION_REACHED:
-        return QString("MESSAGE_POSITION_REACHED");
+        return QString("MESSAGE_POSITION_REACHED (%1,%2)").arg(msg.params.one).arg(msg.params.two);
     case MESSAGE_POSITION_H_REACHED:
-        return QString("MESSAGE_POSITION_H_REACHED");
+        return QString("MESSAGE_POSITION_H_REACHED (%1)").arg(msg.params.one);
     case MESSAGE_POSITION_V_REACHED:
-        return QString("MESSAGE_POSITION_V_REACHED");
+        return QString("MESSAGE_POSITION_V_REACHED (%1)").arg(msg.params.one);
     case MESSAGE_MODE_SWITCH:
         return QString("MESSAGE_MODE_SWITCH");
     }
-    return QString("unrecognized message! %1").arg(msg);
+    return QString("unrecognized message! %1").arg(msg.msg);
 }
 
 Serial& operator<<(Serial &serial, const HardwareComm::Message &msg)
@@ -377,7 +396,7 @@ bool ThreadSafeAsyncSerial::sendMessage(const HardwareComm::Message &msg, Hardwa
     if(!m_isReady)
         return false;
 #ifdef DEBUG_SERIAL_COMM
-    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): Sending: " << msgToString(msg.msg);
+    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): Sending: " << printMsg(msg);
 #endif
     Sender sender;
 
@@ -386,7 +405,7 @@ bool ThreadSafeAsyncSerial::sendMessage(const HardwareComm::Message &msg, Hardwa
     sender.cond.wait(&m_queueMutex);
 
 #ifdef DEBUG_SERIAL_COMM
-    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): response: " << msgToString(sender.response.msg);
+    qDebug() << "ThreadSafeAsyncSerial::sendMessage(): response: " << printMsg(sender.response);
 #endif
 
     response = sender.response;
@@ -422,7 +441,9 @@ void ThreadSafeAsyncSerial::begin()
 
         if(readMsg.isAsync())
         {
-            qDebug() << "Async: " << msgToString(readMsg.msg);
+#ifdef DEBUG_SERIAL_COMM
+            qDebug() << "Async: " << printMsg(readMsg);
+#endif
             emit AsyncMessage(readMsg);
         }
         else
@@ -437,7 +458,10 @@ void ThreadSafeAsyncSerial::begin()
                 sender->cond.wakeOne();
             }
             else
+            {
+                qDebug() << "Non-async and non-response msg: " << printMsg(readMsg);
                 m_queueMutex.unlock();
+            }
         }
     }
 #ifdef DEBUG_QTHREADS

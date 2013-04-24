@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <QFont>
 #include <QGLWidget>
+#include <QSettings>
 
 const QRect FaceInvadersScene::DefaultGameSize = QRect(0,0, 600, 440);
 
@@ -44,6 +45,7 @@ FaceInvadersScene::FaceInvadersScene(QWidget *parent):
     //Init rand() seed
     int seed = QTime::currentTime().msec() * QTime::currentTime().second();
     srand(QThread::currentThreadId() * seed);
+
 }
 
 FaceInvadersScene::~FaceInvadersScene()
@@ -77,6 +79,11 @@ FaceInvadersScene::GameState FaceInvadersScene::getState() const
 int FaceInvadersScene::getGameScore() const
 {
     return m_gameScore;
+}
+
+int FaceInvadersScene::getHighScore() const
+{
+    return m_highScore;
 }
 
 void FaceInvadersScene::createNewInvaders()
@@ -183,6 +190,10 @@ void FaceInvadersScene::setPlayerImage(const QPixmap &image)
     player->setFace(image);
 }
 
+void FaceInvadersScene::setHighScore(int score)
+{
+}
+
 void FaceInvadersScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, Qt::black);
@@ -216,6 +227,16 @@ FaceInvadersWidget::FaceInvadersWidget(QWidget *parent) :
     //Timers
     connect(&m_initTimer, SIGNAL(timeout()), this, SLOT(initTimerExpired()));
     connect(&m_restartTimer, SIGNAL(timeout()), this, SLOT(resetTimerExpired()));
+
+    QSettings settings;
+    int score = settings.value("faceinvaders/highscore").toInt();
+    m_scene->setHighScore(score);
+}
+
+FaceInvadersWidget::~FaceInvadersWidget()
+{
+    QSettings settings;
+    settings.setValue("faceinvaders/highscore", m_scene->getHighScore());
 }
 
 int FaceInvadersWidget::heightForWidth(int w) const
@@ -311,7 +332,7 @@ void FaceInvadersWidget::drawForeground(QPainter *painter, const QRectF &rect)
         painter->setPen(pen);
         textRect.adjust(0, rect2.height()/8, 0, rect2.height()/8);
         //! \todo Use QSettings to store highest score
-        painter->drawText(textRect, QString("Highest Score: %1").arg(100), QTextOption(Qt::AlignLeft));
+        painter->drawText(textRect, QString("Highest Score: %1").arg(m_scene->getHighScore()), QTextOption(Qt::AlignLeft));
 
         f.setPointSize(10);
         pen.setColor(Qt::white);

@@ -15,4 +15,9 @@
         <file>BugInvader.png</file>
         <file>WatermelonInvader.png</file>
     </qresource>
+    <qresource prefix="/about">
+        <file>lockheed.png</file>
+        <file>psu_logo.png</file>
+        <file>psu_logo2.png</file>
+    </qresource>
 </RCC>

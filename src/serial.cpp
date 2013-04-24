@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include <QDebug>
 #include <stdio.h>
+#include <termios.h>
+
 
 const std::string Serial::DefaultTTYDevice = "/dev/ttyACM0";
 
@@ -33,6 +35,13 @@ bool Serial::open()
     }
 
     m_fd = ::open(m_tty.c_str(), O_RDWR | O_NOCTTY);
+    struct termios toptions;
+    tcgetattr(m_fd, &toptions);
+    cfsetispeed(&toptions, B9600);
+    cfsetospeed(&toptions, B9600);
+    cfmakeraw(&toptions);
+    tcsetattr(m_fd, TCSANOW, &toptions);
+    tcflush(m_fd, TCIFLUSH);
 
     return (m_fd != -1);
 }

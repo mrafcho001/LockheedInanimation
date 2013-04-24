@@ -9,6 +9,7 @@
 #include <QWaitCondition>
 #include <QMutex>
 #include <QStateMachine>
+#include "aboutdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +41,8 @@ public slots:
     void exitFaceInvadersMode();
 
     void modeSwitched();
+    void displayAbout();
+    void fullScreenToggle();
 
 signals:
     void ModeSwitchTriggered();
@@ -55,6 +58,8 @@ private:
     QThread *m_puThread;
     QStateMachine *m_stateMachine;
     HardwareManager *m_hardwareManager;
+    AboutDialog *m_ad;
+    bool m_isFullScreen;
 };
 
 class PositionUpdater : public QObject

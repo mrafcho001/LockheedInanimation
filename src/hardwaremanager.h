@@ -22,8 +22,12 @@ public:
 
 signals:
     void PositionChanged(qreal horizontal, qreal vertical);
+    void PositionHUpdate(int hpos);
+    void PositionVUpdate(int vpos);
     void ModeSwitchTriggered();
 
+    void RequestingHPosition(int h);
+    void RequestingVPosition(int v);
 
 public slots:
     bool SetManualMode(bool manual_mode = true);
@@ -48,6 +52,9 @@ public slots:
 
     /*! \brief Set serial port to use for Arduino communication */
     void SetSerialPort(std::string &port);
+
+    void positionHReached(qreal pos);
+    void positionVReached(qreal pos);
 
 private slots:
     void m_updateHPosition(qreal pos);

@@ -6,8 +6,8 @@ const int horiz_extend = 7;       // pin 7 controls the extention of the horizon
 const int horiz_retract = 9;      // pin 9 controls the retraction of the horizotnal actuator
 const int vert_wiper = A1;
 const int horiz_wiper = A2;
-const int joy_vert = A4;
-const int joy_horiz = A3;
+const int joy_vert = A5;
+const int joy_horiz = A4;
 const int joy_sel = 2;           // pin 12 reads the push button of the joystick
 
 int mode = 0;                     // 0: Manual, 1: Automatic, 2: FaceInvaders
@@ -24,8 +24,8 @@ struct Message
     byte param2;
 };
 
-unsigned int requestQueue;
-#define JOYSTICK_PRESSED_QUEUE            (1<<0)
+unsigned int requestQueue = 0;
+#define JOYSTICK_PRESSED_QUEUE              (1<<0)
 #define POSITION_H_REACHED_QUEUE            (1<<1)
 #define POSITION_V_REACHED_QUEUE            (1<<2)
 
@@ -39,7 +39,7 @@ bool adjustingV = false;
 const int actuatorVMax = 95;
 const int actuatorVMin = 22;
 const int actuatorHMax = 130;
-const int actuatorHMin = 10;
+const int actuatorHMin = 20;
 
 enum ActuatorDirection { ACTUATOR_FORWARD, ACTUATOR_STOP, ACTUATOR_REVERSE };
 
@@ -78,10 +78,12 @@ void setup()
     pinMode(joy_sel, INPUT);
     digitalWrite(joy_sel, HIGH);   // turn on the pull-up resistor for the joy_sel line
 
+    pinMode(13, OUTPUT);
+    digitalWrite(13, LOW);
     Serial.begin(9600);
 
-    attachInterrupt(1, joystickPressed, FALLING);
-    //manualModeEnabled = true;
+    attachInterrupt(0, joystickPressed, FALLING);
+    manualModeEnabled = true;
 
 }
 void loop()
@@ -103,10 +105,12 @@ bool getMessage(Message &msg)
         byte lsb = Serial.read();
         byte msb = Serial.read();
         msg.msg = word(msb, lsb);
-        //msg.msg = Serial.parseInt();
+        //msg.param1 = Serial.parseInt();
+        //Serial.print("Got: "); Serial.println(msg.msg);
         while(GET_MSG_PARAM_COUNT(msg.msg) > Serial.available())
         {
             //wait extra bytes
+            digitalWrite(13, HIGH);
         }
         if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
             msg.param1 = Serial.read();
@@ -121,7 +125,7 @@ void sendMessage(Message &msg)
 {
     Serial.write(lowByte(msg.msg));
     Serial.write(highByte(msg.msg));
-    //Serial.print(msg.msg, HEX);
+    //Serial.print("Sending:" ); Serial.println(msg.msg, DEC);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
         Serial.write(msg.param1);
     if(GET_MSG_PARAM_COUNT(msg.msg) >= 2)
@@ -141,18 +145,18 @@ bool performSimple(Message &msg)
 
     case MESSAGE_POSITION_H_REQUEST:
         response.msg = MESSAGE_POSITION_H_RESPONSE;
-        response.param1 = map(getHPosition(), 0, 255, actuatorHMin, actuatorHMax);
+        response.param1 = map(getHPosition(), actuatorHMin, actuatorHMax, 0, 255);
         break;
 
     case MESSAGE_POSITION_V_REQUEST:
         response.msg = MESSAGE_POSITION_V_RESPONSE;
-        response.param1 = map(getVPosition(), 0, 255, actuatorVMin, actuatorVMax);
+        response.param1 = map(getVPosition(), actuatorVMin, actuatorVMax, 0, 255);
         break;
 
     case MESSAGE_POSITION_REQUEST:
         response.msg = MESSAGE_POSITION_RESPONSE;
-        response.param1 = map(getHPosition(), 0, 255, actuatorHMin, actuatorHMax);
-        response.param2 = map(getVPosition(), 0, 255, actuatorVMin, actuatorVMax);
+        response.param1 = map(getHPosition(), actuatorHMin, actuatorHMax, 0, 255);
+        response.param2 = map(getVPosition(), actuatorVMin, actuatorVMax, 0, 255);
         break;
 
     case MESSAGE_ENABLE_MANUAL_CONTROLS:
@@ -160,6 +164,7 @@ bool performSimple(Message &msg)
         setHActuatorDirection(ACTUATOR_STOP);
         manualModeEnabled = true;
         response.msg = MESSAGE_ACK;
+        digitalWrite(13, HIGH);
         break;
 
     case MESSAGE_DISABLE_MANUAL_CONTROLS:
@@ -167,6 +172,7 @@ bool performSimple(Message &msg)
         setHActuatorDirection(ACTUATOR_STOP);
         manualModeEnabled = false;
         response.msg = MESSAGE_ACK;
+        digitalWrite(13, LOW);
         break;
 
     case MESSAGE_ADJUST_H_POSITION:
@@ -336,16 +342,15 @@ void processQueue(bool onlyOne)
     if(requestQueue == 0)
         return;
 
+    Message msg;
     if(requestQueue & JOYSTICK_PRESSED_QUEUE)
     {
-        Message msg;
         msg.msg = MESSAGE_MODE_SWITCH;
         sendMessage(msg);
         requestQueue &= ~JOYSTICK_PRESSED_QUEUE;
     }
     if(requestQueue & POSITION_H_REACHED_QUEUE)
     {
-        Message msg;
         msg.msg = MESSAGE_POSITION_H_REACHED;
         msg.param1 = map(getHPosition(), 0,255, actuatorHMin,actuatorHMax);
         sendMessage(msg);
@@ -353,7 +358,6 @@ void processQueue(bool onlyOne)
     }
     if(requestQueue & POSITION_V_REACHED_QUEUE)
     {
-        Message msg;
         msg.msg = MESSAGE_POSITION_V_REACHED;
         msg.param1 = map(getVPosition(), 0,255, actuatorVMin,actuatorVMax);
         sendMessage(msg);

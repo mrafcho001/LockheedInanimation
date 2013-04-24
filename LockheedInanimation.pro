@@ -19,7 +19,8 @@ SOURCES += src/main.cpp\
     src/faceinvaderswidget.cpp \
     src/serial.cpp \
     src/corefeaturewidget.cpp \
-    src/hardwaremanager.cpp
+    src/hardwaremanager.cpp \
+    src/aboutdialog.cpp
 
 HEADERS  += src/mainwindow.h \
     src/facetracker.h \
@@ -28,9 +29,11 @@ HEADERS  += src/mainwindow.h \
     src/corefeaturewidget.h \
     src/CommunicationProtocol.h \
     src/hardwaremanager.h \
-    src/Arduino/arduino_sketch.ino
+    src/Arduino/arduino_sketch.ino \
+    src/aboutdialog.h
 
-FORMS    += resources/mainwindow.ui
+FORMS    += resources/mainwindow.ui \
+    resources/aboutdialog.ui
 
 ARDUINO_SOURCES += src/Arduino/arduino_sketch.ino
 

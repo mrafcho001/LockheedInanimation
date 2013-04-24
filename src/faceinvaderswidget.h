@@ -88,6 +88,8 @@ public:
     //! \brief Returns the score of the game
     int getGameScore() const;
 
+    int getHighScore() const;
+
 signals:
     /*! \brief Idicates game state transition to <i>game over</i>
 
@@ -153,6 +155,8 @@ public slots:
     //! \brief Sets the player image
     void setPlayerImage(const QPixmap &image);
 
+    void setHighScore(int score);
+
 protected:
     //! \brief Draws background for the game
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -168,6 +172,7 @@ private:
 
     GameState m_gameState;   //!< 1 - Game running, 0 - Game not running
     int m_gameScore;         //!< Maintains the game score
+    int m_highScore;
 
     //Game Parameters
     //! The starting position of player, Y-coordinate is maintained throughout game play
@@ -204,6 +209,7 @@ public:
         \param parent Sets the parent Widget, \seeqtdoc
     */
     explicit FaceInvadersWidget(QWidget *parent = 0);
+    ~FaceInvadersWidget();
 
     //! \brief Used to maintain aspect ratio of widget, \seeqtdoc
     int heightForWidth(int w) const;
