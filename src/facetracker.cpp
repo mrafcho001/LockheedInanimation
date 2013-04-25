@@ -316,6 +316,8 @@ void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
         cameraFrame = m_cameraFrame;
         return;
     }
+    cv::flip(m_cameraFrame, m_cameraFrame, 1);
+
 
     //To Grayscale
     if(m_cameraFrame.channels() == 3)
@@ -325,7 +327,6 @@ void FaceTracker::GetProcessReadyWebcamImage(cv::Mat &cameraFrame)
 
     //Histogram Equalization
     cv::equalizeHist(cameraFrame, cameraFrame);
-
 #ifdef DEBUG_CAPTURE_TIMING
     qint64 s2 = timer.elapsed();
     qDebug() << "Frame Capture Time: " << s1 << "\t Process Time: " << s2;

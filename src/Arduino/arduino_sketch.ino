@@ -1,7 +1,7 @@
 #include "../CommunicationProtocol.h"
 
-const int vert_extend = 3;        // pin 3 controls the extention of the vertical actuator
-const int vert_retract = 5;       // pin 5 controls the retraction of the vertical actuator
+const int vert_extend = 12;        // pin 3 controls the extention of the vertical actuator
+const int vert_retract = 11;       // pin 5 controls the retraction of the vertical actuator
 const int horiz_extend = 7;       // pin 7 controls the extention of the horizontal actuator
 const int horiz_retract = 9;      // pin 9 controls the retraction of the horizotnal actuator
 const int vert_wiper = A1;
@@ -28,6 +28,9 @@ unsigned int requestQueue = 0;
 #define JOYSTICK_PRESSED_QUEUE              (1<<0)
 #define POSITION_H_REACHED_QUEUE            (1<<1)
 #define POSITION_V_REACHED_QUEUE            (1<<2)
+
+unsigned long lastPress = 0;
+int debounceDelay = 150;
 
 Message lastMSG;
 bool manualModeEnabled = false;
@@ -78,8 +81,8 @@ void setup()
     pinMode(joy_sel, INPUT);
     digitalWrite(joy_sel, HIGH);   // turn on the pull-up resistor for the joy_sel line
 
-    pinMode(13, OUTPUT);
-    digitalWrite(13, LOW);
+    pinMode(5, OUTPUT);
+    digitalWrite(5, LOW);
     Serial.begin(9600);
 
     attachInterrupt(0, joystickPressed, FALLING);
@@ -110,7 +113,6 @@ bool getMessage(Message &msg)
         while(GET_MSG_PARAM_COUNT(msg.msg) > Serial.available())
         {
             //wait extra bytes
-            digitalWrite(13, HIGH);
         }
         if(GET_MSG_PARAM_COUNT(msg.msg) >= 1)
             msg.param1 = Serial.read();
@@ -160,19 +162,22 @@ bool performSimple(Message &msg)
         break;
 
     case MESSAGE_ENABLE_MANUAL_CONTROLS:
+        adjustingH = false;
+        adjustingV = false;
         setVActuatorDirection(ACTUATOR_STOP);
         setHActuatorDirection(ACTUATOR_STOP);
         manualModeEnabled = true;
         response.msg = MESSAGE_ACK;
-        digitalWrite(13, HIGH);
         break;
 
     case MESSAGE_DISABLE_MANUAL_CONTROLS:
+        adjustingH = false;
+        adjustingV = false;
         setVActuatorDirection(ACTUATOR_STOP);
         setHActuatorDirection(ACTUATOR_STOP);
+
         manualModeEnabled = false;
         response.msg = MESSAGE_ACK;
-        digitalWrite(13, LOW);
         break;
 
     case MESSAGE_ADJUST_H_POSITION:
@@ -348,18 +353,19 @@ void processQueue(bool onlyOne)
         msg.msg = MESSAGE_MODE_SWITCH;
         sendMessage(msg);
         requestQueue &= ~JOYSTICK_PRESSED_QUEUE;
+        //Serial.println("Shenanigans");
     }
     if(requestQueue & POSITION_H_REACHED_QUEUE)
     {
         msg.msg = MESSAGE_POSITION_H_REACHED;
-        msg.param1 = map(getHPosition(), 0,255, actuatorHMin,actuatorHMax);
+        msg.param1 = map(getHPosition(), actuatorHMin, actuatorHMax, 0,255);
         sendMessage(msg);
         requestQueue &= ~POSITION_H_REACHED_QUEUE;
     }
     if(requestQueue & POSITION_V_REACHED_QUEUE)
     {
         msg.msg = MESSAGE_POSITION_V_REACHED;
-        msg.param1 = map(getVPosition(), 0,255, actuatorVMin,actuatorVMax);
+        msg.param1 = map(getVPosition(), actuatorVMin, actuatorVMax, 0,255);
         sendMessage(msg);
         requestQueue &= ~POSITION_V_REACHED_QUEUE;
     }
@@ -367,5 +373,12 @@ void processQueue(bool onlyOne)
 
 void joystickPressed()
 {
-    requestQueue |= JOYSTICK_PRESSED_QUEUE;
+    if((millis() - lastPress) > debounceDelay)
+    {
+        requestQueue |= JOYSTICK_PRESSED_QUEUE;
+        digitalWrite(5, HIGH);
+        delay(500);
+        digitalWrite(5, LOW);
+    }
+
 }

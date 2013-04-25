@@ -367,6 +367,9 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    InvaderType getType() const;
+    int absorbReward();
+
 signals:
     //! \brief Notify scene of player successfully evading the invader
     void AlienDying(int points);

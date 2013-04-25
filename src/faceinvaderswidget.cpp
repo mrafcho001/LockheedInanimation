@@ -482,9 +482,18 @@ void PlayerItem::advance(int phase)
 {
     QList<QGraphicsItem*> colliding = this->collidingItems();
     hit = (colliding.size() > 0);
-    if(colliding.size() > 0)
+    foreach(QGraphicsItem* item, colliding)
     {
-        emit PlayerHit();
+        Invader* inv = (Invader*)item;
+        if(inv->getType() == Invader::Bug)
+        {
+            emit PlayerHit();
+            break;
+        }
+        else
+        {
+            inv->absorbReward();
+        }
     }
 }
 
@@ -492,7 +501,12 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsItem(parent, scene)
 {
     qsrand(QTime::currentTime().msec());
-    m_type = (InvaderType)(rand()%InvaderTypeCount);
+    int type = rand()%(InvaderTypeCount+5);
+    if(type >= Bug)
+        m_type = Bug;
+    else
+        m_type = (InvaderType)type;
+
     m_fallVelocity = (qreal)(rand()%1000)/100+3;
     m_angularVelocity = (qreal)(rand()%1415)/1000;
     m_pointValue = rand()%10;
@@ -513,7 +527,7 @@ Invader::Invader(QGraphicsItem *parent, QGraphicsScene *scene) :
         break;
     default:
         /* Should never happen, just default to Apple I guess */
-        m_type = Apple;
+        m_type = Bug;
         initApple();
         break;
     }
@@ -542,6 +556,19 @@ void Invader::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 #endif
 }
 
+Invader::InvaderType Invader::getType() const
+{
+    return m_type;
+}
+
+int Invader::absorbReward()
+{
+    this->scene()->removeItem(this);
+    emit AlienDying(m_pointValue);
+    delete this;
+}
+
+
 void Invader::advance(int phase)
 {
     if(phase == 0)
@@ -550,9 +577,13 @@ void Invader::advance(int phase)
     qreal deathLine = static_cast<FaceInvadersScene*>(this->scene())->getInvaderDeathLine();
     if(this->pos().y() > deathLine)
     {
-        this->scene()->removeItem(this);
-        emit AlienDying(m_pointValue);
-        delete this;
+        if(m_type == Bug)
+            absorbReward();
+        else
+        {
+            this->scene()->removeItem(this);
+            delete this;
+        }
         return;
     }
     setPos(mapToParent(0, m_fallVelocity));
