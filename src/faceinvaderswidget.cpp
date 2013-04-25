@@ -192,6 +192,7 @@ void FaceInvadersScene::setPlayerImage(const QPixmap &image)
 
 void FaceInvadersScene::setHighScore(int score)
 {
+    m_highScore = score;
 }
 
 void FaceInvadersScene::drawBackground(QPainter *painter, const QRectF &rect)
@@ -229,7 +230,7 @@ FaceInvadersWidget::FaceInvadersWidget(QWidget *parent) :
     connect(&m_restartTimer, SIGNAL(timeout()), this, SLOT(resetTimerExpired()));
 
     QSettings settings;
-    int score = settings.value("faceinvaders/highscore").toInt();
+    int score = settings.value("faceinvaders/highscore", 0).toInt();
     m_scene->setHighScore(score);
 }
 

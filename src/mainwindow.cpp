@@ -115,12 +115,13 @@ void MainWindow::enterAutomaticMode()
 {
     pu->ResumeThread();
     pu->EnablePositionUpdates(true);
-    pu->EnableFaceHighlighting(true);
+    pu->EnableFaceHighlighting(false);
     pu->EnableFaceOnlyUpdates(false);
-    pu->EnableFullImageUpdates(true);
+    pu->EnableFullImageUpdates(false);
 
     connect(pu, SIGNAL(UpdatePosition(QRect)), m_hardwareManager, SLOT(UpdateFacePosition(QRect)));
-    ui->tabWidget->setCurrentWidget(ui->tabImageTracking);
+    //ui->tabWidget->setCurrentWidget(ui->tabImageTracking);
+    ui->tabWidget->setCurrentWidget(ui->tabAutomaticMode);
 #ifdef DEBUG_MODE_SWITCHING
     qDebug() << "MainWindow::enterAutomaticMode(): done";
 #endif
@@ -184,7 +185,6 @@ void MainWindow::exitFaceInvadersMode()
 
 void MainWindow::modeSwitched()
 {
-    qDebug() << "Mode switch triggered...";
 }
 
 void MainWindow::displayAbout()
@@ -289,11 +289,15 @@ void PositionUpdater::run()
         mutex.lock();
         if(stopped)
         {
+#ifdef DEBUG_QTHREADS
             qDebug() << "Sleeping pu...";
+#endif
             condition.wait(&mutex);
             if(m_quitRequested)
                 return;
+#ifdef DEBUG_QTHREADS
             qDebug() << "pu woke up...";
+#endif
         }
         mutex.unlock();
 

@@ -78,7 +78,7 @@ private:
     bool m_vMotion;
 
 public:
-    static const qreal DefaultHorizontalROM = 30.0;
+    static const qreal DefaultHorizontalROM = 56.0;
     static const qreal DefaultVerticalROM = 25.0;
     static const qreal DefaultCameraHFOV = 50.0;
     static const qreal DefaultCameraVFOV = 36.0;

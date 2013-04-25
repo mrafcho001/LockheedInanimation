@@ -8,6 +8,7 @@
         <file>background2.png</file>
         <file>defaultUser.png</file>
         <file>joystick.png</file>
+        <file>automatic_mode.png</file>
     </qresource>
     <qresource prefix="/images/invaders">
         <file>AppleInvader.png</file>

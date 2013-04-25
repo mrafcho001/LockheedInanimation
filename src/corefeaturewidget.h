@@ -13,12 +13,6 @@ public slots:
 
     void SetFacePosition(QRect rect);
 
-signals:
-
-protected:
-    void paintEvent(QPaintEvent *event);
-
-
 private:
     
 };

@@ -41,7 +41,7 @@ bool adjustingV = false;
 
 const int actuatorVMax = 95;
 const int actuatorVMin = 22;
-const int actuatorHMax = 130;
+const int actuatorHMax = 140;
 const int actuatorHMin = 20;
 
 enum ActuatorDirection { ACTUATOR_FORWARD, ACTUATOR_STOP, ACTUATOR_REVERSE };
@@ -181,7 +181,7 @@ bool performSimple(Message &msg)
         break;
 
     case MESSAGE_ADJUST_H_POSITION:
-        requestedH = msg.param1;
+        requestedH = map(msg.param1, 0, 255, actuatorHMin, actuatorHMax);
         if(requestedH < actuatorHMin)
             requestedH = actuatorHMin;
         if(requestedH > actuatorHMax)
@@ -193,7 +193,7 @@ bool performSimple(Message &msg)
         break;
 
     case MESSAGE_ADJUST_V_POSITION:
-        requestedV = msg.param1;
+        requestedV = map(msg.param1, 0, 255, actuatorVMin, actuatorVMax);
         if(requestedV < actuatorVMin)
             requestedV = actuatorVMin;
         if(requestedV > actuatorVMax)

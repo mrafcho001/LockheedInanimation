@@ -38,7 +38,6 @@ void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
     emit PositionVUpdate(vpos);
 
     QPointF center = normalized_face_pos.center();
-    qDebug() << "Center: " << center;
     if(center.x() < 5 && center.y() < 5)
         return;
     center /= 100;
@@ -70,7 +69,7 @@ void HardwareManager::UpdateFacePosition(QRect normalized_face_pos)
         else if(newPosition < 0)
             newPosition = 0;
 
-        m_vMotion = m_comm->setHorizontalPosition(newPosition);
+        m_vMotion = m_comm->setVerticalPosition(newPosition);
         emit RequestingVPosition((quint8)newPosition);
     }
 }
@@ -459,7 +458,9 @@ void ThreadSafeAsyncSerial::begin()
             }
             else
             {
+#ifdef DEBUG_SERIAL_COMM
                 qDebug() << "Non-async and non-response msg: " << printMsg(readMsg);
+#endif
                 m_queueMutex.unlock();
             }
         }
