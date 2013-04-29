@@ -10,6 +10,7 @@ var class_face_tracker =
     [ "GetFaceImage", "class_face_tracker.html#a3d2b93c80d45eb8c041cae5165c65280", null ],
     [ "GetFacePosition", "class_face_tracker.html#a9b2f83e09b8911f8c14df67453cda966", null ],
     [ "GetLastImage", "class_face_tracker.html#a4f77bdab0b45cf24701ac008c56ce571", null ],
+    [ "GetLastPosition", "class_face_tracker.html#a62ce12b864026315105d9b8e4c80c023", null ],
     [ "GetMinFeatureSize", "class_face_tracker.html#a5a04d2a24e2607a04f187b81b5335391", null ],
     [ "GetMinNeighbors", "class_face_tracker.html#a531a750753b8c6f3e000ae0ad1460ef7", null ],
     [ "GetProcessReadyWebcamImage", "class_face_tracker.html#aa14c553465c1c0efbc4b5a240013b02c", null ],

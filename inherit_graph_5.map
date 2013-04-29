@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node3" href="$class_invader.html" title="Invader" alt="" coords="213,5,277,35"/>
+<area shape="rect" id="node5" href="$class_player_item.html" title="This is the graphics item representing the user in the graphics scene." alt="" coords="203,59,288,88"/>
+<area shape="rect" id="node8" href="$class_hardware_comm.html" title="HardwareComm" alt="" coords="187,219,304,248"/>
+<area shape="rect" id="node10" href="$class_hardware_manager.html" title="HardwareManager" alt="" coords="181,272,309,301"/>
+<area shape="rect" id="node14" href="$class_position_updater.html" title="PositionUpdater" alt="" coords="188,112,303,141"/>
+<area shape="rect" id="node16" href="$class_thread_safe_async_serial.html" title="ThreadSafeAsyncSerial" alt="" coords="167,165,324,195"/>
+</map>

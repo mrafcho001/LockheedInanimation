@@ -1,3 +1,3 @@
 <map id="FaceInvadersScene" name="FaceInvadersScene">
-<area shape="rect" id="node2" href="$class_player_item.html" title="This is the graphics item representing the user in the graphics scene." alt="" coords="32,5,117,35"/>
+<area shape="rect" id="node4" href="$class_player_item.html" title="This is the graphics item representing the user in the graphics scene." alt="" coords="149,85,235,115"/>
 </map>
