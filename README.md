@@ -52,3 +52,6 @@ Once the software and arduino sketch are compiled and the arduino sketch is uplo
 ```
 $ ./build/release/LockheedInanimation
 ```
+
+## Documentation
+This project is documented using doxygen, in order to generate the documentation yourself, you need doxygen and graphviz. graphviz is used to generate all of the class diagrams.
